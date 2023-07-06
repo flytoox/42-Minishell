@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/06/12 11:38:58 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/06 21:45:08 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	export(char *argument)
 		}
 	}
 	updt_vr = malloc(ft_strlen(nm_vr) + ft_strlen(vl_vr) + 2);
-	g_data.env[i] = updt_vr;
-	g_data.env[i + 1] = NULL;
+	g_data.env[i++] = updt_vr;
+	g_data.env[i] = NULL;
 }
 
 void	unset(char *s)

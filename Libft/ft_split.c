@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 02:39:00 by obelaizi          #+#    #+#             */
-/*   Updated: 2022/11/03 13:54:26 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:44:01 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@ static int	skip_c(const char *s, char c)
 	return (i);
 }
 
-static void	free_str(char **str, int i)
+void	free_dbl_pntr(char **str)
 {
-	while (i >= 0)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
 		free(str[i]);
-		i--;
+		i++;
 	}
 	free(str);
 }
@@ -83,7 +86,7 @@ char	**ft_split(char const *s, char c)
 		s = skip_c(s, c) + s;
 		str[i] = malloc(word_size(s, c) + 1);
 		if (!str[i])
-			return (free_str(str, i), NULL);
+			return (free_dbl_pntr(str), NULL);
 		while (*s && *s != c)
 			str[i][j++] = *(s)++;
 		str[i++][j] = 0;
