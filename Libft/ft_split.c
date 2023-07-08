@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 02:39:00 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/06 16:44:01 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:46:44 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	skip_c(const char *s, char c)
 	return (i);
 }
 
-void	free_dbl_pntr(char **str)
+void	free_dbl_pntr(void **str)
 {
 	int	i;
 
@@ -86,7 +86,7 @@ char	**ft_split(char const *s, char c)
 		s = skip_c(s, c) + s;
 		str[i] = malloc(word_size(s, c) + 1);
 		if (!str[i])
-			return (free_dbl_pntr(str), NULL);
+			return (free_dbl_pntr((void **)str), NULL);
 		while (*s && *s != c)
 			str[i][j++] = *(s)++;
 		str[i++][j] = 0;

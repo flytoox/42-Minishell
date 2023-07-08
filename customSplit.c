@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:18:41 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/06 19:02:11 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/08 15:50:09 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ char	**custt_strjoin(char **s1, char *s2)
 	int		sz;
 
 	sz = 0;
+	remove_quotes(s2);
+	if (!*s2)
+		return (s1);
 	while (s1[sz])
 		sz++;
 	result = malloc((sz + 2) * sizeof(char *));

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/06 21:45:08 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/08 22:09:11 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,46 +35,31 @@ void	pwd(void)
 		perror("getcwd");
 }
 
-void	export(char *argument)
+char	*get_val_var(char *argument)
+{
+	char	*vl_vr;
+
+	vl_vr = ft_strchr(argument, '=') + 1;
+	return (ft_strdup(vl_vr));
+}
+
+char	*get_name_var(char *argument)
 {
 	char	*nm_vr;
 	char	*vl_vr;
 	int		i;
-	char	*updt_vr;
 
 	i = -1;
-	nm_vr = argument;
 	vl_vr = ft_strchr(argument, '=') + 1;
-	while (g_data.env[++i])
+	nm_vr = malloc(ft_strlen(argument) - ft_strlen(vl_vr));
+	while (argument[++i])
 	{
-		if (!ft_strncmp(g_data.env[i], nm_vr, ft_strlen(nm_vr))
-			&& g_data.env[i][ft_strlen(nm_vr)] == '=')
+		if (argument[i] == '=')
 		{
-			updt_vr = malloc(ft_strlen(nm_vr) + ft_strlen(vl_vr) + 2);
-			g_data.env[i] = updt_vr;
-			return ;
+			nm_vr[i] = '\0';
+			break ;
 		}
+		nm_vr[i] = argument[i];
 	}
-	updt_vr = malloc(ft_strlen(nm_vr) + ft_strlen(vl_vr) + 2);
-	g_data.env[i++] = updt_vr;
-	g_data.env[i] = NULL;
-}
-
-void	unset(char *s)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (g_data.env[++i])
-	{
-		if (!ft_strncmp(g_data.env[i], s, ft_strlen(s))
-			&& g_data.env[i][ft_strlen(s)] == '=')
-		{
-			j = i - 1;
-			while (g_data.env[++j])
-				g_data.env[j] = g_data.env[j + 1];
-			return ;
-		}
-	}
+	return (nm_vr);
 }

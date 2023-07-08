@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:02:29 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/06 16:44:30 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:14:51 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	*ft_calloc(size_t nitems, size_t size);
 char	*ft_strdup(const char *src);
 
 char	**ft_split(char const *s, char c);
-void	free_dbl_pntr(char **str);
+void	free_dbl_pntr(void **str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_itoa(int n);

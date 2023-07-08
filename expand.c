@@ -1,30 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/22 05:43:52 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/08 21:20:48 by obelaizi         ###   ########.fr       */
+/*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
+/*   Updated: 2023/07/08 22:36:53 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+char	*env_value(char *key)
 {
-	t_list	*check;
+	t_env	*node;
 
-	if (!new)
-		return ;
-	if (!(*lst))
+	node = g_data.env;
+	while (node)
 	{
-		ft_lstadd_front(lst, new);
-		return ;
+		if (!ft_strncmp(node->key, key, ft_strlen(key)))
+			return (node->value);
+		node = node->next;
 	}
-	check = *lst;
-	while (check->next)
-		check = check->next;
-	check->next = new;
+	return (NULL);
+}
+
+void	expand(void)
+{
+	char	*tmp;
+	int		i;
+
+	i = -1;
+	while (g_data.input[++i])
+	{
+		if (g_data.input[i] == '$')
+		{
+		}
+	}
 }
