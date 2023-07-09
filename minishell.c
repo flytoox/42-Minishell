@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/08 22:27:58 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/09 15:49:36 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	sigusr_handler(int signum)
 void	display_prompt(void)
 {
 	rl_catch_signals = 0;
-	g_data.input = readline("\033[0;32mminishell# \033[0m");
+	g_data.input = readline("minishell# ");
 	if (!g_data.input)
 	{
 		env_lstclear(&g_data.env);

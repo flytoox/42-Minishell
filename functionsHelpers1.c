@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:43:34 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/08 21:54:06 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/09 15:53:41 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,28 @@
 int	count_str(const char *s, const char *s1)
 {
 	int	count;
-	int	i;
 
 	count = 0;
 	while (*s)
 	{
-		i = 1;
-		if (*s == *s1)
-		{
-			i = -1;
-			while (s1[++i])
-				if (s1[i] != s[i])
-					break ;
-			if (!s1[i])
-				count++;
-		}
-		s += i;
+		if (!ft_strncmp(s, s1, ft_strlen(s1)))
+			count++;
+		s++;
+	}
+	return (count);
+}
+
+int	count_char(const char *s, char c)
+{
+	int	count;
+	int	i;
+
+	i = -1;
+	count = 0;
+	while (s[++i])
+	{
+		if (s[i] == c && (i - 1 < 0 || s[i - 1] != '\\'))
+			count++;
 	}
 	return (count);
 }
