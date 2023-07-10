@@ -6,7 +6,7 @@
 #    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/09 15:47:28 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/09 18:43:16 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,13 +20,13 @@ FLAGS = #-Wall -Wextra -Werror -g
 RL_INC = -I $(shell brew --prefix readline)/include
 RL_LIB = -L $(shell brew --prefix readline)/lib
 
-all : libft.a $(NAME)
+all : libft $(NAME)
 
-libft.a : 
+libft : 
 	@make -C Libft all bonus
 
 $(NAME) :  $(OBJ)
-	$(CC) ./Libft/libft.a $(RL_LIB) $(OBJ) -o $(NAME) -lreadline
+	$(CC) $(RL_LIB) $(OBJ) ./Libft/libft.a -o $(NAME) -lreadline 
 
 %.o: %.c $(HEADER)
 	$(CC) $(FLAGS) $(RL_INC)  -c $< -o $@

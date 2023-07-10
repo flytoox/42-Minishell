@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/09 15:32:56 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/09 19:12:26 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,11 @@ void	tokens(char *str)
 void	parse(char *str)
 {
 	// char	**splt;
-
-	if (count_char(str, '\'') % 2 || count_char(str, '"') % 2)
+	if (is_closed(str))
+	{
 		printf("Dude close ur things\n");
+		return ;
+	}
 	if (!*str)
 		return ;
 	// splt = ft_split(str, '|');

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:43:34 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/09 15:53:41 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/09 19:01:25 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,29 @@ int	count_str(const char *s, const char *s1)
 	return (count);
 }
 
-int	count_char(const char *s, char c)
+int	is_closed(const char *s)
 {
-	int	count;
-	int	i;
+	int		flg;
+	char	flg_c;
+	int		i;
 
 	i = -1;
-	count = 0;
+	flg = 0;
+	flg_c = 0;
 	while (s[++i])
 	{
-		if (s[i] == c && (i - 1 < 0 || s[i - 1] != '\\'))
-			count++;
+		if (flg && s[i] == flg_c)
+		{
+			flg = 0;
+			i++;
+		}
+		if (s[i] && (s[i] == '"' || s[i] == '\'') && !flg)
+		{
+			flg = 1;
+			flg_c = s[i];
+		}
 	}
-	return (count);
-}
-
-void	*ft_realloc(void *ptr, size_t size)
-{
-	void	*new_ptr;
-
-	new_ptr = malloc(size);
-	if (!new_ptr)
-		exit (1);
-	ft_memcpy(new_ptr, ptr, size);
-	free(ptr);
-	return (new_ptr);
+	return (flg);
 }
 
 // char	*expand(char **splts)

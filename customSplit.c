@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:18:41 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/09 17:54:07 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/09 20:05:21 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,23 +61,26 @@ char	**custt_strjoin(char **s1, char *s2)
 char	*func_helper(char *s, int flg, char chr_flg, int *i)
 {
 	char	*tmp;
-	int		count;
 
-	count = 0;
 	tmp = ft_strdup("");
+	tmp = cust_strjoin(tmp, s[*i]);
+	(*i)++;
 	while (s[*i])
 	{
-		if ((flg && s[*i] == chr_flg))
-			count++;
-		else if (!flg && is_whitespace(s[*i]))
+		if (!flg && (s[*i] == '"' || s[*i] == '\''))
+		{
+			chr_flg = s[*i];
+			flg = 1;
+		}
+		else if ((flg && s[*i] == chr_flg))
+			flg = 0;
+		if (!flg && is_whitespace(s[*i]))
 		{
 			(*i)++;
-			break;
+			break ;
 		}
 		tmp = cust_strjoin(tmp, s[*i]);
 		(*i)++;
-		if (count == 2)
-			break ;
 	}
 	return (tmp);
 }
@@ -98,13 +101,13 @@ char	**cust_split(char *s)
 		chr_flg = 0;
 		while (is_whitespace(s[i]))
 			i++;
-		if ((s[i] == '\'' || s[i] == '"') && (i - 1 < 0 || s[i - 1] != '\\'))
+		if (!s[i])
+			break ;
+		if ((s[i] == '\'' || s[i] == '"'))
 		{
 			chr_flg = s[i];
 			flg = 1;
 		}
-		if (!s[i])
-			break ;
 		res = custt_strjoin(res, func_helper(s, flg, chr_flg, &i));
 	}
 	return (res);

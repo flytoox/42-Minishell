@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/09 15:26:49 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/09 19:03:02 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_data	g_data;
 
 t_env	*env_lstnew(char *key, char *value);
 void	env_lstadd_back(t_env **lst, t_env *new);
-int		count_char(const char *s, char c);
+int		is_closed(const char *s);
 void	env_lstdelone(t_env *lst);
 int		env_lstsize(t_env *lst);
 void	env_lstclear(t_env **lst);
@@ -68,7 +68,6 @@ void	display_prompt(void);
 void	parse(char *str);
 int		count_str(const char *s, const char *s1);
 char	**cust_split(char *s);
-void	*ft_realloc(void *ptr, size_t size);
 char	*get_name_var(char *argument);
 char	*get_val_var(char *argument);
 
