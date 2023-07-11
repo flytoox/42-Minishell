@@ -20,10 +20,10 @@ FLAGS = #-Wall -Wextra -Werror -g
 RL_INC = -I $(shell brew --prefix readline)/include
 RL_LIB = -L $(shell brew --prefix readline)/lib
 
-all : libft $(NAME)
+all : libft.a $(NAME)
 
-libft : 
-	@make -C Libft all bonus
+libft.a : 
+	make -C Libft all bonus
 
 $(NAME) :  $(OBJ)
 	$(CC) $(RL_LIB) $(OBJ) ./Libft/libft.a -o $(NAME) -lreadline 

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/09 19:49:58 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/10 23:03:04 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	display_prompt(void)
 	g_data.input = readline("\033[1;32mminishell# \033[0m");
 	if (!g_data.input)
 	{
-		env_lstclear(&g_data.env);
+		env_clear(&g_data.env);
 		free_dbl_pntr((void **)g_data.path);
 		exit (0);
 	}
@@ -61,8 +61,8 @@ t_env	*fill_env(char **env)
 	new_env = NULL;
 	i = 0;
 	while (env[++i])
-		env_lstadd_back(&new_env,
-			env_lstnew(get_name_var(env[i]), get_val_var(env[i])));
+		env_add_back(&new_env,
+			env_new(get_name_var(env[i]), get_val_var(env[i])));
 	return (new_env);
 }
 

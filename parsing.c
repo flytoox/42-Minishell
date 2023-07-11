@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/09 19:12:26 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/11 01:46:32 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,32 +29,46 @@ void	tokens(char *str)
 {
 	char	**splt;
 	int		i;
+	t_cmd	*tmp;
 
-	g_data.tkns.pipe = count_str(str, "|");
-	g_data.tkns.heredoc = count_str(str, "<<");
-	g_data.tkns.append = count_str(str, ">>");
-	g_data.tkns.out = count_str(str, ">");
-	g_data.tkns.in = count_str(str, "<");
-	splt = cust_split(str);
-	i = 0;
-	while (splt[i])
+	cust_split(str);
+	tmp = g_data.cmds;
+	while (tmp)
 	{
-		printf("|%s|\n", splt[i]);
-		i++;
+		printf("%s      ", tmp->s);
+		tmp = tmp->next;
 	}
-	free_dbl_pntr((void **)splt);
+	printf("\n--------------------\n");
+	upgrade_splt("|");
+	upgrade_splt("<<");
+	upgrade_splt(">>");
+	upgrade_splt(">");
+	upgrade_splt("<");
+	tmp = g_data.cmds;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->s, "|", 1))
+			printf("\033[1;32m|      \033[0m");
+		else
+			printf("%s      ", tmp->s);
+		tmp = tmp->next;
+	}
+	printf("\n--------------------\n");
 }
 
 void	parse(char *str)
 {
-	// char	**splt;
 	if (is_closed(str))
 	{
 		printf("Dude close ur things\n");
 		return ;
 	}
+	// if (is_syntax_error(str))
+	// {
+	// 	printf("Syntax error\n");
+	// 	return ;
+	// }
 	if (!*str)
 		return ;
-	// splt = ft_split(str, '|');
 	tokens(str);
 }

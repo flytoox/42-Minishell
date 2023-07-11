@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/08 22:02:06 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/10 23:02:50 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	unset(char *s)
 		if (!ft_strncmp(node->key, s, ft_strlen(s)))
 		{
 			tmp->next = node->next;
-			env_lstdelone(node);
+			env_delone(node);
 			return ;
 		}
 		tmp = node;
@@ -64,5 +64,5 @@ void	export(char *argument)
 		}
 		node = node->next;
 	}
-	env_lstadd_back(&g_data.env, env_lstnew(nm_vr, get_val_var(argument)));
+	env_add_back(&g_data.env, env_new(nm_vr, get_val_var(argument)));
 }

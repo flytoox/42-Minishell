@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envLists.c                                         :+:      :+:    :+:   */
+/*   cmdsLists.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/08 21:15:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/10 23:01:45 by obelaizi         ###   ########.fr       */
+/*   Created: 2023/07/10 22:51:07 by obelaizi          #+#    #+#             */
+/*   Updated: 2023/07/10 23:26:05 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*env_new(char *key, char *value)
+t_cmd	*cmd_new(char *s)
 {
-	t_env	*node;
+	t_cmd	*node;
 
-	node = malloc(sizeof(t_env));
+	node = malloc(sizeof(t_cmd));
 	if (!node)
 		return (0);
-	node->key = key;
-	node->value = value;
+	node->s = s;
 	node->next = 0;
 	return (node);
 }
 
-void	env_add_back(t_env **lst, t_env *new)
+void	cmd_add_back(t_cmd **lst, t_cmd *new)
 {
-	t_env	*check;
+	t_cmd	*check;
 
 	if (!new)
 		return ;
@@ -43,18 +42,9 @@ void	env_add_back(t_env **lst, t_env *new)
 	check->next = new;
 }
 
-void	env_delone(t_env *lst)
+int	cmd_size(t_cmd *lst)
 {
-	if (!lst)
-		return ;
-	free(lst->key);
-	free(lst->value);
-	free(lst);
-}
-
-int	env_size(t_env *lst)
-{
-	t_env	*i;
+	t_cmd	*i;
 	int		count;
 
 	if (!lst)
@@ -69,18 +59,27 @@ int	env_size(t_env *lst)
 	return (count);
 }
 
-void	env_clear(t_env **lst)
+void	cmd_clear(t_cmd **lst)
 {
 	int		size;
-	t_env	*tmp;
+	t_cmd	*tmp;
 
 	if (!(*lst))
 		return ;
-	size = env_size(*lst);
+	size = cmd_size(*lst);
 	while (size--)
 	{
 		tmp = (*lst)->next;
-		env_delone(*lst);
+		free((*lst)->s);
+		free(*lst);
 		*lst = tmp;
 	}
+}
+
+void	cmd_front(t_cmd **lst, t_cmd *new)
+{
+	if (!new)
+		return ;
+	new ->next = *lst;
+	*lst = new;
 }
