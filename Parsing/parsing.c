@@ -6,11 +6,11 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:30:26 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 01:51:37 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	remove_quotes(void)
 {
@@ -80,6 +80,7 @@ void	parse(char *str)
 	make_it_prev();
 	tokens();
 	expand();
+	execute();
 	t_cmd *tmp = g_data.cmds;
 	printf("cmds:\n");
 	while (tmp)

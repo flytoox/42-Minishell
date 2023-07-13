@@ -6,11 +6,11 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:37:54 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 01:42:01 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*env_value(char *key)
 {
@@ -23,7 +23,7 @@ char	*env_value(char *key)
 			return (node->value);
 		node = node->next;
 	}
-	return (NULL);
+	return (0);
 }
 
 void	expand(void)

@@ -6,11 +6,11 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:43:34 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 00:52:45 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 01:42:18 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	count_str(const char *s, const char *s1)
 {

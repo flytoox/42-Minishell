@@ -6,11 +6,11 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:15:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/10 23:01:45 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 01:41:45 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_env	*env_new(char *key, char *value)
 {

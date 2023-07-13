@@ -6,12 +6,12 @@
 #    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/09 18:43:16 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/13 01:47:00 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-SRC = $(wildcard *.c)
+SRC = $(wildcard *.c Parsing/*.c Execution/*.c)
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h
 CC = cc

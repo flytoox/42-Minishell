@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/13 01:29:21 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 01:49:37 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,7 @@ void	export(char *argument);
 void	unset(char *s);
 void	env(void);
 void	expand(void);
+
+void	execute(void);
 
 #endif

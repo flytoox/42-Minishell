@@ -6,11 +6,11 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 22:51:07 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/10 23:26:05 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 01:41:34 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_cmd	*cmd_new(char *s)
 {
