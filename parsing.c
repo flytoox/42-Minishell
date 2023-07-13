@@ -6,69 +6,94 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/11 01:46:32 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 01:30:26 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_quotes(char *str)
+void	remove_quotes(void)
 {
-	int	i;
-	int	j;
-
-	i = -1;
-	j = -1;
-	while (++i < (int)ft_strlen(str))
-		if (str[i] != '\'' && str[i] != '"')
-			str[++j] = str[i];
-	str[++j] = '\0';
+	// int		flg;
+	// int		i;
+	// t_cmd	*tmp;
+	
+	// tmp = g_data.cmds;
+	// while (tmp)
+	// {
+		
+	// 	tmp = tmp->next;
+	// }
+	// i = -1;
+	// flg = 0;
 }
 
-void	tokens(char *str)
+void	token_it(t_cmd *node)
+{
+	if (!ft_strncmp(node->s, "|", 1))
+		node->type = PIPE;
+	else if (!ft_strncmp(node->s, "<<", 2))
+		node->type = HEREDOC;
+	else if (!ft_strncmp(node->s, ">>", 2))
+		node->type = APPEND;
+	else if (!ft_strncmp(node->s, ">", 1))
+		node->type = OUT;
+	else if (!ft_strncmp(node->s, "<", 1))
+		node->type = IN;
+	else if (node->prev && (node->prev->type == OUT
+			|| node->prev->type == IN || node->prev->type == APPEND))
+		node->type = FD;
+	else
+		node->type = CMD;
+}
+
+void	tokens(void)
 {
 	char	**splt;
 	int		i;
 	t_cmd	*tmp;
 
-	cust_split(str);
+	token_it(g_data.cmds);
 	tmp = g_data.cmds;
 	while (tmp)
 	{
-		printf("%s      ", tmp->s);
+		token_it(tmp);
 		tmp = tmp->next;
 	}
-	printf("\n--------------------\n");
-	upgrade_splt("|");
-	upgrade_splt("<<");
-	upgrade_splt(">>");
-	upgrade_splt(">");
-	upgrade_splt("<");
-	tmp = g_data.cmds;
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->s, "|", 1))
-			printf("\033[1;32m|      \033[0m");
-		else
-			printf("%s      ", tmp->s);
-		tmp = tmp->next;
-	}
-	printf("\n--------------------\n");
 }
 
 void	parse(char *str)
 {
+	if (!*str)
+		return ;
 	if (is_closed(str))
 	{
 		printf("Dude close ur things\n");
 		return ;
 	}
-	// if (is_syntax_error(str))
-	// {
-	// 	printf("Syntax error\n");
-	// 	return ;
-	// }
-	if (!*str)
+	cust_split(str);
+	upgrade_splt("|");
+	upgrade_splt("<<");
+	upgrade_splt(">>");
+	upgrade_splt(">");
+	upgrade_splt("<");
+	make_it_prev();
+	tokens();
+	expand();
+	t_cmd *tmp = g_data.cmds;
+	printf("cmds:\n");
+	while (tmp)
+	{
+		printf("------------------\n");
+		printf("s: {%s}\n", tmp->s);
+		printf("TYPE: {%u}\n", tmp->type);
+		printf("------------------\n");
+		tmp = tmp->next;
+	}
+	printf("end\n");
+	if (is_syntax_error())
+	{
+		printf("Minishell: syntax error near unexpected token `|'\n");
 		return ;
-	tokens(str);
+	}
 }

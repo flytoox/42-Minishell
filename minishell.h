@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/11 01:45:23 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 01:29:21 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,24 @@ enum e_type
 	HEREDOC,
 	APPEND,
 	OUT,
-	IN
+	IN,
+	FD,
+	CMD,
 };
 
+enum e_quote
+{
+	NONE = 0,
+	SQ,
+	DQ,
+};
 typedef struct cmds
 {
-	char		*s;
-	enum e_type	type;
-	struct cmds	*next;
+	char			*s;
+	enum e_type		type;
+	enum e_quote	quote;
+	struct cmds		*next;
+	struct cmds		*prev;
 }	t_cmd;
 
 typedef struct s_env
@@ -45,22 +55,12 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct tkns
-{
-	int	pipe;
-	int	heredoc;
-	int	append;
-	int	out;
-	int	in;
-}	t_tkns;
-
 typedef struct minikhell
 {
 	char	**path;
 	char	*input;
 	t_env	*env;
 	t_cmd	*cmds;
-	t_tkns	tkns;
 }	t_data;
 
 t_data	g_data;
@@ -76,9 +76,10 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new);
 void	cmd_front(t_cmd **lst, t_cmd *new);
 int		cmd_size(t_cmd *lst);
 void	cmd_clear(t_cmd **lst);
+void	make_it_prev(void);
 
 int		is_closed(const char *s);
-void	remove_quotes(char *str);
+void	remove_quotes(void);
 void	display_prompt(void);
 void	parse(char *str);
 int		count_str(const char *s, const char *s1);
@@ -86,6 +87,7 @@ void	cust_split(char *s);
 void	upgrade_splt(const char *sep);
 char	*get_name_var(char *argument);
 char	*get_val_var(char *argument);
+int		is_syntax_error(void);
 
 void	echo(char *str, int flag);
 void	cd(char *path);
@@ -93,5 +95,6 @@ void	pwd(void);
 void	export(char *argument);
 void	unset(char *s);
 void	env(void);
+void	expand(void);
 
 #endif
