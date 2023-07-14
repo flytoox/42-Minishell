@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/15 00:12:48 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/15 00:19:11 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_env	*fill_env(char **env)
 
 int	main(int argc, char **argv, char **env)
 {
-	atexit(ft_exit);
+	// atexit(ft_exit);
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
 	set_builtins();

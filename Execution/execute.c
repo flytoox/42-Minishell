@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/15 00:13:26 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/15 00:18:20 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,23 @@ t_pars	*set_parsed(t_cmd *cmd)
 	return (parsed);
 }
 
+char	**get_cmds_args(t_cmd *cmd)
+{
+	char	**args;
+	int		i;
+
+	i = 0;
+	args = malloc(sizeof(char *) * (cmd_size(cmd) + 1));
+	while (cmd)
+	{
+		args[i] = cmd->s;
+		cmd = cmd->next;
+		i++;
+	}
+	args[i] = NULL;
+	return (args);
+}
+
 int	check_builtins(t_cmd *cmd)
 {
 	int		i;
@@ -85,6 +102,7 @@ void	execute(void)
 {
 	t_pars	*parsed;
 	t_cmd	*cmd;
+	char	**args;
 
 	printf("\n\n========Execute\n");
 	cmd = g_data.cmds;
@@ -100,8 +118,9 @@ void	execute(void)
 		{
 			if (fork() == 0)
 			{
-				char *arr[] = {path_cmd(cmd->s), NULL};
-				execve(path_cmd(cmd->s), arr, NULL);
+				args = get_cmds_args(cmd);
+				args[0] = path_cmd(cmd->s);
+				execve(path_cmd(cmd->s), args, NULL);
 				printf("%s", path_cmd(cmd->s));
 			}
 			else
