@@ -55,12 +55,21 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct parsing
+{
+	t_cmd			*cmd;
+	int				out;
+	int				in;
+	struct parsing	*next;
+}	t_pars;
+
 typedef struct minikhell
 {
 	char	**path;
 	char	*input;
 	t_env	*env;
 	t_cmd	*cmds;
+	t_pars	*pars;
 }	t_data;
 
 t_data	g_data;
