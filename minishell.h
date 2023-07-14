@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/14 21:45:53 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/14 23:01:50 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ enum e_type
 
 enum e_quote
 {
-	NONE = 0,
-	SQ,
+	SQ = 1,
 	DQ,
 };
 typedef struct cmds
@@ -87,8 +86,13 @@ int		cmd_size(t_cmd *lst);
 void	cmd_clear(t_cmd **lst);
 void	make_it_prev(void);
 
+t_pars	*parse_new(t_cmd *cmd);
+void	parse_add_back(t_pars **lst, t_pars *new);
+int		parse_size(t_pars *lst);
+void	parse_clear(t_pars **lst);
+void	parse_front(t_pars **lst, t_pars *new);
+
 int		is_closed(const char *s);
-void	remove_quotes(void);
 void	display_prompt(void);
 void	parse(char *str);
 int		count_str(const char *s, const char *s1);
