@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/10 23:03:04 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/13 20:54:26 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	display_prompt(void)
 	}
 	parse(g_data.input);
 	free(g_data.input);
+	cmd_clear(&g_data.cmds);
 }
 
 char	*get_path(char **env)

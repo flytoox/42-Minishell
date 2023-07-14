@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/13 01:49:37 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/14 21:45:53 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,21 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct parsing
+{
+	t_cmd			*cmd;
+	int				out;
+	int				in;
+	struct parsing	*next;
+}	t_pars;
+
 typedef struct minikhell
 {
 	char	**path;
 	char	*input;
 	t_env	*env;
 	t_cmd	*cmds;
+	t_pars	*pars;
 }	t_data;
 
 t_data	g_data;
