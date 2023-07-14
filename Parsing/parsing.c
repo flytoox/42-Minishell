@@ -105,7 +105,6 @@ void	parse(char *str)
 	make_it_prev();
 	tokens();
 	expand();
-	// execute();
 	t_cmd *tmp = g_data.cmds;
 	printf("cmds:\n");
 	while (tmp)
@@ -122,5 +121,6 @@ void	parse(char *str)
 		printf("Minishell: syntax error near unexpected token `|'\n");
 		return ;
 	}
+	execute();
 	// remove_quotes();
 }

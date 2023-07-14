@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/13 20:54:26 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/15 00:12:48 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	main(int argc, char **argv, char **env)
 	atexit(ft_exit);
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
+	set_builtins();
 	g_data.env = fill_env(env);
 	if (argc != 1 && argv[1] != NULL)
 		return (printf("Mamamia, don't use args\n"), 1);
