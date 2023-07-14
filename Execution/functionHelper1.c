@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/14 23:43:23 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/15 00:52:46 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,5 @@ char	*path_cmd(char *cmd)
 			return (free(cmd), cmd = tmp, cmd);
 		i++;
 	}
-	return (printf("pipex: command not found\n"), exit(1), NULL);
+	return (printf("pipex: command not found\n"), exit(1), 0);
 }
