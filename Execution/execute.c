@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:53:41 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/14 21:37:15 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 void	execute(void)
 {
-	t_cmd	*cmd;
+	t_cmd		*cmds;
 
-	cmd = g_data.cmds;
-	printf("CMD SIZE: %d\n", cmd_size(cmd));
-	while (cmd)
+	cmds = g_data.cmds;
+	printf("CMD SIZE: %d\n", cmd_size(cmds));
+	while (cmds)
 	{
-		if (cmd->s)
-			printf("%s ", cmd->s);
-		cmd = cmd->next;
+		// printf("CMD: %s\n", cmds->cmd);
+		cmds = cmds->next;
 	}
 	printf("\n\n\n");
 }
