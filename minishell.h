@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/14 23:01:50 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/16 01:56:39 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ typedef struct s_env
 typedef struct parsing
 {
 	t_cmd			*cmd;
+	struct parsing	*next;
 	int				out;
 	int				in;
-	struct parsing	*next;
+
 }	t_pars;
 
 typedef struct minikhell
@@ -69,9 +70,10 @@ typedef struct minikhell
 	t_env	*env;
 	t_cmd	*cmds;
 	t_pars	*pars;
+	char	**builtins;
 }	t_data;
 
-t_data	g_data;
+t_data g_data;
 
 t_env	*env_new(char *key, char *value);
 void	env_add_back(t_env **lst, t_env *new);
@@ -107,9 +109,11 @@ void	cd(char *path);
 void	pwd(void);
 void	export(char *argument);
 void	unset(char *s);
-void	env(void);
-void	expand(void);
+void	env(int is_env);
+void	expand(t_cmd *node);
 
+char	*path_cmd(char *cmd);
+void	set_builtins(void);
 void	execute(void);
 
 #endif

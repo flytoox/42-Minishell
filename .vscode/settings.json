@@ -1,7 +1,8 @@
 {
-	"files.associations": {
-		"__node_handle": "c",
-		"__locale": "c",
-		"ios": "c"
-	}
+  "files.associations": {
+    "__node_handle": "c",
+    "__locale": "c",
+    "ios": "c",
+    "minishell.h": "c"
+  }
 }

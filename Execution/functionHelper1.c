@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   functionHelper1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/12 00:39:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/16 01:54:01 by aait-mal         ###   ########.fr       */
+/*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
+/*   Updated: 2023/07/16 01:57:29 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*path_cmd(char *cmd)
 {
-	char	*result;
-	size_t	size;
-	size_t	i;
-	int		j;
+	int		i;
+	char	*tmp;
+	char	*tmp2;
 
-	if (!s1 || !s2)
-		return (0);
 	i = 0;
-	j = 0;
-	size = ft_strlen(s1) + ft_strlen(s2);
-	result = malloc(size + 1);
-	if (!result)
-		return (0);
-	while (i < size)
+	tmp = 0;
+	if (!access(cmd, F_OK))
+		return (cmd);
+	tmp2 = cmd;
+	cmd = ft_strjoin("/", tmp2);
+	while (g_data.path[i])
 	{
-		while (i < ft_strlen(s1))
-		{
-			result[i] = s1[i];
-			i++;
-		}
-		if (!(*s2))
-			break ;
-		result[i++] = s2[j++];
+		if (tmp)
+			free(tmp);
+		tmp = ft_strjoin(g_data.path[i], cmd);
+		if (!access(tmp, F_OK))
+			return (free(cmd), cmd = tmp, cmd);
+		i++;
 	}
-	return (result[i] = 0, result);
+	return (printf("Minishell: %s command not found\n", tmp2), exit(1), NULL);
 }
