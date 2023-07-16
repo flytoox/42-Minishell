@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/15 00:49:06 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/16 01:56:39 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ void	cd(char *path);
 void	pwd(void);
 void	export(char *argument);
 void	unset(char *s);
-void	env(void);
-void	expand(void);
+void	env(int is_env);
+void	expand(t_cmd *node);
 
 char	*path_cmd(char *cmd);
 void	set_builtins(void);

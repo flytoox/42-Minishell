@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/15 00:49:38 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/16 00:48:20 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,30 @@ void	set_builtins(void)
 	g_data.builtins[7] = NULL;
 }
 
-t_pars	*set_parsed(t_cmd *cmd)
-{
-	t_pars	*parsed;
-	t_cmd	*tmp;
-	t_cmd	*tmp2;
+// t_pars	*set_parsed(t_cmd *cmd)
+// {
+// 	t_pars	*parsed;
+// 	t_cmd	*tmp;
+// 	t_cmd	*tmp2;
 
-	parsed = g_data.pars;
-	parsed = malloc(sizeof(t_pars));
-	parsed->cmd = cmd;
-	tmp2 = parsed->cmd;
-	while (parsed->cmd)
-	{
-		if (parsed->cmd->type == PIPE)
-		{
-			tmp = parsed->cmd->next;
-			parsed->cmd->prev->next = NULL;
-			break ;
-		}
-		parsed->cmd = parsed->cmd->next;
-	}
-	parsed->cmd = tmp2;
-	parsed->next = NULL;
-	return (parsed);
-}
+// 	parsed = g_data.pars;
+// 	parsed = malloc(sizeof(t_pars));
+// 	parsed->cmd = cmd;
+// 	tmp2 = parsed->cmd;
+// 	while (parsed->cmd)
+// 	{
+// 		if (parsed->cmd->type == PIPE)
+// 		{
+// 			tmp = parsed->cmd->next;
+// 			parsed->cmd->prev->next = NULL;
+// 			break ;
+// 		}
+// 		parsed->cmd = parsed->cmd->next;
+// 	}
+// 	parsed->cmd = tmp2;
+// 	parsed->next = NULL;
+// 	return (parsed);
+// }
 
 char	**get_cmds_args(t_cmd *cmd)
 {
@@ -105,23 +105,22 @@ void	execute(void)
 	char	**args;
 
 	printf("\n\n========Execute\n");
-	cmd = g_data.cmds;
-	parsed = set_parsed(cmd);
+	parsed = g_data.pars;
 	while (parsed)
 	{
-		while (parsed->cmd)
+		if (!check_builtins(parsed->cmd))
 		{
-			printf("parsed->cmd->s = %s\n", parsed->cmd->s);
-			parsed->cmd = parsed->cmd->next;
-		}
-		if (!check_builtins(cmd))
-		{
+			if (parsed->cmd->type == HEREDOC)
+			{
+				printf("heredoc\n");
+				return ;
+			}
 			if (fork() == 0)
 			{
-				args = get_cmds_args(cmd);
-				args[0] = path_cmd(cmd->s);
-				execve(path_cmd(cmd->s), args, NULL);
-				printf("%s", path_cmd(cmd->s));
+				args = get_cmds_args(parsed->cmd);
+				args[0] = path_cmd(parsed->cmd->s);
+				execve(path_cmd(parsed->cmd->s), args, NULL);
+				printf("%s", path_cmd(parsed->cmd->s));
 			}
 			else
 				wait(NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:41:21 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/15 23:37:35 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	*get_val_var(char *argument)
 {
 	char	*vl_vr;
 
+	if (!ft_strchr(argument, '='))
+		return (NULL);
 	vl_vr = ft_strchr(argument, '=') + 1;
 	return (ft_strdup(vl_vr));
 }
@@ -49,8 +51,10 @@ char	*get_name_var(char *argument)
 	char	*vl_vr;
 	int		i;
 
-	i = -1;
+	if (!ft_strchr(argument, '='))
+		return (ft_strdup(argument));
 	vl_vr = ft_strchr(argument, '=') + 1;
+	i = -1;
 	nm_vr = malloc(ft_strlen(argument) - ft_strlen(vl_vr));
 	while (argument[++i])
 	{

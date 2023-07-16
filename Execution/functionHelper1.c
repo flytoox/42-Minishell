@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/15 00:52:46 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/16 01:57:29 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ char	*path_cmd(char *cmd)
 {
 	int		i;
 	char	*tmp;
+	char	*tmp2;
 
 	i = 0;
 	tmp = 0;
 	if (!access(cmd, F_OK))
 		return (cmd);
-	cmd = ft_strjoin("/", cmd);
+	tmp2 = cmd;
+	cmd = ft_strjoin("/", tmp2);
 	while (g_data.path[i])
 	{
 		if (tmp)
@@ -31,5 +33,5 @@ char	*path_cmd(char *cmd)
 			return (free(cmd), cmd = tmp, cmd);
 		i++;
 	}
-	return (printf("pipex: command not found\n"), exit(1), 0);
+	return (printf("Minishell: %s command not found\n", tmp2), exit(1), NULL);
 }

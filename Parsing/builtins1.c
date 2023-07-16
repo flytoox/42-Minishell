@@ -3,23 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:41:27 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/16 00:53:47 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	env(void)
+void	env(int is_env)
 {
 	t_env	*node;
 
 	node = g_data.env;
+	if (is_env)
+	{
+		while (node)
+		{
+			if (node->value)
+				printf("%s=%s\n", node->key, node->value);
+			node = node->next;
+		}
+		return ;
+	}
 	while (node)
 	{
-		printf("%s=%s\n", node->key, node->value);
+		if (node->value)
+			printf("declare -x %s=\"%s\"\n", node->key, node->value);
+		else
+			printf("declare -x %s\n", node->key);
 		node = node->next;
 	}
 }
@@ -47,22 +60,23 @@ void	export(char *argument)
 {
 	t_env	*node;
 	char	*nm_vr;
+	char	*vl_vr;
 	int		i;
 
-	if (!ft_strchr(argument, '='))
-		return ;
 	node = g_data.env;
 	nm_vr = get_name_var(argument);
 	i = -1;
+	vl_vr = get_val_var(argument);
 	while (node)
 	{
 		if (!ft_strncmp(node->key, nm_vr, ft_strlen(nm_vr)))
 		{
-			node->value = get_val_var(argument);
+			if (vl_vr)
+				node->value = vl_vr;
 			free(nm_vr);
 			return ;
 		}
 		node = node->next;
 	}
-	env_add_back(&g_data.env, env_new(nm_vr, get_val_var(argument)));
+	env_add_back(&g_data.env, env_new(nm_vr, vl_vr));
 }
