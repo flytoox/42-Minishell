@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/15 00:19:11 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/18 00:25:03 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	display_prompt(void)
 		free_dbl_pntr((void **)g_data.path);
 		exit (0);
 	}
+	if (g_data.input[0])
+		add_history(g_data.input);
 	parse(g_data.input);
 	free(g_data.input);
 	cmd_clear(&g_data.cmds);

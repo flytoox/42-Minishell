@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/16 02:04:08 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/18 00:26:02 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ void	parse(char *str)
 		return ;
 	}
 	cust_split(str);
+	if (!g_data.cmds)
+		return ;
 	upgrade_splt("|");
 	upgrade_splt("<<");
 	upgrade_splt(">>");
@@ -158,16 +160,18 @@ void	parse(char *str)
 	while (tmp)
 	{
 		t_cmd *tmp1 = tmp->cmd;
-		expand(tmp1);
+		char *a[8] = {"PIPE", "HEREDOC", "APPEND", "OUT", "IN", "FD", "CMD"};
+		// expand(tmp1);
 		while (tmp1)
 		{
-			printf("| {%s} | TYPE: {%u} | quote: {%u}|\t", tmp1->s, tmp1->type, tmp1->quote);
+			printf("| {%s} | TYPE: {%s} | quote: {%u}|\t", tmp1->s, a[tmp1->type], tmp1->quote);
+			export(tmp1->s);
 			tmp1 = tmp1->next;
 		}
 		printf("\n------------------\n");
 		tmp = tmp->next;
 	}
-	// env(1);
+	env(1);
 	printf("-------------------------------------------------\n");
 	// env(1);
 	printf("------------------------------------------------\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/16 01:56:39 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/18 00:03:26 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 enum e_type
 {
-	PIPE = 1,
+	PIPE,
 	HEREDOC,
 	APPEND,
 	OUT,
@@ -103,6 +103,7 @@ void	upgrade_splt(const char *sep);
 char	*get_name_var(char *argument);
 char	*get_val_var(char *argument);
 int		is_syntax_error(void);
+int		check_parse_export(char *s);
 
 void	echo(char *str, int flag);
 void	cd(char *path);
