@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/18 00:25:03 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/18 23:33:06 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_env	*fill_env(char **env)
 	t_env	*new_env;
 
 	new_env = NULL;
-	i = 0;
+	i = -1;
 	while (env[++i])
 		env_add_back(&new_env,
 			env_new(get_name_var(env[i]), get_val_var(env[i])));
@@ -72,6 +72,7 @@ t_env	*fill_env(char **env)
 int	main(int argc, char **argv, char **env)
 {
 	// atexit(ft_exit);
+	int i = -1;
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
 	set_builtins();

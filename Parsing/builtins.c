@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/18 00:08:20 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/18 22:30:32 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ char	*get_name_var(char *argument)
 	char	*vl_vr;
 	int		i;
 
-
 	if (!ft_strchr(argument, '='))
 		return (ft_strdup(argument));
 	vl_vr = ft_strchr(argument, '=') + 1;
@@ -77,7 +76,8 @@ int	check_parse_export(char *s)
 	i = 0;
 	while (s[i] && s[i] != '=')
 	{
-		if ((!ft_isalnum(s[i]) && s[i] != '_' && s[i] != '+') || (s[i] == '+' && s[i + 1] != '='))
+		if ((!ft_isalnum(s[i]) && s[i] != '_' && s[i] != '+')
+			|| (s[i] == '+' && s[i + 1] != '='))
 			return (1);
 		i++;
 	}

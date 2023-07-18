@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/18 00:26:02 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/19 00:13:02 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,52 +23,40 @@ char	*ft_strjoin_free(char *s1, char *s2, int flg)
 		free(s2);
 	return (res);
 }
-void	remove_char(char *s, char q)
+void	rmv_frst_chr(char *s, int i)
 {
-	int		i;
 	int		j;
 
-	i = -1;
-	j = -1;
+	j = i;
 	while (s[++i])
-	{
-		if (s[i] == q)
-			continue ;
-		s[++j] = s[i];
-	}
-	s[++j] = '\0';
+		s[j++] = s[i];
+	s[j] = '\0';
 }
 
-void	tokens_quotes(t_cmd *tmp)
+void	remove_quotes(char *s)
 {
 	int		flg;
 	int		i;
 
-	flg = 1;
-	i = 0;
-	while (tmp->s[++i])
+	flg = 0;
+	i = -1;
+	while (s[++i])
 	{
-		if (!flg || (tmp->s[i] == tmp->s[flg - 1] && !tmp->s[i + 1]))
-			break ;
-		else if (tmp->s[i] == tmp->s[flg - 1]
-			&& tmp->s[i + 1] != tmp->s[flg - 1])
+		if (!flg && (s[i] == '"' || s[i] == '\''))
+			flg = i + 1;
+		else if (flg && s[i] == s[flg - 1])
+		{
+			rmv_frst_chr(s, i);
+			rmv_frst_chr(s, flg - 1);
 			flg = 0;
-		else if (tmp->s[i] == tmp->s[flg - 1]
-			&& tmp->s[i + 1] == tmp->s[flg - 1])
-			i++;
-	}
-	if (flg)
-	{
-		if (tmp->s[0] == '\'')
-			tmp->quote = SQ;
-		else if (tmp->s[0] == '"')
-			tmp->quote = DQ;
-		remove_char(tmp->s, tmp->s[0]);
+			i -= 2;
+		}
 	}
 }
 
 void	token_it(t_cmd *node)
 {
+	node->quote = F;
 	if (!ft_strncmp(node->s, "|", 1))
 		node->type = PIPE;
 	else if (!ft_strncmp(node->s, "<<", 2))
@@ -82,12 +70,14 @@ void	token_it(t_cmd *node)
 	else if (node->prev && (node->prev->type == OUT
 			|| node->prev->type == IN || node->prev->type == APPEND))
 		node->type = FD;
+	else if (node->prev && node->prev->type == HEREDOC)
+	{
+		node->type = DELIM;
+		if (count_str(node->s, "\"") || count_str(node->s, "'"))
+			node->quote = T;
+	}
 	else
 		node->type = CMD;
-	if (node->s[0] == '\'' || node->s[0] == '"')
-		tokens_quotes(node);
-	if (node->quote != SQ && node->quote != DQ)
-		node->quote = 0;
 }
 
 void	tokens(void)
@@ -112,7 +102,7 @@ void	make_new_lst(void)
 
 	tmp = g_data.cmds;
 	g_data.pars = NULL;
-	parse_front(&g_data.pars, parse_new(g_data.cmds));// ls -al | wc -al
+	parse_front(&g_data.pars, parse_new(g_data.cmds));
 	while (tmp)
 	{
 		if (tmp->type == PIPE)
@@ -127,6 +117,18 @@ void	make_new_lst(void)
 		}
 		else
 			tmp = tmp->next;
+	}
+}
+
+void	expand_remove_quotes(void)
+{
+	t_cmd	*tmp;
+
+	tmp = g_data.cmds;
+	while (tmp)
+	{
+		expand(tmp);
+		tmp = tmp->next;
 	}
 }
 
@@ -160,18 +162,19 @@ void	parse(char *str)
 	while (tmp)
 	{
 		t_cmd *tmp1 = tmp->cmd;
-		char *a[8] = {"PIPE", "HEREDOC", "APPEND", "OUT", "IN", "FD", "CMD"};
-		// expand(tmp1);
+		char *a[8] = {"PIPE","HEREDOC","DELIM","APPEND","OUT","IN","FD","CMD"};
+		expand(tmp1);
 		while (tmp1)
 		{
-			printf("| {%s} | TYPE: {%s} | quote: {%u}|\t", tmp1->s, a[tmp1->type], tmp1->quote);
-			export(tmp1->s);
+			
+			printf("| {%s} | TYPE: {%s} | quote: {%d}|\t\n", tmp1->s, a[tmp1->type], tmp1->quote);
+			// export(tmp1->s);
 			tmp1 = tmp1->next;
 		}
 		printf("\n------------------\n");
 		tmp = tmp->next;
 	}
-	env(1);
+	// env(1);
 	printf("-------------------------------------------------\n");
 	// env(1);
 	printf("------------------------------------------------\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:02:29 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/16 01:54:03 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/19 00:27:58 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		ft_isdigit(int c);
 int		ft_isprint(int c);
 void	*ft_memset(void *str, int x, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t size);
+int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *str, int c);
 int		ft_tolower(int c);
