@@ -122,8 +122,8 @@ void	execute(void)
 				execve(path_cmd(parsed->cmd->s), args, NULL);
 				printf("%s", path_cmd(parsed->cmd->s));
 			}
-			else
-				wait(NULL);
+			// else
+			// 	wait(NULL);
 		}
 		parsed = parsed->next;
 	}

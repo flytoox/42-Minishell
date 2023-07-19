@@ -166,7 +166,7 @@ void	parse(char *str)
 		expand(tmp1);
 		while (tmp1)
 		{
-			
+
 			printf("| {%s} | TYPE: {%s} | quote: {%d}|\t\n", tmp1->s, a[tmp1->type], tmp1->quote);
 			// export(tmp1->s);
 			tmp1 = tmp1->next;
@@ -174,10 +174,61 @@ void	parse(char *str)
 		printf("\n------------------\n");
 		tmp = tmp->next;
 	}
+	open_files();
+	write(g_data.pars->out, "hello", 5);
+	close(g_data.pars->out);
 	// env(1);
-	printf("-------------------------------------------------\n");
+	// printf("-------------------------------------------------\n");
 	// env(1);
-	printf("------------------------------------------------\n");
+	// printf("------------------------------------------------\n");
 	// env(0);
 	// execute();
+}
+
+void	open_files(void)
+{
+	int		fd;
+	t_pars	*tmp;
+	t_cmd	*cmd;
+	int		last_in;
+	int		last_out;
+
+	tmp = g_data.pars;
+	while (tmp)
+	{
+		cmd = tmp->cmd;
+		while (cmd)
+		{
+			if (cmd->type == IN)
+			{
+				if (last_in != -1)
+					close(last_in);
+				fd = open(cmd->next->s, O_RDONLY);
+				if (fd == -1)
+				{
+					printf("Minishell: %s: No such file or directory\n", cmd->next->s);
+					break ;
+				}
+				last_in = fd;
+			}
+			else if (cmd->type == OUT)
+			{
+				if (last_out != -1)
+					close(last_out);
+				fd = open(cmd->next->s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				last_out = fd;
+			}
+			else if (cmd->type == APPEND)
+			{
+				if (last_out != -1)
+					close(last_out);
+				fd = open(cmd->next->s, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				last_out = fd;
+			}
+			cmd = cmd->next;
+		}
+		tmp = tmp->next;
+	}
+	g_data.pars->in = last_in;
+	g_data.pars->out = last_out;
 }
