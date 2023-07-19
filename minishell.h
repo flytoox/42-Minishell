@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "Libft/libft.h"
@@ -73,7 +74,7 @@ typedef struct minikhell
 	char	**builtins;
 }	t_data;
 
-t_data g_data;
+extern t_data g_data;
 
 t_env	*env_new(char *key, char *value);
 void	env_add_back(t_env **lst, t_env *new);
@@ -111,6 +112,7 @@ void	export(char *argument);
 void	unset(char *s);
 void	env(int is_env);
 void	expand(t_cmd *node);
+void	open_files(void);
 
 char	*path_cmd(char *cmd);
 void	set_builtins(void);

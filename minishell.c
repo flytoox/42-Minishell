@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+t_data	g_data;
+
 void	sigusr_handler(int signum)
 {
 	if (signum == SIGINT)

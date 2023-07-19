@@ -167,10 +167,49 @@ void	parse(char *str)
 		printf("\n------------------\n");
 		tmp = tmp->next;
 	}
+	open_files();
 	// env(1);
-	printf("-------------------------------------------------\n");
+	// printf("-------------------------------------------------\n");
 	// env(1);
-	printf("------------------------------------------------\n");
+	// printf("------------------------------------------------\n");
 	// env(0);
 	// execute();
+}
+
+void	open_files(void)
+{
+	int		fd;
+	t_pars	*tmp;
+	t_cmd	*cmd;
+
+	tmp = g_data.pars;
+	while (tmp)
+	{
+		cmd = tmp->cmd;
+		while (cmd)
+		{
+			if (cmd->type == IN)
+			{
+				fd = open(cmd->next->s, O_RDONLY);
+				if (fd == -1)
+				{
+					printf("Minishell: %s: No such file or directory\n", cmd->next->s);
+					break ;
+				}
+				close(fd);
+			}
+			else if (cmd->type == OUT)
+			{
+				fd = open(cmd->next->s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				close(fd);
+			}
+			else if (cmd->type == APPEND)
+			{
+				fd = open(cmd->next->s, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				close(fd);
+			}
+			cmd = cmd->next;
+		}
+		tmp = tmp->next;
+	}
 }
