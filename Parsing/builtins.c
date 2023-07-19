@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/15 23:37:35 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/18 22:30:32 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	pwd(void)
 {
 	char	cwd[1024];
 
-	if (getcwd(cwd, sizeof(cwd)) != 0)
-		printf("%s\n", cwd);
-	else
-		perror("getcwd");
+	getcwd(cwd, sizeof(cwd));
+	printf("%s\n", cwd);
+	// else
+	// 	perror("getcwd");
 }
 
 char	*get_val_var(char *argument)
@@ -66,4 +66,20 @@ char	*get_name_var(char *argument)
 		nm_vr[i] = argument[i];
 	}
 	return (nm_vr);
+}
+int	check_parse_export(char *s)
+{
+	int		i;
+
+	if (!ft_isalpha(s[0]) && s[0] != '_')
+		return (1);
+	i = 0;
+	while (s[i] && s[i] != '=')
+	{
+		if ((!ft_isalnum(s[i]) && s[i] != '_' && s[i] != '+')
+			|| (s[i] == '+' && s[i + 1] != '='))
+			return (1);
+		i++;
+	}
+	return (0);
 }

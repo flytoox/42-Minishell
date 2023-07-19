@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 01:25:51 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:42:47 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/18 23:53:12 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	redirect_error(t_cmd *node)
 {
-	if (node->type == HEREDOC && (!node->next || node->next->type != CMD))
+	if (node->type == HEREDOC && (!node->next || node->next->type != DELIM))
 		return (1);
 	return ((node->type == OUT || node->type == IN
 			|| node->type == APPEND) && (!node->next

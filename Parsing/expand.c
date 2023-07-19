@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/16 02:31:17 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/19 00:34:56 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*env_value(char *key)
 	printf("tmp = %s\n", tmp);
 	while (node)
 	{
-		if (!ft_strncmp(node->key, tmp, ft_strlen(tmp)))
+		if (!ft_strcmp(node->key, tmp))
 			return (free(tmp), node->value);
 		node = node->next;
 	}
@@ -66,37 +66,25 @@ void	expand(t_cmd *node)
 	{
 		flg = 0;
 		i = -1;
-		if (node->quote == SQ)
-		{
-			node = node->next;
-			continue ;
-		}
-		while (node->s[++i])
+		while (node->s[++i] && node->type != DELIM)
 		{
 			if ((node->s[i] == '\'' || node->s[i] == '"') && !flg)
 				flg = i + 1;
 			else if (flg && node->s[i] == node->s[flg - 1])
 				flg = 0;
-			else if (node->s[i] == '$' && (node->quote == DQ || !flg || (flg && node->s[flg - 1] == '"')))
+			else if (node->s[i] == '$' && node->s[i + 1] && (!flg || (flg && node->s[flg - 1] == '"')))
 			{
 				s3 = ft_substr(node->s, i, ft_strlen(node->s));
 				trim_it(s3);
-				printf("s3 = %s\n", s3);
 				s2 = env_value(&node->s[i]);
-				printf("s2 = %s\n", s2);
 				node->s[i] = '\0';
 				tmp = node->s;
-				printf("node->s = %s\n", node->s);
 				node->s = ft_strjoin(node->s, s2);
-				// free(tmp);
-				// free(s2);
 				tmp = node->s;
 				node->s = ft_strjoin(node->s, s3);
-				// free(tmp);
-				// free(s3);
-				printf("TRUE\n");
 			}
 		}
+		remove_quotes(node->s);
 		node = node->next;
 	}
 }

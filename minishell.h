@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/16 01:56:39 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/19 00:02:19 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@
 
 enum e_type
 {
-	PIPE = 1,
+	PIPE,
 	HEREDOC,
+	DELIM,
 	APPEND,
 	OUT,
 	IN,
@@ -34,16 +35,17 @@ enum e_type
 	CMD,
 };
 
-enum e_quote
+enum e_quotes
 {
-	SQ = 1,
-	DQ,
+	F,
+	T,
 };
+
 typedef struct cmds
 {
 	char			*s;
 	enum e_type		type;
-	enum e_quote	quote;
+	enum e_quotes	quote;
 	struct cmds		*next;
 	struct cmds		*prev;
 }	t_cmd;
@@ -96,7 +98,9 @@ void	parse_clear(t_pars **lst);
 void	parse_front(t_pars **lst, t_pars *new);
 
 int		is_closed(const char *s);
+
 void	display_prompt(void);
+void	rmv_frst_chr(char *s, int i);
 void	parse(char *str);
 int		count_str(const char *s, const char *s1);
 void	cust_split(char *s);
@@ -104,6 +108,9 @@ void	upgrade_splt(const char *sep);
 char	*get_name_var(char *argument);
 char	*get_val_var(char *argument);
 int		is_syntax_error(void);
+int		check_parse_export(char *s);
+void	remove_quotes(char *s);
+
 
 void	echo(char *str, int flag);
 void	cd(char *path);
