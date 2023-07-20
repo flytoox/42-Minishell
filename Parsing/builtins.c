@@ -6,16 +6,36 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/18 22:30:32 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/20 01:28:11 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	echo(char *str, int flag)
+void	echo(char **args)
 {
-	printf("%s", str);
-	if (flag)
+	int	i;
+	int	j;
+	int	flg;
+
+	flg = 0;
+	i = 0;
+	j = 0;
+	while (!ft_strncmp(args[j++], "-n", 2))
+	{
+		i = 0;
+		while (args[0][++i] == 'n')
+			;
+		if (!args[0][i])
+		{
+			flg = 1;
+			i = j;
+		}
+	}
+	while (args[i + 1])
+		printf("%s ", args[i++]);
+	printf("%s", args[i]);
+	if (!flg)
 		printf("\n");
 }
 

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/18 00:19:42 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/20 01:48:42 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,8 @@ void	export(char *argument)
 	{
 		if (nm_vr[ft_strlen(nm_vr) - 1] == '+')
 		{
-			printf("nm_vr = %s\nvl_vr = %s\n", nm_vr, vl_vr);
 			if (!ft_strncmp(node->key, nm_vr, ft_strlen(nm_vr) - 1))
 			{
-				printf("hahah\n");
 				if (vl_vr)
 					node->value = ft_strjoin(node->value, vl_vr);
 				free(nm_vr);

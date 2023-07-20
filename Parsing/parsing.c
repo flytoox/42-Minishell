@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/19 00:13:02 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/20 01:21:40 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ void	parse(char *str)
 		return ;
 	}
 	make_new_lst();
+	
 	printf("------------------------------------------------\n");
 	t_pars	*tmp = g_data.pars;
 	while (tmp)
@@ -168,67 +169,58 @@ void	parse(char *str)
 		{
 
 			printf("| {%s} | TYPE: {%s} | quote: {%d}|\t\n", tmp1->s, a[tmp1->type], tmp1->quote);
-			// export(tmp1->s);
 			tmp1 = tmp1->next;
 		}
 		printf("\n------------------\n");
 		tmp = tmp->next;
 	}
 	open_files();
-	write(g_data.pars->out, "hello", 5);
-	close(g_data.pars->out);
-	// env(1);
-	// printf("-------------------------------------------------\n");
-	// env(1);
-	// printf("------------------------------------------------\n");
-	// env(0);
-	// execute();
+	if (g_data.pars->out != 0)
+		write(g_data.pars->out, "hello", 5), close(g_data.pars->out);
+	if (g_data.pars->in != 0)
+		write(g_data.pars->in, "hello", 5), close(g_data.pars->in);
+	execute();
 }
 
 void	open_files(void)
 {
-	int		fd;
 	t_pars	*tmp;
 	t_cmd	*cmd;
-	int		last_in;
-	int		last_out;
 
 	tmp = g_data.pars;
 	while (tmp)
 	{
-		cmd = tmp->cmd;
+		tmp->in = 0;
+		tmp->out = 0;
+		cmd = tmp->cmd->next;
 		while (cmd)
 		{
-			if (cmd->type == IN)
+			if (cmd->prev->type == OUT
+				|| cmd->prev->type == APPEND)
 			{
-				if (last_in != -1)
-					close(last_in);
-				fd = open(cmd->next->s, O_RDONLY);
-				if (fd == -1)
+				if (tmp->out)
+					close(tmp->out);
+				if (cmd->prev->type == OUT)
+					tmp->out = open(cmd->s,
+							O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				else if (cmd->prev->type == APPEND)
+					tmp->out = open(cmd->s,
+							O_WRONLY | O_CREAT | O_APPEND, 0644);
+			}
+			else if (cmd->prev->type == IN)
+			{
+				if (tmp->in)
+					close(tmp->in);
+				tmp->in = open(cmd->s, O_RDONLY);
+				if (tmp->in == -1)
 				{
-					printf("Minishell: %s: No such file or directory\n", cmd->next->s);
+					printf("Minishell: %s: No such file or directory\n",
+						cmd->s);
 					break ;
 				}
-				last_in = fd;
-			}
-			else if (cmd->type == OUT)
-			{
-				if (last_out != -1)
-					close(last_out);
-				fd = open(cmd->next->s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				last_out = fd;
-			}
-			else if (cmd->type == APPEND)
-			{
-				if (last_out != -1)
-					close(last_out);
-				fd = open(cmd->next->s, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				last_out = fd;
 			}
 			cmd = cmd->next;
 		}
 		tmp = tmp->next;
 	}
-	g_data.pars->in = last_in;
-	g_data.pars->out = last_out;
 }
