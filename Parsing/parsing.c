@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/19 00:13:02 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/19 22:53:59 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void	open_files(void)
 		{
 			if (cmd->type == IN)
 			{
-				if (last_in != -1)
+				if (last_in)
 					close(last_in);
 				fd = open(cmd->next->s, O_RDONLY);
 				if (fd == -1)
@@ -213,14 +213,14 @@ void	open_files(void)
 			}
 			else if (cmd->type == OUT)
 			{
-				if (last_out != -1)
+				if (last_out)
 					close(last_out);
 				fd = open(cmd->next->s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 				last_out = fd;
 			}
 			else if (cmd->type == APPEND)
 			{
-				if (last_out != -1)
+				if (last_out )
 					close(last_out);
 				fd = open(cmd->next->s, O_WRONLY | O_CREAT | O_APPEND, 0644);
 				last_out = fd;
