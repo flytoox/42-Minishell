@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/20 01:18:46 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/20 23:03:41 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "Libft/libft.h"
+
+# define CMD_NT_FND " command not found\n"
+# define NO_SUCH_FILE " No such file or directory\n"
 
 enum e_type
 {
@@ -120,7 +123,7 @@ void	env(int is_env);
 void	expand(t_cmd *node);
 void	open_files(void);
 
-char	*path_cmd(char *cmd);
+char	*path_cmd(char *cmd, char *msg);
 void	set_builtins(void);
 void	execute(void);
 

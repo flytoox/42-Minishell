@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   functionHelper1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/20 00:33:47 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/20 23:03:17 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*path_cmd(char *cmd)
+char	*path_cmd(char *cmd, char *msg)
 {
 	int		i;
 	char	*tmp;
@@ -21,7 +21,7 @@ char	*path_cmd(char *cmd)
 	i = 0;
 	tmp = 0;
 	if (!cmd[0])
-		return (printf("Minishell: %s command not found\n", cmd), exit(1), NULL);
+		return (printf("Minishell: %s%s", cmd, msg), exit(1), NULL);
 	if (!access(cmd, F_OK))
 		return (cmd);
 	tmp2 = cmd;
@@ -35,5 +35,5 @@ char	*path_cmd(char *cmd)
 			return (free(cmd), cmd = tmp, cmd);
 		i++;
 	}
-	return (printf("Minishell: %s command not found\n", tmp2), exit(1), NULL);
+	return (printf("Minishell: %s%s", tmp2, msg), exit(1), NULL);
 }
