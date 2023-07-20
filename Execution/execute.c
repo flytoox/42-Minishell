@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/20 01:50:39 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/20 22:15:51 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ int	check_builtins(char **args)
 			exit(1);
 		}
 	}
+	if (i == 3 && j == 1)
+		env(0);
 	return (1);
 }
 
