@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/20 22:15:51 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/20 23:07:01 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,14 @@ char	**get_cmds_args(t_cmd *cmd)
 	return (args);
 }
 
-
-int	check_builtins(char **args)
+int	check_builtins(char ***targs)
 {
 	int		i;
 	int		j;
+	char	**args;
 
 	i = 0;
+	args = *targs;
 	while (g_data.builtins[i] && ft_strcmp(g_data.builtins[i], args[0]))
 		i++;
 	if (!g_data.builtins[i])
@@ -110,8 +111,8 @@ int	check_builtins(char **args)
 			export(args[j]);
 		else if (i == 4 && j)
 			unset(args[j]);
-		else if (i == 5)
-			env(1);
+		else if (i == 5 && j)
+			return (*targs = *targs + 1, 2);
 		else if (i == 6)
 		{
 			printf("exit\n");
@@ -121,6 +122,8 @@ int	check_builtins(char **args)
 	}
 	if (i == 3 && j == 1)
 		env(0);
+	else if (i == 5 && j == 1)
+		env(1);
 	return (1);
 }
 
@@ -129,6 +132,7 @@ void	execute(void)
 	t_pars	*parsed;
 	t_cmd	*cmd;
 	char	**args;
+	int		ret;
 
 	parsed = g_data.pars;
 	while (parsed)
@@ -141,7 +145,8 @@ void	execute(void)
 				return ;
 			}
 			args = get_cmds_args(parsed->cmd);
-			if (check_builtins(args))
+			ret = check_builtins(&args);
+			if (ret == 1)
 			{
 				parsed = parsed->next;
 				continue ;
@@ -150,8 +155,11 @@ void	execute(void)
 			{
 				if (!args)
 					exit(1);
-				args[0] = path_cmd(args[0]);
-				execve(args[0], args, NULL);
+				if (ret == 2)
+					args[0] = path_cmd(args[0], NO_SUCH_FILE);
+				else
+					args[0] = path_cmd(args[0], CMD_NT_FND);
+				execve(args[0], args, g_data.env);
 				exit(1);
 			}
 			else
