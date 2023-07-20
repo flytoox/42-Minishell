@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/16 00:48:20 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/20 01:50:39 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,52 +50,76 @@ void	set_builtins(void)
 // 	return (parsed);
 // }
 
+int	calc_cmd_size(t_cmd *cmd)
+{
+	int		i;
+
+	i = 0;
+	while (cmd)
+	{
+		if (cmd->type == CMD)
+			i++;
+		cmd = cmd->next;
+	}
+	return (i);
+}
+
 char	**get_cmds_args(t_cmd *cmd)
 {
 	char	**args;
 	int		i;
 
 	i = 0;
-	args = malloc(sizeof(char *) * (cmd_size(cmd) + 1));
+	if (!calc_cmd_size(cmd))
+		return (NULL);
+	args = malloc(sizeof(char *) * (calc_cmd_size(cmd) + 1));
 	while (cmd)
 	{
-		args[i] = cmd->s;
+		if (cmd->type == CMD)
+			args[i++] = cmd->s;
 		cmd = cmd->next;
-		i++;
 	}
 	args[i] = NULL;
 	return (args);
 }
 
-int	check_builtins(t_cmd *cmd)
+
+int	check_builtins(char **args)
 {
 	int		i;
+	int		j;
 
 	i = 0;
-	while (g_data.builtins[i])
+	while (g_data.builtins[i] && ft_strcmp(g_data.builtins[i], args[0]))
+		i++;
+	if (!g_data.builtins[i])
+		return (0);
+	j = -1;
+	while (args[++j])
 	{
-		if (!ft_strncmp(g_data.builtins[i], cmd->s, ft_strlen(cmd->s)))
+		if (i == 0 && j)
 		{
-			if (i == 0)
-				printf("echo\n");
-			else if (i == 1)
-				printf("cd\n");
-			else if (i == 2)
-				printf("pwd\n");
-			else if (i == 3)
-				printf("export\n");
-			else if (i == 4)
-				printf("unset\n");
-			else if (i == 5)
-				printf("env\n");
-			else if (i == 6)
-				printf("exit\n");
+			echo(args + 1);
 			return (1);
 		}
-		i++;
+		else if (i == 1 && j)
+			cd(args[j]);
+		else if (i == 2)
+			pwd();
+		else if (i == 3 && j)
+			export(args[j]);
+		else if (i == 4 && j)
+			unset(args[j]);
+		else if (i == 5)
+			env(1);
+		else if (i == 6)
+		{
+			printf("exit\n");
+			kill(0, SIGINT);
+			exit(1);
+		}
 	}
-	printf("not a builtin\n");
-	return (0);
+	return (1);
 }
 
 void	execute(void)
@@ -104,26 +128,32 @@ void	execute(void)
 	t_cmd	*cmd;
 	char	**args;
 
-	printf("\n\n========Execute\n");
 	parsed = g_data.pars;
 	while (parsed)
 	{
-		if (!check_builtins(parsed->cmd))
+		if (parsed->in != -1)
 		{
 			if (parsed->cmd->type == HEREDOC)
 			{
 				printf("heredoc\n");
 				return ;
 			}
+			args = get_cmds_args(parsed->cmd);
+			if (check_builtins(args))
+			{
+				parsed = parsed->next;
+				continue ;
+			}
 			if (fork() == 0)
 			{
-				args = get_cmds_args(parsed->cmd);
-				args[0] = path_cmd(parsed->cmd->s);
-				execve(path_cmd(parsed->cmd->s), args, NULL);
-				printf("%s", path_cmd(parsed->cmd->s));
+				if (!args)
+					exit(1);
+				args[0] = path_cmd(args[0]);
+				execve(args[0], args, NULL);
+				exit(1);
 			}
-			// else
-			// 	wait(NULL);
+			else
+				wait(NULL);
 		}
 		parsed = parsed->next;
 	}

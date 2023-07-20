@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/19 00:02:19 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/20 01:18:46 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,7 @@ int		is_syntax_error(void);
 int		check_parse_export(char *s);
 void	remove_quotes(char *s);
 
-
-void	echo(char *str, int flag);
+void	echo(char **args);
 void	cd(char *path);
 void	pwd(void);
 void	export(char *argument);
