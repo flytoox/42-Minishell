@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/21 01:27:13 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 00:21:58 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ char	*path_cmd(char *cmd, char *msg)
 
 void	which_fd(t_pars *parsed)
 {
-	if (parsed->in != -1)
+	if (parsed->in != FD_INIT)
 		dup2(parsed->in, 0);
-	if (parsed->out != -1)
+	if (parsed->out != FD_INIT)
 		dup2(parsed->out, 1);
 }
 
@@ -82,7 +82,6 @@ int	fill_file(int fd, char *del)
 int	here_doc(char *del)
 {
 	int		in;
-	char	***cmd_paths;
 	int		pid;
 
 	in = open(".temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
@@ -91,5 +90,5 @@ int	here_doc(char *del)
 	in = fill_file(in, del);
 	if (in < 0)
 		return (perror("pipex"), exit(1), 1);
-	return (0);
+	return (in);
 }

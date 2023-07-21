@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/21 22:39:47 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/22 00:33:06 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,20 @@ char	**get_cmds_args(t_cmd *cmd)
 	return (args);
 }
 
-void	lunch_herdoc(t_cmd *cmd)
+void	lunch_herdoc(t_pars *parsed)
 {
+	t_cmd	*cmd;
+	int		in;
+
+	cmd = parsed->cmd;
 	while (cmd)
 	{
 		if (cmd->type == DELIM)
-			here_doc(cmd->s);
+			in = here_doc(cmd->s);
 		cmd = cmd->next;
 	}
+	if (parsed->in == -200)
+		parsed->in = in;
 }
 
 int	check_builtins(char ***targs)
@@ -114,9 +120,9 @@ int	check_builtins(char ***targs)
 			return (1);
 		}
 		else if (i == 1 && j)
-			cd(args[j]);
+			return (cd(args[j]), 1);
 		else if (i == 2)
-			pwd();
+			return (pwd(), 1);
 		else if (i == 3 && j)
 			export(args[j]);
 		else if (i == 4 && j)
@@ -144,19 +150,15 @@ void	execute(void)
 	char	**args;
 	int		ret;
 	int		fd[2];
+	int		tmp;
 
 	parsed = g_data.pars;
+	tmp = -2;
 	while (parsed)
 	{
-		lunch_herdoc(parsed->cmd);
-		if (g_data.not_found)
-		{
-			parsed = parsed->next;
-			g_data.not_found--;
-			continue ;
-		}
+		lunch_herdoc(parsed);
 		args = get_cmds_args(parsed->cmd);
-		if (args)
+		if (args && parsed->in != FILE_NOT_FOUND)
 		{
 			ret = check_builtins(&args);
 			if (ret != 1)
@@ -166,19 +168,21 @@ void	execute(void)
 					perror("pipe");
 					return ;
 				}
+				if (tmp == -2)
+					tmp = fd[0];
 				if (fork() == 0)
 				{
-					if (parsed->next && parsed->out == -1)
+					if (parsed->next && parsed->out == FD_INIT)
 					{
 						close(fd[0]);
 						dup2(fd[1], 1);
 						close(fd[1]);
 					}
-					if (parsed->prev && parsed->in == -1
-						&& parsed->prev->out == -1)
+					if (parsed->prev && parsed->in == FD_INIT)
 					{
 						close(fd[1]);
-						dup2(fd[0], 0);
+						dup2(tmp, 0);
+						close(tmp);
 						close(fd[0]);
 					}
 					which_fd(parsed);
@@ -190,14 +194,17 @@ void	execute(void)
 					perror("execve");
 					exit(1);
 				}
-				else
-				{
-					close(fd[1]);
-					close(fd[0]);
-					wait(NULL);
-				}
+				if (tmp != fd[0])
+					close(tmp);
+				tmp = fd[0];
+				close(fd[1]);
 			}
 		}
 		parsed = parsed->next;
 	}
+	if (tmp != -2)
+		close(tmp);
+	while (waitpid(-1, NULL, 0) != -1)
+		;
+	unlink(".temp_file");
 }

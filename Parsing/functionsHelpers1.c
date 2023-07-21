@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:43:34 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:42:18 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 00:16:23 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,6 @@ static void	upgrade_splt_helper1(t_cmd **node, int i, const char *sep)
 	t_cmd	*tmp;
 
 	tmp = (*node)->next;
-	printf("|%s|\n", (*node)->s);
-	// if (ft_strlen((*node)->s) == ft_strlen(sep))
-	// {
-	// 	(*node) = (*node)->next;
-	// 	return ;
-	// }
 	if ((*node)->s[i + ft_strlen(sep)] != '\0')
 	{
 		cmd_front(&tmp, cmd_new(ft_substr((*node)->s, i + ft_strlen(sep),

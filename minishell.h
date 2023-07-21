@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/21 01:18:42 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/21 23:26:25 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 
 # define CMD_NT_FND " command not found\n"
 # define NO_SUCH_FILE " No such file or directory\n"
+# define FILE_NOT_FOUND -3
+# define FD_INIT -2
 
 enum e_type
 {

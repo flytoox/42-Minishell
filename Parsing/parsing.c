@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/21 00:49:59 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 00:42:36 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,21 +159,18 @@ void	parse(char *str)
 	make_new_lst();
 
 	// printf("------------------------------------------------\n");
-	// t_pars	*tmp = g_data.pars;
-	// while (tmp)
-	// {
-	// 	t_cmd *tmp1 = tmp->cmd;
-	// 	char *a[8] = {"PIPE","HEREDOC","DELIM","APPEND","OUT","IN","FD","CMD"};
-	// 	expand(tmp1);
-	// 	while (tmp1)
-	// 	{
-
-	// 		printf("| {%s} | TYPE: {%s} | quote: {%d}|\t\n", tmp1->s, a[tmp1->type], tmp1->quote);
-	// 		tmp1 = tmp1->next;
-	// 	}
-	// 	printf("\n------------------\n");
-	// 	tmp = tmp->next;
-	// }
+	t_pars	*tmp = g_data.pars;
+	while (tmp)
+	{
+		t_cmd *tmp1 = tmp->cmd;
+		char *a[8] = {"PIPE","HEREDOC","DELIM","APPEND","OUT","IN","FD","CMD"};
+		expand(tmp1);
+		while (tmp1)
+		{
+			tmp1 = tmp1->next;
+		}
+		tmp = tmp->next;
+	}
 	open_files();
 	make_pars_prev();
 	execute();
@@ -188,8 +185,8 @@ void	open_files(void)
 	g_data.not_found = 0;
 	while (tmp)
 	{
-		tmp->in = -1;
-		tmp->out = -1;
+		tmp->in = FD_INIT;
+		tmp->out = FD_INIT;
 		cmd = tmp->cmd->next;
 		while (cmd)
 		{
@@ -214,9 +211,15 @@ void	open_files(void)
 				{
 					printf("Minishell: %s: No such file or directory\n",
 						cmd->s);
-					g_data.not_found++;
+					tmp->in = FILE_NOT_FOUND;
 					break ;
 				}
+			}
+			else if (cmd->prev->type == HEREDOC)
+			{
+				if (tmp->in)
+					close(tmp->in);
+				tmp->in = -200;
 			}
 			cmd = cmd->next;
 		}
