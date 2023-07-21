@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 01:25:51 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/18 23:53:12 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/21 00:35:20 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,25 @@ int	is_syntax_error(void)
 	return (0);
 }
 
-void	make_it_prev(void)
+void	make_cmd_prev(void)
 {
 	t_cmd	*tmp;
 
 	g_data.cmds->prev = 0;
 	tmp = g_data.cmds;
+	while (tmp->next)
+	{
+		tmp->next->prev = tmp;
+		tmp = tmp->next;
+	}
+}
+
+void	make_pars_prev(void)
+{
+	t_pars	*tmp;
+
+	g_data.pars->prev = 0;
+	tmp = g_data.pars;
 	while (tmp->next)
 	{
 		tmp->next->prev = tmp;

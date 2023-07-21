@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/20 21:46:19 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/21 00:49:59 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	parse(char *str)
 	upgrade_splt(">>");
 	upgrade_splt(">");
 	upgrade_splt("<");
-	make_it_prev();
+	make_cmd_prev();
 	tokens();
 	if (is_syntax_error())
 	{
@@ -175,10 +175,7 @@ void	parse(char *str)
 		tmp = tmp->next;
 	}
 	open_files();
-	if (g_data.pars->out != 0)
-		write(g_data.pars->out, "hello", 5), close(g_data.pars->out);
-	if (g_data.pars->in != 0)
-		write(g_data.pars->in, "hello", 5), close(g_data.pars->in);
+	make_pars_prev();
 	execute();
 }
 
@@ -190,8 +187,8 @@ void	open_files(void)
 	tmp = g_data.pars;
 	while (tmp)
 	{
-		tmp->in = 0;
-		tmp->out = 0;
+		tmp->in = -1;
+		tmp->out = -1;
 		cmd = tmp->cmd->next;
 		while (cmd)
 		{

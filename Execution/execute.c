@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/20 23:07:01 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/21 01:28:04 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,16 @@ char	**get_cmds_args(t_cmd *cmd)
 	return (args);
 }
 
+void	lunch_herdoc(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->type == DELIM)
+			here_doc(cmd->s);
+		cmd = cmd->next;
+	}
+}
+
 int	check_builtins(char ***targs)
 {
 	int		i;
@@ -137,33 +147,26 @@ void	execute(void)
 	parsed = g_data.pars;
 	while (parsed)
 	{
-		if (parsed->in != -1)
+		lunch_herdoc(parsed->cmd);
+		args = get_cmds_args(parsed->cmd);
+		if (args)
 		{
-			if (parsed->cmd->type == HEREDOC)
-			{
-				printf("heredoc\n");
-				return ;
-			}
-			args = get_cmds_args(parsed->cmd);
 			ret = check_builtins(&args);
-			if (ret == 1)
+			if (ret != 1)
 			{
-				parsed = parsed->next;
-				continue ;
-			}
-			if (fork() == 0)
-			{
-				if (!args)
+				if (fork() == 0)
+				{
+					if (ret == 2)
+						args[0] = path_cmd(args[0], NO_SUCH_FILE);
+					else
+						args[0] = path_cmd(args[0], CMD_NT_FND);
+					which_fd(parsed);
+					execve(args[0], args, NULL);
 					exit(1);
-				if (ret == 2)
-					args[0] = path_cmd(args[0], NO_SUCH_FILE);
+				}
 				else
-					args[0] = path_cmd(args[0], CMD_NT_FND);
-				execve(args[0], args, g_data.env);
-				exit(1);
+					wait(NULL);
 			}
-			else
-				wait(NULL);
 		}
 		parsed = parsed->next;
 	}

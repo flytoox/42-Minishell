@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/20 23:03:41 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/21 01:18:42 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct parsing
 {
 	t_cmd			*cmd;
 	struct parsing	*next;
+	struct parsing	*prev;
 	int				out;
 	int				in;
 
@@ -92,7 +93,8 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new);
 void	cmd_front(t_cmd **lst, t_cmd *new);
 int		cmd_size(t_cmd *lst);
 void	cmd_clear(t_cmd **lst);
-void	make_it_prev(void);
+void	make_cmd_prev(void);
+void	make_pars_prev(void);
 
 t_pars	*parse_new(t_cmd *cmd);
 void	parse_add_back(t_pars **lst, t_pars *new);
@@ -122,6 +124,10 @@ void	unset(char *s);
 void	env(int is_env);
 void	expand(t_cmd *node);
 void	open_files(void);
+void	which_fd(t_pars *parsed);
+int		here_doc(char *del);
+
+char	*get_next_line(int fd);
 
 char	*path_cmd(char *cmd, char *msg);
 void	set_builtins(void);
