@@ -19,6 +19,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "Libft/libft.h"
@@ -77,6 +78,7 @@ typedef struct minikhell
 	t_env	*env;
 	t_cmd	*cmds;
 	t_pars	*pars;
+	int		not_found;
 	char	**builtins;
 }	t_data;
 

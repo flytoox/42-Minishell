@@ -143,29 +143,58 @@ void	execute(void)
 	t_cmd	*cmd;
 	char	**args;
 	int		ret;
+	int		fd[2];
 
 	parsed = g_data.pars;
 	while (parsed)
 	{
 		lunch_herdoc(parsed->cmd);
+		if (g_data.not_found)
+		{
+			parsed = parsed->next;
+			g_data.not_found--;
+			continue ;
+		}
 		args = get_cmds_args(parsed->cmd);
 		if (args)
 		{
 			ret = check_builtins(&args);
 			if (ret != 1)
 			{
+				if (pipe(fd) == -1)
+				{
+					perror("pipe");
+					return ;
+				}
 				if (fork() == 0)
 				{
+					if (parsed->next && parsed->out == -1)
+					{
+						close(fd[0]);
+						dup2(fd[1], 1);
+						close(fd[1]);
+					}
+					if (parsed->prev && parsed->in == -1 && parsed->prev->out == -1)
+					{
+						close(fd[1]);
+						dup2(fd[0], 0);
+						close(fd[0]);
+					}
+					which_fd(parsed);
 					if (ret == 2)
 						args[0] = path_cmd(args[0], NO_SUCH_FILE);
 					else
 						args[0] = path_cmd(args[0], CMD_NT_FND);
-					which_fd(parsed);
 					execve(args[0], args, NULL);
+					perror("execve");
 					exit(1);
 				}
 				else
+				{
+					close(fd[1]);
+					close(fd[0]);
 					wait(NULL);
+				}
 			}
 		}
 		parsed = parsed->next;
