@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/21 01:28:04 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/21 22:39:47 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,8 @@ void	execute(void)
 						dup2(fd[1], 1);
 						close(fd[1]);
 					}
-					if (parsed->prev && parsed->in == -1 && parsed->prev->out == -1)
+					if (parsed->prev && parsed->in == -1
+						&& parsed->prev->out == -1)
 					{
 						close(fd[1]);
 						dup2(fd[0], 0);
