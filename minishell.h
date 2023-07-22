@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/21 23:26:25 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 22:29:01 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct minikhell
 	t_pars	*pars;
 	int		not_found;
 	char	**builtins;
+	int		exit_status;
 }	t_data;
 
 extern t_data g_data;
@@ -129,7 +130,9 @@ void	env(int is_env);
 void	expand(t_cmd *node);
 void	open_files(void);
 void	which_fd(t_pars *parsed);
-int		here_doc(char *del);
+int		here_doc(char *del, int is_expand);
+void	trim_it(char *s);
+char	*env_value(char *key);
 
 char	*get_next_line(int fd);
 

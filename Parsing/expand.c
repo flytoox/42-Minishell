@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/19 00:34:56 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 21:56:53 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,14 @@ char	*env_value(char *key)
 	int		i;
 
 	node = g_data.env;
-	printf("Key = %s\n", key);
-	key++;
 	tmp = malloc(ft_strlen(key) + 1);
 	i = 0;
 	while (key[i] && (ft_isalnum(key[i]) || key[i] == '_'))
 	{
-		printf("---> %c\n", key[i]);
 		tmp[i] = key[i];
 		i++;
 	}
 	tmp[i] = '\0';
-	printf("tmp = %s\n", tmp);
 	while (node)
 	{
 		if (!ft_strcmp(node->key, tmp))
@@ -45,7 +41,7 @@ void	trim_it(char *s)
 	int		i;
 	int		j;
 
-	i = 0;
+	i = -1;
 	j = -1;
 	while (s[++i] && (ft_isalnum(s[i]) || s[i] == '_'))
 		;
@@ -74,10 +70,11 @@ void	expand(t_cmd *node)
 				flg = 0;
 			else if (node->s[i] == '$' && node->s[i + 1] && (!flg || (flg && node->s[flg - 1] == '"')))
 			{
+				i++;
 				s3 = ft_substr(node->s, i, ft_strlen(node->s));
 				trim_it(s3);
 				s2 = env_value(&node->s[i]);
-				node->s[i] = '\0';
+				node->s[i - 1] = '\0';
 				tmp = node->s;
 				node->s = ft_strjoin(node->s, s2);
 				tmp = node->s;

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/22 00:51:26 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 22:43:23 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	display_prompt(void)
 	g_data.input = readline("\033[1;32mminishell# \033[0m");
 	if (!g_data.input)
 	{
-		env_clear(&g_data.env);
-		free_dbl_pntr((void **)g_data.path);
+		// env_clear(&g_data.env);
+		// free_dbl_pntr((void **)g_data.path);
 		// parse_clear(&g_data.pars);
 		exit (0);
 	}
@@ -83,9 +83,9 @@ int	main(int argc, char **argv, char **env)
 	g_data.env = fill_env(env);
 	if (argc != 1 && argv[1] != NULL)
 		return (printf("Mamamia, don't use args\n"), 1);
-	g_data.path = ft_split(get_path(env), ':');
-	if (!g_data.path)
-		return (printf("ERROR\nthere is something with the path"), 1);
+	// g_data.path = ft_split(get_path(env), ':');
+	// if (!g_data.path)
+	// 	return (printf("ERROR\nthere is something with the path"), 1);
 	while (1)
 		display_prompt();
 	return (0);

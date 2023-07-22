@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/20 01:28:11 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 22:19:24 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char	*get_name_var(char *argument)
 	}
 	return (nm_vr);
 }
+
 int	check_parse_export(char *s)
 {
 	int		i;

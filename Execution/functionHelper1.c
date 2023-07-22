@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/22 00:21:58 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 22:44:54 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	*path_cmd(char *cmd, char *msg)
 
 	i = 0;
 	tmp = 0;
-	if (!cmd[0])
-		return (printf("Minishell: %s%s", cmd, msg), exit(1), NULL);
+	if (!cmd[0] || !g_data.path)
+		return (printf("Minishell: %s%s", cmd, msg), exit(127), NULL);
 	if (!access(cmd, F_OK))
 		return (cmd);
 	tmp2 = cmd;
@@ -35,7 +35,7 @@ char	*path_cmd(char *cmd, char *msg)
 			return (free(cmd), cmd = tmp, cmd);
 		i++;
 	}
-	return (printf("Minishell: %s%s", tmp2, msg), exit(1), NULL);
+	return (printf("Minishell: %s%s", tmp2, msg), exit(127), NULL);
 }
 
 void	which_fd(t_pars *parsed)
@@ -53,7 +53,34 @@ void	ft_print(const char *s, int fd)
 	write(fd, s, ft_strlen(s));
 }
 
-int	fill_file(int fd, char *del)
+char	*expand_her(char *s)
+{
+	char	*s3;
+	char	*s2;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '$')
+		{
+			i++;
+			s3 = ft_substr(s, i, ft_strlen(s));
+			trim_it(s3);
+			s2 = env_value(&s[i]);
+			s[i - 1] = '\0';
+			tmp = s;
+			s = ft_strjoin(s, s2);
+			tmp = s;
+			s = ft_strjoin(s, s3);
+		}
+		i++;
+	}
+	return (s);
+}
+
+int	fill_file(int fd, char *del, int is_expand)
 {
 	int		check;
 	char	*line;
@@ -67,19 +94,23 @@ int	fill_file(int fd, char *del)
 		if (check)
 			check = 0;
 		line = get_next_line(0);
+		if (!line)
+			break ;
 		if (line && ft_strlen(line) - 1 == ft_strlen(del)
 			&& !ft_strncmp(del, line, ft_strlen(line) - 1))
 		{
 			free(line);
 			break ;
 		}
+		if (!is_expand)
+			line = expand_her(line);
 		ft_print(line, fd);
 	}
 	close(fd);
 	return (open(".temp_file", O_RDONLY));
 }
 
-int	here_doc(char *del)
+int	here_doc(char *del, int is_expand)
 {
 	int		in;
 	int		pid;
@@ -87,7 +118,7 @@ int	here_doc(char *del)
 	in = open(".temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
 	if (in < 0)
 		return (perror("Minishell"), exit(1), 1);
-	in = fill_file(in, del);
+	in = fill_file(in, del, is_expand);
 	if (in < 0)
 		return (perror("pipex"), exit(1), 1);
 	return (in);

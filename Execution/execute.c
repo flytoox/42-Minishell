@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/22 00:33:06 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 23:02:55 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,6 @@ void	set_builtins(void)
 	g_data.builtins[6] = "exit";
 	g_data.builtins[7] = NULL;
 }
-
-// t_pars	*set_parsed(t_cmd *cmd)
-// {
-// 	t_pars	*parsed;
-// 	t_cmd	*tmp;
-// 	t_cmd	*tmp2;
-
-// 	parsed = g_data.pars;
-// 	parsed = malloc(sizeof(t_pars));
-// 	parsed->cmd = cmd;
-// 	tmp2 = parsed->cmd;
-// 	while (parsed->cmd)
-// 	{
-// 		if (parsed->cmd->type == PIPE)
-// 		{
-// 			tmp = parsed->cmd->next;
-// 			parsed->cmd->prev->next = NULL;
-// 			break ;
-// 		}
-// 		parsed->cmd = parsed->cmd->next;
-// 	}
-// 	parsed->cmd = tmp2;
-// 	parsed->next = NULL;
-// 	return (parsed);
-// }
 
 int	calc_cmd_size(t_cmd *cmd)
 {
@@ -92,11 +67,28 @@ void	lunch_herdoc(t_pars *parsed)
 	while (cmd)
 	{
 		if (cmd->type == DELIM)
-			in = here_doc(cmd->s);
+			in = here_doc(cmd->s, cmd->quote);
 		cmd = cmd->next;
 	}
 	if (parsed->in == -200)
 		parsed->in = in;
+}
+
+void	make_the_path(void)
+{
+	t_env	*node;
+
+	node = g_data.env;
+	while (node)
+	{
+		if (!ft_strcmp(node->key, "PATH"))
+		{
+			g_data.path = ft_split(node->value, ':');
+			return ;
+		}
+		node = node->next;
+	}
+	g_data.path = NULL;
 }
 
 int	check_builtins(char ***targs)
@@ -104,6 +96,7 @@ int	check_builtins(char ***targs)
 	int		i;
 	int		j;
 	char	**args;
+	
 
 	i = 0;
 	args = *targs;
@@ -151,6 +144,7 @@ void	execute(void)
 	int		ret;
 	int		fd[2];
 	int		tmp;
+	int 	status;
 
 	parsed = g_data.pars;
 	tmp = -2;
@@ -186,11 +180,12 @@ void	execute(void)
 						close(fd[0]);
 					}
 					which_fd(parsed);
+					make_the_path();
 					if (ret == 2)
 						args[0] = path_cmd(args[0], NO_SUCH_FILE);
 					else
 						args[0] = path_cmd(args[0], CMD_NT_FND);
-					execve(args[0], args, NULL);
+					execve(args[0], args, g_data.path);
 					perror("execve");
 					exit(1);
 				}
@@ -204,7 +199,11 @@ void	execute(void)
 	}
 	if (tmp != -2)
 		close(tmp);
-	while (waitpid(-1, NULL, 0) != -1)
+	while (waitpid(-1, &status, 0) != -1)
 		;
+	if (WIFEXITED(status))
+		g_data.exit_status = WEXITSTATUS(status);
+	else
+		g_data.exit_status =  WEXITSTATUS(status) + 128;
 	unlink(".temp_file");
 }
