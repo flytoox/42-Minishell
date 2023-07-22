@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 01:25:51 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/21 00:35:20 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 23:36:42 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ int	is_syntax_error(void)
 
 	tmp = g_data.cmds;
 	if (tmp->type == PIPE)
-		return (258);
+		return (g_data.exit_status = 258);
 	while (tmp)
 	{
 		if (tmp->type == PIPE && !tmp->next)
-			return (258);
+			return (g_data.exit_status = 258);
 		if (tmp->type == PIPE && tmp->next->type == PIPE)
-			return (258);
+			return (g_data.exit_status = 258);
 		if (tmp->type == PIPE && tmp->prev && (tmp->prev->type == PIPE
 				|| tmp->prev->type == OUT || tmp->prev->type == IN
 				|| tmp->prev->type == APPEND || tmp->prev->type == HEREDOC))
-			return (258);
+			return (g_data.exit_status = 258);
 		if (redirect_error(tmp))
-			return (258);
+			return (g_data.exit_status = 258);
 		tmp = tmp->next;
 	}
 	return (0);

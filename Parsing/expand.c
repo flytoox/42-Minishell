@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/22 21:56:53 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/22 23:50:10 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*env_value(char *key)
 	int		i;
 
 	node = g_data.env;
+	if (!ft_strncmp(key, "?", 1))
+		return (ft_itoa(g_data.exit_status));
 	tmp = malloc(ft_strlen(key) + 1);
 	i = 0;
 	while (key[i] && (ft_isalnum(key[i]) || key[i] == '_'))
@@ -27,6 +29,8 @@ char	*env_value(char *key)
 		i++;
 	}
 	tmp[i] = '\0';
+	if (!ft_strcmp(tmp, "?"))
+		return (free(tmp), ft_itoa(g_data.exit_status));
 	while (node)
 	{
 		if (!ft_strcmp(node->key, tmp))
@@ -43,6 +47,12 @@ void	trim_it(char *s)
 
 	i = -1;
 	j = -1;
+	if (!ft_strncmp(s, "?", 1))
+	{
+		while (s[++i])
+			s[i] = s[i + 1];
+		return ;
+	}
 	while (s[++i] && (ft_isalnum(s[i]) || s[i] == '_'))
 		;
 	while (s[i])

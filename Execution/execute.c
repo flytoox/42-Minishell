@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/22 23:02:55 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/23 00:14:16 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	check_builtins(char ***targs)
 	int		i;
 	int		j;
 	char	**args;
-	
+
 
 	i = 0;
 	args = *targs;
@@ -203,7 +203,5 @@ void	execute(void)
 		;
 	if (WIFEXITED(status))
 		g_data.exit_status = WEXITSTATUS(status);
-	else
-		g_data.exit_status =  WEXITSTATUS(status) + 128;
 	unlink(".temp_file");
 }

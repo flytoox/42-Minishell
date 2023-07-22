@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/22 22:19:24 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/23 00:06:56 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,24 @@ void	echo(char **args)
 
 void	cd(char *path)
 {
+	char	cwd[1024];
+	t_env	*node;
+	char	oldpwd[1024];	
+
+	if (!ft_strcmp(path, "-"))
+		path = env_value("OLDPWD");
+	getcwd(oldpwd, sizeof(oldpwd));
 	if (chdir(path) == -1)
-		perror("chdir");
+		return (perror("chdir"));
+	node = g_data.env;
+	while (node)
+	{
+		if (!ft_strcmp(node->key, "PWD"))
+			node->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
+		else if (!ft_strcmp(node->key, "OLDPWD"))
+			node->value = ft_strdup(oldpwd);
+		node = node->next;
+	}
 }
 
 void	pwd(void)
@@ -51,8 +67,6 @@ void	pwd(void)
 
 	getcwd(cwd, sizeof(cwd));
 	printf("%s\n", cwd);
-	// else
-	// 	perror("getcwd");
 }
 
 char	*get_val_var(char *argument)
