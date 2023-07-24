@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/25 00:04:49 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/25 00:24:51 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int	check_builtins(char ***targs, int is_child)
 	char	**args;
 
 
+	if (!*targs)
+		return (0);
 	i = 0;
 	args = *targs;
 	while (g_data.builtins[i] && ft_strcmp(g_data.builtins[i], args[0]))
@@ -176,7 +178,7 @@ void	execute(void)
 	{
 		lunch_herdoc(parsed);
 		args = get_cmds_args(parsed->cmd);
-		if (check_builtins(&args, 0))
+		if (args && check_builtins(&args, 0))
 		{
 			parsed = parsed->next;
 			continue ;

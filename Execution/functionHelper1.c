@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/24 01:02:50 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/25 00:19:41 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	ft_print(const char *s, int fd)
 	if (!s)
 		return ;
 	write(fd, s, ft_strlen(s));
+	write(fd, "\n", 1);
 }
 
 char	*expand_her(char *s)
@@ -93,11 +94,11 @@ int	fill_file(int fd, char *del, int is_expand)
 			free(line);
 		if (check)
 			check = 0;
-		line = get_next_line(0);
+		line = readline("> ");
 		if (!line)
 			break ;
-		if (line && ft_strlen(line) - 1 == ft_strlen(del)
-			&& !ft_strncmp(del, line, ft_strlen(line) - 1))
+		if (line && ft_strlen(line) == ft_strlen(del)
+			&& !ft_strcmp(del, line))
 		{
 			free(line);
 			break ;
