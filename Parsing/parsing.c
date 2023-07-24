@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/22 23:36:30 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/23 23:23:29 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,13 +162,7 @@ void	parse(char *str)
 	t_pars	*tmp = g_data.pars;
 	while (tmp)
 	{
-		t_cmd *tmp1 = tmp->cmd;
-		char *a[8] = {"PIPE","HEREDOC","DELIM","APPEND","OUT","IN","FD","CMD"};
-		expand(tmp1);
-		while (tmp1)
-		{
-			tmp1 = tmp1->next;
-		}
+		expand(tmp->cmd);
 		tmp = tmp->next;
 	}
 	open_files();

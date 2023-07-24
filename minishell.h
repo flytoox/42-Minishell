@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/22 22:29:01 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/24 00:31:12 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct parsing
 typedef struct minikhell
 {
 	char	**path;
+	char	**env_tab;
 	char	*input;
 	t_env	*env;
 	t_cmd	*cmds;
