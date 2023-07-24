@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/25 00:24:51 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/25 00:27:04 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,13 +243,27 @@ void	execute(void)
 		g_data.exit_status = WEXITSTATUS(status);
 	if (WTERMSIG(status) == SIGINT)
 	{
-		g_data.exit_status = 130;
-		write(1, "\n", 1);
+		if (g_data.pars->next)
+		{
+			write(1, "\n", 1);
+		}
+		else
+		{
+			g_data.exit_status = 130;
+			write(1, "\n", 1);
+		}
 	}
 	if (WTERMSIG(status) == SIGQUIT)
 	{
-		g_data.exit_status  = 131;
-		write(1, "Quit: 3\n", 8);
+		if (g_data.pars->next)
+		{
+			write(0, "", 1);
+		}
+		else
+		{
+			g_data.exit_status  = 131;
+			write(1, "Quit: 3\n", 8);
+		}
 	}
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
