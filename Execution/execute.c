@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/24 23:40:58 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/25 00:04:49 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,8 +192,8 @@ void	execute(void)
 				tmp = fd[0];
 			if (fork() == 0)
 			{
-				signal(SIGINT, sigusr_handler);
-				signal(SIGQUIT, SIG_IGN);
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
 				if (parsed->next && parsed->out == FD_INIT)
 				{
 					close(fd[0]);
@@ -224,6 +224,7 @@ void	execute(void)
 			else
 			{
 				signal(SIGINT, SIG_IGN);
+				signal(SIGQUIT, SIG_IGN);
 				if (tmp != fd[0])
 					close(tmp);
 				tmp = fd[0];
@@ -249,5 +250,6 @@ void	execute(void)
 		write(1, "Quit: 3\n", 8);
 	}
 	signal(SIGINT, sigusr_handler);
+	signal(SIGQUIT, sigusr_handler);
 	unlink(".temp_file");
 }
