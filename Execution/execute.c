@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/24 01:50:09 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/24 23:40:58 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,10 +221,14 @@ void	execute(void)
 				perror("execve");
 				exit(1);
 			}
-			if (tmp != fd[0])
-				close(tmp);
-			tmp = fd[0];
-			close(fd[1]);
+			else
+			{
+				signal(SIGINT, SIG_IGN);
+				if (tmp != fd[0])
+					close(tmp);
+				tmp = fd[0];
+				close(fd[1]);
+			}
 		}
 		parsed = parsed->next;
 	}
@@ -234,7 +238,16 @@ void	execute(void)
 		;
 	if (WIFEXITED(status))
 		g_data.exit_status = WEXITSTATUS(status);
+	if (WTERMSIG(status) == SIGINT)
+	{
+		g_data.exit_status = 130;
+		write(1, "\n", 1);
+	}
+	if (WTERMSIG(status) == SIGQUIT)
+	{
+		g_data.exit_status  = 131;
+		write(1, "Quit: 3\n", 8);
+	}
 	signal(SIGINT, sigusr_handler);
-	signal(SIGQUIT, SIG_IGN);
 	unlink(".temp_file");
 }

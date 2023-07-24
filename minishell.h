@@ -84,6 +84,7 @@ typedef struct minikhell
 	int		not_found;
 	char	**builtins;
 	int		exit_status;
+	int		quit_heredoc;
 }	t_data;
 
 extern t_data g_data;
