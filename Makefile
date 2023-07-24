@@ -6,12 +6,12 @@
 #    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/21 01:17:21 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/25 00:21:21 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-SRC = $(wildcard *.c Parsing/*.c Execution/*.c Execution/gnl/*.c)
+SRC = $(wildcard *.c Parsing/*.c Execution/*.c)
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h
 CC = cc
@@ -28,7 +28,7 @@ libft.a :
 $(NAME) :  $(OBJ)
 	$(CC) $(RL_LIB) $(OBJ) ./Libft/libft.a -o $(NAME) -lreadline 
 
-%.o: %.c $(HEADER) ./Execution/gnl/get_next_line.h
+%.o: %.c $(HEADER)
 	$(CC) $(FLAGS) $(RL_INC)  -c $< -o $@
 
 clean :
