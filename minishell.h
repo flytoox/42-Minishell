@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/24 00:31:12 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/24 01:38:24 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ typedef struct minikhell
 }	t_data;
 
 extern t_data g_data;
+
+void	sigusr_handler(int signum);
 
 t_env	*env_new(char *key, char *value);
 void	env_add_back(t_env **lst, t_env *new);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/24 01:01:14 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/24 01:50:09 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void	execute(void)
 
 	parsed = g_data.pars;
 	tmp = -2;
+	signal(SIGINT, SIG_IGN);
 	while (parsed)
 	{
 		lunch_herdoc(parsed);
@@ -191,6 +192,8 @@ void	execute(void)
 				tmp = fd[0];
 			if (fork() == 0)
 			{
+				signal(SIGINT, sigusr_handler);
+				signal(SIGQUIT, SIG_IGN);
 				if (parsed->next && parsed->out == FD_INIT)
 				{
 					close(fd[0]);
@@ -231,5 +234,7 @@ void	execute(void)
 		;
 	if (WIFEXITED(status))
 		g_data.exit_status = WEXITSTATUS(status);
+	signal(SIGINT, sigusr_handler);
+	signal(SIGQUIT, SIG_IGN);
 	unlink(".temp_file");
 }
