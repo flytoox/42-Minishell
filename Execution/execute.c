@@ -191,6 +191,7 @@ void	execute(void)
 				tmp = fd[0];
 			if (fork() == 0)
 			{
+				signal(SIGINT, SIG_DFL);
 				if (parsed->next && parsed->out == FD_INIT)
 				{
 					close(fd[0]);
@@ -218,10 +219,14 @@ void	execute(void)
 				perror("execve");
 				exit(1);
 			}
-			if (tmp != fd[0])
-				close(tmp);
-			tmp = fd[0];
-			close(fd[1]);
+			else
+			{
+				signal(SIGINT, SIG_IGN);
+				if (tmp != fd[0])
+					close(tmp);
+				tmp = fd[0];
+				close(fd[1]);
+			}
 		}
 		parsed = parsed->next;
 	}
@@ -231,5 +236,16 @@ void	execute(void)
 		;
 	if (WIFEXITED(status))
 		g_data.exit_status = WEXITSTATUS(status);
+	if (WTERMSIG(status) == SIGINT)
+	{
+		g_data.exit_status = 130;
+		write(1, "\n", 1);
+	}
+	if (WTERMSIG(status) == SIGQUIT)
+	{
+		g_data.exit_status  = 131;
+		write(1, "Quit: 3\n", 8);
+	}
+	signal(SIGINT, sigusr_handler);
 	unlink(".temp_file");
 }

@@ -84,9 +84,12 @@ typedef struct minikhell
 	int		not_found;
 	char	**builtins;
 	int		exit_status;
+	int		quit_heredoc;
 }	t_data;
 
 extern t_data g_data;
+
+void	sigusr_handler(int signum);
 
 t_env	*env_new(char *key, char *value);
 void	env_add_back(t_env **lst, t_env *new);
