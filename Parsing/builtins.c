@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/23 00:29:42 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 00:01:51 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,33 @@ void	cd(char *path)
 {
 	char	cwd[1024];
 	t_env	*node;
-	char	oldpwd[1024];	
+	char	oldpwd[1024];
 
-	if (!ft_strcmp(path, "-"))
+	if (!ft_strcmp(path, ""))
+		path = env_value("HOME");
+	else if (!ft_strcmp(path, "-"))
+	{
 		path = env_value("OLDPWD");
+		if (!*path)
+			return (printf("Minishell: cd: OLDPWD not set\n"), free(path));
+	}
 	getcwd(oldpwd, sizeof(oldpwd));
 	if (chdir(path) == -1)
+	{
+		g_data.exit_status = 1;
 		return (perror("chdir"));
+	}
 	node = g_data.env;
+	if (!getcwd(cwd, sizeof(cwd)))
+	{
+		printf("cd: error retrieving current directory: getcwd:\
+			cannot access parent directories: No such file or directory\n");
+		return ;
+	}
 	while (node)
 	{
 		if (!ft_strcmp(node->key, "PWD"))
-			node->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
+			node->value = ft_strdup(cwd);
 		else if (!ft_strcmp(node->key, "OLDPWD"))
 			node->value = ft_strdup(oldpwd);
 		node = node->next;
