@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/22 23:50:10 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/25 00:47:26 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	trim_it(char *s)
 
 void	expand(t_cmd *node)
 {
-	char	*s2;
-	char	*s3;
+	char	*val;
+	char	*rest;
 	int		i;
 	int		flg;
 	char	*tmp;
@@ -81,14 +81,14 @@ void	expand(t_cmd *node)
 			else if (node->s[i] == '$' && node->s[i + 1] && (!flg || (flg && node->s[flg - 1] == '"')))
 			{
 				i++;
-				s3 = ft_substr(node->s, i, ft_strlen(node->s));
-				trim_it(s3);
-				s2 = env_value(&node->s[i]);
+				rest = ft_substr(node->s, i, ft_strlen(node->s));
+				trim_it(rest);
+				val = env_value(&node->s[i]);
 				node->s[i - 1] = '\0';
 				tmp = node->s;
-				node->s = ft_strjoin(node->s, s2);
+				node->s = ft_strjoin(node->s, val);
 				tmp = node->s;
-				node->s = ft_strjoin(node->s, s3);
+				node->s = ft_strjoin(node->s, rest);
 			}
 		}
 		remove_quotes(node->s);

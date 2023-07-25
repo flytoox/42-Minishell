@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/23 23:23:29 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/25 00:36:16 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,13 +158,13 @@ void	parse(char *str)
 	}
 	make_new_lst();
 
-	// printf("------------------------------------------------\n");
 	t_pars	*tmp = g_data.pars;
 	while (tmp)
 	{
 		expand(tmp->cmd);
 		tmp = tmp->next;
 	}
+	// printf("------------------------------------------------\n");
 	open_files();
 	make_pars_prev();
 	execute();
