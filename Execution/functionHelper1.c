@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functionHelper1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/25 00:19:41 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:55:12 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,24 @@ char	*expand_her(char *s)
 	return (s);
 }
 
+int	event(void)
+{
+	return (0);
+}
+
+void	herdoc_signal_handler(int sig)
+{
+	int	fd;
+
+	if (sig == SIGINT)
+	{
+		rl_done = 1;
+		g_data.quit_heredoc = 1;
+		fd = open(".temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
+		close(fd);
+	}
+}
+
 int	fill_file(int fd, char *del, int is_expand)
 {
 	int		check;
@@ -88,6 +106,9 @@ int	fill_file(int fd, char *del, int is_expand)
 
 	check = 1;
 	line = NULL;
+	rl_event_hook = event;
+	g_data.quit_heredoc = 0;
+	signal(SIGINT, herdoc_signal_handler);
 	while (line || check)
 	{
 		if (!check)
@@ -95,7 +116,7 @@ int	fill_file(int fd, char *del, int is_expand)
 		if (check)
 			check = 0;
 		line = readline("> ");
-		if (!line)
+		if (!line || g_data.quit_heredoc)
 			break ;
 		if (line && ft_strlen(line) == ft_strlen(del)
 			&& !ft_strcmp(del, line))
@@ -107,6 +128,7 @@ int	fill_file(int fd, char *del, int is_expand)
 			line = expand_her(line);
 		ft_print(line, fd);
 	}
+	g_data.quit_heredoc = 0;
 	close(fd);
 	return (open(".temp_file", O_RDONLY));
 }
@@ -121,6 +143,6 @@ int	here_doc(char *del, int is_expand)
 		return (perror("Minishell"), exit(1), 1);
 	in = fill_file(in, del, is_expand);
 	if (in < 0)
-		return (perror("pipex"), exit(1), 1);
+		return (perror("Minishell"), exit(1), 1);
 	return (in);
 }
