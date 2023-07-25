@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functionHelper1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/25 00:19:41 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:55:12 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,10 @@ char	*expand_her(char *s)
 	return (s);
 }
 
-int	event(void) { }
+int	event(void)
+{
+	return (0);
+}
 
 void	herdoc_signal_handler(int sig)
 {
