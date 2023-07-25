@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 00:01:51 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/26 00:04:33 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	cd(char *path)
 	if (!getcwd(cwd, sizeof(cwd)))
 	{
 		printf("cd: error retrieving current directory: getcwd:\
-			cannot access parent directories: No such file or directory\n");
+ cannot access parent directories: No such file or directory\n");
 		return ;
 	}
 	while (node)
