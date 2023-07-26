@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/25 23:55:59 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/26 00:49:08 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,4 +254,5 @@ void	execute(void)
 	}
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
+	unlink(".temp_file");
 }
