@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/26 01:10:09 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/26 23:41:04 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ char	*path_cmd(char *cmd, char *msg)
 
 	i = 0;
 	tmp = 0;
-	if (!access(cmd, F_OK))
-		return (cmd);
 	if (!cmd[0] || !g_data.path)
 		return (printf("Minishell: %s%s", cmd, msg), exit(127), NULL);
 	tmp2 = cmd;
@@ -35,6 +33,8 @@ char	*path_cmd(char *cmd, char *msg)
 			return (free(cmd), cmd = tmp, cmd);
 		i++;
 	}
+	if (!access(tmp2, F_OK))
+		return (tmp2);
 	return (printf("Minishell: %s%s", tmp2, msg), exit(127), NULL);
 }
 
