@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/22 23:50:10 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 01:09:55 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*env_value(char *key)
 			return (free(tmp), node->value);
 		node = node->next;
 	}
-	return (free(tmp), ft_strdup(""));
+	return (free(tmp), NULL);
 }
 
 void	trim_it(char *s)
@@ -86,7 +86,8 @@ void	expand(t_cmd *node)
 				s2 = env_value(&node->s[i]);
 				node->s[i - 1] = '\0';
 				tmp = node->s;
-				node->s = ft_strjoin(node->s, s2);
+				if (s2)
+					node->s = ft_strjoin(node->s, s2);
 				tmp = node->s;
 				node->s = ft_strjoin(node->s, s3);
 			}

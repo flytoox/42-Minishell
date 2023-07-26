@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/25 22:55:12 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/26 01:10:09 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ char	*expand_her(char *s)
 			s2 = env_value(&s[i]);
 			s[i - 1] = '\0';
 			tmp = s;
-			s = ft_strjoin(s, s2);
+			if (s2)
+				s = ft_strjoin(s, s2);
 			tmp = s;
 			s = ft_strjoin(s, s3);
 		}
