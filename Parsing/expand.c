@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 22:10:34 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 22:11:08 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ void	expand(t_pars *pars)
 					val = env_value(&node->s[i]);
 					node->s[i - 1] = '\0';
 					tmp = node->s;
-					node->s = ft_strjoin(node->s, val);
+					if (val)
+						node->s = ft_strjoin(node->s, val);
 					tmp = node->s;
 					node->s = ft_strjoin(node->s, rest);
 					// if (!is_export(pars->cmd))
