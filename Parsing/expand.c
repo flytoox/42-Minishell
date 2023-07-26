@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 01:48:32 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 22:10:34 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*env_value(char *key)
 			return (free(tmp), node->value);
 		node = node->next;
 	}
-	return (free(tmp), ft_strdup(""));
+	return (free(tmp), NULL);
 }
 
 void	trim_it(char *s)

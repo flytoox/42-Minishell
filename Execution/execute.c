@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/25 00:27:04 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/26 00:49:08 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int	check_builtins(char ***targs, int is_child)
 	int		j;
 	char	**args;
 
-
 	if (!*targs)
 		return (0);
 	i = 0;
@@ -110,10 +109,7 @@ int	check_builtins(char ***targs, int is_child)
 	while (args[++j])
 	{
 		if (i == 0 && j)
-		{
-			echo(args + 1);
-			return (1);
-		}
+			return (echo(args + 1), 1);
 		else if (i == 5 && j)
 			return (cd(args[j]), 1);
 		else if (i == 1)
@@ -125,16 +121,14 @@ int	check_builtins(char ***targs, int is_child)
 		else if (i == 5 && j)
 			return (*targs = *targs + 1, 2);
 		else if (i == 3)
-		{
-			printf("exit\n");
-			kill(0, SIGINT);
-			exit(1);
-		}
+			return (printf("exit\n"), kill(0, SIGINT));
 	}
 	if (i == 6 && j == 1)
 		env(0);
 	else if (i == 2 && j == 1)
 		env(1);
+	else if (i == 5 && j == 1)
+		cd("");
 	return (1);
 }
 
@@ -186,10 +180,7 @@ void	execute(void)
 		if (args && parsed->in != FILE_NOT_FOUND)
 		{
 			if (pipe(fd) == -1)
-			{
-				perror("pipe");
-				return ;
-			}
+				return (perror("pipe"));
 			if (tmp == -2)
 				tmp = fd[0];
 			if (fork() == 0)
@@ -244,9 +235,7 @@ void	execute(void)
 	if (WTERMSIG(status) == SIGINT)
 	{
 		if (g_data.pars->next)
-		{
 			write(1, "\n", 1);
-		}
 		else
 		{
 			g_data.exit_status = 130;
@@ -256,12 +245,10 @@ void	execute(void)
 	if (WTERMSIG(status) == SIGQUIT)
 	{
 		if (g_data.pars->next)
-		{
 			write(0, "", 1);
-		}
 		else
 		{
-			g_data.exit_status  = 131;
+			g_data.exit_status = 131;
 			write(1, "Quit: 3\n", 8);
 		}
 	}

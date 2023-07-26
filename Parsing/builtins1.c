@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/23 00:30:20 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 22:04:39 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	unset(char *s)
 	node = g_data.env;
 	while (node)
 	{
-		if (!ft_strncmp(node->key, s, ft_strlen(s)))
+		if (!ft_strcmp(node->key, s))
 		{
 			tmp->next = node->next;
 			env_delone(node);
@@ -76,7 +76,7 @@ void	export(char *argument)
 	{
 		if (nm_vr[ft_strlen(nm_vr) - 1] == '+')
 		{
-			if (!ft_strncmp(node->key, nm_vr, ft_strlen(nm_vr) - 1))
+			if (!ft_strcmp(node->key, nm_vr))
 			{
 				if (vl_vr)
 					node->value = ft_strjoin(node->value, vl_vr);
@@ -84,7 +84,7 @@ void	export(char *argument)
 				return ;
 			}
 		}
-		if (!ft_strncmp(node->key, nm_vr, ft_strlen(nm_vr)))
+		if (!ft_strcmp(node->key, nm_vr))
 		{
 			if (vl_vr)
 				node->value = vl_vr;
