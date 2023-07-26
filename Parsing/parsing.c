@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/25 00:36:16 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 01:38:57 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,17 +120,6 @@ void	make_new_lst(void)
 	}
 }
 
-void	expand_remove_quotes(void)
-{
-	t_cmd	*tmp;
-
-	tmp = g_data.cmds;
-	while (tmp)
-	{
-		expand(tmp);
-		tmp = tmp->next;
-	}
-}
 
 void	parse(char *str)
 {
@@ -141,7 +130,8 @@ void	parse(char *str)
 		printf("Dude close ur things\n");
 		return ;
 	}
-	cust_split(str);
+	g_data.cmds = NULL;
+	cust_split(str, &g_data.cmds);
 	if (!g_data.cmds)
 		return ;
 	upgrade_splt("|");
@@ -158,12 +148,7 @@ void	parse(char *str)
 	}
 	make_new_lst();
 
-	t_pars	*tmp = g_data.pars;
-	while (tmp)
-	{
-		expand(tmp->cmd);
-		tmp = tmp->next;
-	}
+	expand(g_data.pars);
 	// printf("------------------------------------------------\n");
 	open_files();
 	make_pars_prev();

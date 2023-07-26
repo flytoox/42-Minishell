@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/25 00:47:26 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 01:48:32 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,38 +60,83 @@ void	trim_it(char *s)
 	s[++j] = '\0';
 }
 
-void	expand(t_cmd *node)
+bool	is_export(t_cmd *cmd)
+{
+	t_cmd	*node;
+
+	node = cmd;
+	while (node)
+	{
+		if (node->type == CMD)
+		{
+			if (!ft_strcmp(node->s, "export"))
+				return (true);
+			else
+				return (false);
+		}
+		node = node->next;
+	}
+	return (false);
+}
+
+void	token_expand(t_cmd *cmd)
+{
+	
+}
+
+void	expand(t_pars *pars)
 {
 	char	*val;
 	char	*rest;
 	int		i;
 	int		flg;
 	char	*tmp;
+	t_cmd	*tmp_node;
+	t_cmd	*node;
 
-	while (node)
+	while (pars)
 	{
-		flg = 0;
-		i = -1;
-		while (node->s[++i] && node->type != DELIM)
+		node = pars->cmd;
+		while (node)
 		{
-			if ((node->s[i] == '\'' || node->s[i] == '"') && !flg)
-				flg = i + 1;
-			else if (flg && node->s[i] == node->s[flg - 1])
-				flg = 0;
-			else if (node->s[i] == '$' && node->s[i + 1] && (!flg || (flg && node->s[flg - 1] == '"')))
+			flg = 0;
+			i = -1;
+			while (node->s[++i] && node->type != DELIM)
 			{
-				i++;
-				rest = ft_substr(node->s, i, ft_strlen(node->s));
-				trim_it(rest);
-				val = env_value(&node->s[i]);
-				node->s[i - 1] = '\0';
-				tmp = node->s;
-				node->s = ft_strjoin(node->s, val);
-				tmp = node->s;
-				node->s = ft_strjoin(node->s, rest);
+				if ((node->s[i] == '\'' || node->s[i] == '"') && !flg)
+					flg = i + 1;
+				else if (flg && node->s[i] == node->s[flg - 1])
+					flg = 0;
+				else if (node->s[i] == '$' && node->s[i + 1] && (!flg || (flg && node->s[flg - 1] == '"')))
+				{
+					i++;
+					rest = ft_substr(node->s, i, ft_strlen(node->s));
+					trim_it(rest);
+					val = env_value(&node->s[i]);
+					node->s[i - 1] = '\0';
+					tmp = node->s;
+					node->s = ft_strjoin(node->s, val);
+					tmp = node->s;
+					node->s = ft_strjoin(node->s, rest);
+					// if (!is_export(pars->cmd))
+					// {
+					// 	// tmp_node = node->next;
+					// 	// node->next = NULL;
+						
+					// 	cust_split(val, &node->next);
+					// 	// cmd_add_back(&pars->cmd, tmp_node);
+					// 	t_cmd *tmp_node2 = pars->cmd;
+					// 	while (tmp_node2)
+					// 	{
+					// 		printf("s = %s\n", tmp_node2->s);
+					// 		tmp_node2 = tmp_node2->next;
+					// 	}
+					// }
+				}
 			}
+			remove_quotes(node->s);
+			node = node->next;
 		}
-		remove_quotes(node->s);
-		node = node->next;
+		pars = pars->next;
 	}
 }

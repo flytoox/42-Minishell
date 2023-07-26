@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:18:41 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:41:40 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 01:28:50 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*func_helper(char *s, int flg, char chr_flg, int *i)
 	return (tmp);
 }
 
-void	cust_split(char *s)
+void	cust_split(char *s, t_cmd **cmds)
 {
 	int		flg;
 	char	chr_flg;
@@ -93,7 +93,6 @@ void	cust_split(char *s)
 	char	*tmp;
 
 	i = 0;
-	g_data.cmds = NULL;
 	while (s[i])
 	{
 		flg = 0;
@@ -107,7 +106,7 @@ void	cust_split(char *s)
 			chr_flg = s[i];
 			flg = 1;
 		}
-		cmd_add_back(&g_data.cmds,
+		cmd_add_back(cmds,
 			cmd_new(func_helper(s, flg, chr_flg, &i)));
 	}
 }

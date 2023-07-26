@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/24 01:38:24 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/26 01:19:13 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	display_prompt(void);
 void	rmv_frst_chr(char *s, int i);
 void	parse(char *str);
 int		count_str(const char *s, const char *s1);
-void	cust_split(char *s);
+void	cust_split(char *s, t_cmd **cmds);
 void	upgrade_splt(const char *sep);
 char	*get_name_var(char *argument);
 char	*get_val_var(char *argument);
@@ -131,7 +131,7 @@ void	pwd(void);
 void	export(char *argument);
 void	unset(char *s);
 void	env(int is_env);
-void	expand(t_cmd *node);
+void	expand(t_pars *pars);
 void	open_files(void);
 void	which_fd(t_pars *parsed);
 int		here_doc(char *del, int is_expand);
