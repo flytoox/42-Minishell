@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 01:48:23 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/26 22:23:34 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	cd(char *path)
 		if (!path)
 		{
 			g_data.exit_status = 1;
-			printf("Minishell: cd: HOME not set\n");
+			printf("Minishell: cd:fsfasf HOME not set\n");
 			return ;
 		}
 		else if (!*path)

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 22:11:08 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/26 23:02:26 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,22 +119,21 @@ void	expand(t_pars *pars)
 						node->s = ft_strjoin(node->s, val);
 					tmp = node->s;
 					node->s = ft_strjoin(node->s, rest);
-					// if (!is_export(pars->cmd))
-					// {
-					// 	// tmp_node = node->next;
-					// 	// node->next = NULL;
-						
-					// 	cust_split(val, &node->next);
-					// 	// cmd_add_back(&pars->cmd, tmp_node);
-					// 	t_cmd *tmp_node2 = pars->cmd;
-					// 	while (tmp_node2)
-					// 	{
-					// 		printf("s = %s\n", tmp_node2->s);
-					// 		tmp_node2 = tmp_node2->next;
-					// 	}
-					// }
 				}
 			}
+			// if (!is_export(pars->cmd))
+			// {
+			// 	tmp_node = node->next;
+			// 	node->next = NULL;
+			// 	cust_split(node->s, &node);
+			// 	cmd_add_back(&pars->cmd, tmp_node);
+			// 	t_cmd *tmp_node2 = pars->cmd;
+			// 	while (tmp_node2)
+			// 	{
+			// 		printf("s = %s\n", tmp_node2->s);
+			// 		tmp_node2 = tmp_node2->next;
+			// 	}
+			// }
 			remove_quotes(node->s);
 			node = node->next;
 		}
