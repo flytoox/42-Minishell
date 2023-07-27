@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 00:49:08 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/26 23:33:42 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ void	execute(void)
 		}
 		if (args && parsed->in != FILE_NOT_FOUND)
 		{
+			status = -1337;
 			if (pipe(fd) == -1)
 				return (perror("pipe"));
 			if (tmp == -2)
@@ -211,7 +212,7 @@ void	execute(void)
 				else
 					args[0] = path_cmd(args[0], CMD_NT_FND);
 				execve(args[0], args, g_data.env_tab);
-				perror("execve");
+				perror("minishell");
 				exit(1);
 			}
 			else
@@ -228,10 +229,13 @@ void	execute(void)
 	}
 	if (tmp != -2)
 		close(tmp);
-	while (waitpid(-1, &status, 0) != -1)
-		;
-	if (WIFEXITED(status))
-		g_data.exit_status = WEXITSTATUS(status);
+	if (status == -1337)
+	{
+		while (waitpid(-1, &status, 0) != -1)
+			;
+		if (WIFEXITED(status))
+			g_data.exit_status = WEXITSTATUS(status);
+	}
 	if (WTERMSIG(status) == SIGINT)
 	{
 		if (g_data.pars->next)
