@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/27 22:48:09 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/27 22:50:13 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,18 @@ void	echo(char **args)
 	int	flg;
 
 	flg = 0;
-	i = 0;
-	j = 0;
-	while (!ft_strncmp(args[j++], "-n", 2))
+	j = -1;
+	while (!ft_strncmp(args[++j], "-n", 2))
 	{
 		i = 0;
-		while (args[0][++i] == 'n')
+		while (args[j][++i] == 'n')
 			;
-		if (!args[0][i])
-		{
+		if (!args[j][i])
 			flg = 1;
-			i = j;
-		}
+		else
+			break ;
 	}
+	i = j;
 	while (args[i + 1])
 		printf("%s ", args[i++]);
 	printf("%s", args[i]);

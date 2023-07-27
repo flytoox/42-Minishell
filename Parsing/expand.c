@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 23:02:26 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/27 22:50:40 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*env_value(char *key)
 	int		i;
 
 	node = g_data.env;
-	if (!ft_strncmp(key, "?", 1))
+	if (!ft_strcmp(key, "?"))
 		return (ft_itoa(g_data.exit_status));
 	tmp = malloc(ft_strlen(key) + 1);
 	i = 0;
@@ -81,7 +81,7 @@ bool	is_export(t_cmd *cmd)
 
 void	token_expand(t_cmd *cmd)
 {
-	
+
 }
 
 void	expand(t_pars *pars)
