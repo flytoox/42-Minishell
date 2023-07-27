@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/26 01:19:13 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/27 22:14:51 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "Libft/libft.h"
+# include <dirent.h>
+# include <sys/stat.h>
+# include <errno.h>
+
 
 # define CMD_NT_FND " command not found\n"
 # define NO_SUCH_FILE " No such file or directory\n"

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/25 00:08:49 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/27 21:53:42 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	sigusr_handler(int signum)
 void	display_prompt(void)
 {
 	rl_catch_signals = 0;
-	g_data.input = readline("\033[1;32mminishell# \033[0m");
+	g_data.input = readline("minishell# ");
 	if (!g_data.input)
 	{
 		// env_clear(&g_data.env);
@@ -72,15 +72,37 @@ t_env	*fill_env(char **env)
 	return (new_env);
 }
 
+
+void	fill_the_env(void)
+{
+	char	*pwd;
+	char	*shlvl;
+	char	cwd[1024];
+
+	pwd = getcwd(cwd, sizeof(cwd));
+	shlvl = ft_itoa(1);
+	env_add_back(&g_data.env, env_new("PWD", ft_strdup(pwd)));
+	env_add_back(&g_data.env, env_new("SHLVL", shlvl));
+	// env_add_back(&g_data.env, env_new("OLDPWD", oldpwd));
+	// env_add_back(&g_data.env, env_new("HOME", home));
+	// env_add_back(&g_data.env, env_new("USER", user));
+}
 int	main(int argc, char **argv, char **env)
 {
 	// atexit(ft_exit);
 	int i = -1;
-
+	
+	g_data.env = NULL;
+	if (!*env)
+	{
+		fill_the_env();
+		printf("env is empty\n");
+	}
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
 	set_builtins();
-	g_data.env = fill_env(env);
+	if (*env)
+		g_data.env = fill_env(env);
 	if (argc != 1 && argv[1] != NULL)
 		return (printf("Mamamia, don't use args\n"), 1);
 	// g_data.path = ft_split(get_path(env), ':');

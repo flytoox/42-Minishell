@@ -13,6 +13,7 @@
     "stdio.h": "c",
     "unistd.h": "c",
     "stdlib.h": "c",
-    "signal.h": "c"
+    "signal.h": "c",
+    "stat.h": "c"
   }
 }

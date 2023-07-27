@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 22:04:39 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/27 22:47:09 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,19 @@ void	unset(char *s)
 	t_env	*node;
 	t_env	*tmp;
 
+	if (!ft_strcmp(g_data.env->key, s))
+	{
+		node = g_data.env;
+		g_data.env = g_data.env->next;
+		return (env_delone(node));
+	}
 	node = g_data.env;
 	while (node)
 	{
 		if (!ft_strcmp(node->key, s))
 		{
 			tmp->next = node->next;
-			env_delone(node);
-			return ;
+			return (env_delone(node));
 		}
 		tmp = node;
 		node = node->next;
@@ -76,7 +81,7 @@ void	export(char *argument)
 	{
 		if (nm_vr[ft_strlen(nm_vr) - 1] == '+')
 		{
-			if (!ft_strcmp(node->key, nm_vr))
+			if (!ft_strncmp(node->key, nm_vr, ft_strlen(nm_vr) - 1))
 			{
 				if (vl_vr)
 					node->value = ft_strjoin(node->value, vl_vr);
@@ -93,5 +98,7 @@ void	export(char *argument)
 		}
 		node = node->next;
 	}
+	if (nm_vr[ft_strlen(nm_vr) - 1] == '+')
+		nm_vr[ft_strlen(nm_vr) - 1] = '\0';
 	env_add_back(&g_data.env, env_new(nm_vr, vl_vr));
 }

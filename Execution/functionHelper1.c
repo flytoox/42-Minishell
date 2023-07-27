@@ -3,28 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   functionHelper1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/26 01:10:09 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/27 22:41:25 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*path_cmd(char *cmd, char *msg)
+char	*path_cmd_helper(char *cmd, char *tmp2, char *msg)
 {
-	int		i;
-	char	*tmp;
-	char	*tmp2;
+	int			i;
+	char		*tmp;
 
 	i = 0;
 	tmp = 0;
-	if (!access(cmd, F_OK))
-		return (cmd);
+	if (!ft_strcmp(cmd, "."))
+		return (printf("minishell: .: filename argument required\n.:\
+usage: . filename [arguments]\n"), exit(2), NULL);
+	else if (!ft_strcmp(cmd, ".."))
+		return (printf("Minishell: %s%s", cmd, msg), exit(127), NULL);
 	if (!cmd[0] || !g_data.path)
 		return (printf("Minishell: %s%s", cmd, msg), exit(127), NULL);
-	tmp2 = cmd;
 	cmd = ft_strjoin("/", tmp2);
 	while (g_data.path[i])
 	{
@@ -35,6 +36,33 @@ char	*path_cmd(char *cmd, char *msg)
 			return (free(cmd), cmd = tmp, cmd);
 		i++;
 	}
+	return (NULL);
+}
+
+char	*path_cmd(char *cmd, char *msg)
+{
+	struct stat	statbuf;
+	char		*tmp2;
+
+	tmp2 = path_cmd_helper(cmd, cmd, msg);
+	if (tmp2)
+		return (tmp2);
+	tmp2 = cmd;
+	if (stat(tmp2, &statbuf) == 0)
+	{
+		if (S_ISREG(statbuf.st_mode))
+		{
+			if (access(tmp2, X_OK) == 0) 
+				return (tmp2);
+		}
+		else if (S_ISDIR(statbuf.st_mode)) 
+			return (printf("minishell : %s: is a directory\n", tmp2)
+				, exit(126), NULL);
+	}
+	else
+		if (errno == EACCES) 
+			return (printf("minishell: %s: Permission denied\n", tmp2),
+				exit(126), NULL);
 	return (printf("Minishell: %s%s", tmp2, msg), exit(127), NULL);
 }
 
