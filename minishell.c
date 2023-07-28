@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/27 22:49:13 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/27 23:03:56 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	display_prompt(void)
 		// env_clear(&g_data.env);
 		// free_dbl_pntr((void **)g_data.path);
 		// parse_clear(&g_data.pars);
+		printf("exit\n");
 		exit (0);
 	}
 	if (g_data.input[0])
@@ -81,8 +82,8 @@ void	fill_the_env(void)
 
 	pwd = getcwd(cwd, sizeof(cwd));
 	shlvl = ft_itoa(1);
-	env_add_back(&g_data.env, env_new("PWD", ft_strdup(pwd)));
-	env_add_back(&g_data.env, env_new("SHLVL", shlvl));
+	env_add_back(&g_data.env, env_new(ft_strdup("PWD"), ft_strdup(pwd)));
+	env_add_back(&g_data.env, env_new(ft_strdup("SHLVL"), shlvl));
 	// env_add_back(&g_data.env, env_new("OLDPWD", oldpwd));
 	// env_add_back(&g_data.env, env_new("HOME", home));
 	// env_add_back(&g_data.env, env_new("USER", user));
@@ -94,10 +95,7 @@ int	main(int argc, char **argv, char **env)
 	
 	g_data.env = NULL;
 	if (!*env)
-	{
 		fill_the_env();
-		printf("env is empty\n");
-	}
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
 	set_builtins();

@@ -6,14 +6,14 @@
 #    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/25 00:21:21 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/27 23:43:30 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 SRC = $(wildcard *.c Parsing/*.c Execution/*.c)
 OBJ = $(SRC:.c=.o)
-HEADER = minishell.h
+HEADER = minishell.h ./Libft/libft.h
 CC = cc
 FLAGS = #-Wall -Wextra -Werror -g
 

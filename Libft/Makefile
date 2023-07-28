@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obelaizi <obelaizi@student.1337.ma>        +#+  +:+       +#+         #
+#    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/26 19:41:28 by obelaizi          #+#    #+#              #
-#    Updated: 2022/11/01 16:31:54 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/27 23:44:09 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ all: $(NAME)
 	cc -c $(FLAGS) $<
 
 $(NAME): $(OBJS)
-	@ar -r $(NAME) $(OBJS)
+	ar -r $(NAME) $(OBJS)
 
 bonus: $(OBJS_BONUS)
 	@ar -r $(NAME) $(OBJS_BONUS)

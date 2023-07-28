@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/27 22:49:56 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/27 22:59:29 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char	*path_cmd_helper(char *cmd, char *tmp2, char *msg)
 usage: . filename [arguments]\n"), exit(2), NULL);
 	else if (!ft_strcmp(cmd, ".."))
 		return (printf("Minishell: %s%s", cmd, msg), exit(127), NULL);
-	if (!cmd[0] || !g_data.path)
+	if (!cmd[0])
 		return (printf("Minishell: %s%s", cmd, msg), exit(127), NULL);
 	cmd = ft_strjoin("/", tmp2);
-	while (g_data.path[i])
+	while (g_data.path && g_data.path[i])
 	{
 		if (tmp)
 			free(tmp);

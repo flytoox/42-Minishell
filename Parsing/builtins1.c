@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/27 22:47:09 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/27 23:05:21 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	unset(char *s)
 	t_env	*node;
 	t_env	*tmp;
 
-	if (!ft_strcmp(g_data.env->key, s))
+	if (g_data.env && !ft_strcmp(g_data.env->key, s))
 	{
 		node = g_data.env;
 		g_data.env = g_data.env->next;

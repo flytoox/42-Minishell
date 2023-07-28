@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 23:33:42 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/28 21:26:52 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ int	check_builtins(char ***targs, int is_child)
 			unset(args[j]);
 		else if (i == 5 && j)
 			return (*targs = *targs + 1, 2);
-		else if (i == 3)
-			return (printf("exit\n"), kill(0, SIGINT));
+		else if (i == 3 && parse_size(g_data.pars) == 1)
+			return (printf("exit\n"), exit(ft_atoi(args[j + 1])), 0);
 	}
 	if (i == 6 && j == 1)
 		env(0);
@@ -201,8 +201,8 @@ void	execute(void)
 					close(tmp);
 					close(fd[0]);
 				}
-				ret = check_builtins(&args, 1);
 				which_fd(parsed);
+				ret = check_builtins(&args, 1);
 				if (ret == 1)
 					exit(0);
 				make_the_path();
