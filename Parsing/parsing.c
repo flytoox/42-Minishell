@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/26 22:44:19 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/28 23:16:36 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,12 @@ void	make_new_lst(void)
 }
 
 
-void	parse(char *str)
+int	parse(char *str)
 {
 	if (!*str)
 		return ;
 	if (is_closed(str))
-	{
-		printf("Dude close ur things\n");
-		return ;
-	}
+		return (printf("Dude close ur things\n"));
 	g_data.cmds = NULL;
 	cust_split(str, &g_data.cmds);
 	if (!g_data.cmds)
@@ -142,26 +139,42 @@ void	parse(char *str)
 	make_cmd_prev();
 	tokens();
 	if (is_syntax_error())
-	{
-		printf("Minishell: syntax error near unexpected token `|'\n");
-		return ;
-	}
+		return (printf("Minishell: syntax error near unexpected token `|'\n"));
 	make_new_lst();
-
 	expand(g_data.pars);
-	// printf("------------------------------------------------\n");
-	open_files();
+	open_files(g_data.pars);
 	make_pars_prev();
-	execute();
+	execute(g_data.pars);
 }
 
-void	open_files(void)
+void	out_append(t_pars *tmp, t_cmd *cmd)
 {
-	t_pars	*tmp;
+	if (tmp->out)
+		close(tmp->out);
+	if (cmd->prev->type == OUT)
+		tmp->out = open(cmd->s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (cmd->prev->type == APPEND)
+		tmp->out = open(cmd->s, O_WRONLY | O_CREAT | O_APPEND, 0644);
+}
+
+void	in(t_pars *tmp, t_cmd *cmd)
+{
+	if (tmp->in)
+		close(tmp->in);
+	tmp->in = open(cmd->s, O_RDONLY);
+	if (tmp->in == -1)
+	{
+		printf("Minishell: %s: No such file or directory\n",
+			cmd->s);
+		tmp->in = FILE_NOT_FOUND;
+		break ;
+	}
+}
+
+void	open_files(t_pars *tmp)
+{
 	t_cmd	*cmd;
 
-	tmp = g_data.pars;
-	g_data.not_found = 0;
 	while (tmp)
 	{
 		tmp->in = FD_INIT;
@@ -169,31 +182,10 @@ void	open_files(void)
 		cmd = tmp->cmd->next;
 		while (cmd)
 		{
-			if (cmd->prev->type == OUT
-				|| cmd->prev->type == APPEND)
-			{
-				if (tmp->out)
-					close(tmp->out);
-				if (cmd->prev->type == OUT)
-					tmp->out = open(cmd->s,
-							O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				else if (cmd->prev->type == APPEND)
-					tmp->out = open(cmd->s,
-							O_WRONLY | O_CREAT | O_APPEND, 0644);
-			}
+			if (cmd->prev->type == OUT || cmd->prev->type == APPEND)
+				out_append(tmp, cmd);
 			else if (cmd->prev->type == IN)
-			{
-				if (tmp->in)
-					close(tmp->in);
-				tmp->in = open(cmd->s, O_RDONLY);
-				if (tmp->in == -1)
-				{
-					printf("Minishell: %s: No such file or directory\n",
-						cmd->s);
-					tmp->in = FILE_NOT_FOUND;
-					break ;
-				}
-			}
+				in(tmp, cmd);
 			else if (cmd->prev->type == HEREDOC)
 			{
 				if (tmp->in)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/27 22:50:13 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/28 23:21:01 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,35 @@ void	echo(char **args)
 		printf("\n");
 }
 
+void	cd_helper(t_env *node, char *path)
+{
+	char	oldpwd[1024];
+	char	cwd[1024];
+
+	getcwd(oldpwd, sizeof(oldpwd));
+	if (chdir(path) == -1)
+		return (g_data.exit_status = 1, perror("cd"));
+	if (!getcwd(cwd, sizeof(cwd)))
+	{
+		printf("cd: error retrieving current directory: getcwd:\
+ cannot access parent directories: No such file or directory\n");
+		return ;
+	}
+	if (!env_value("OLDPWD"))
+		env_add_back(&g_data.env, env_new("OLDPWD", oldpwd));
+	while (node)
+	{
+		if (!ft_strcmp(node->key, "PWD"))
+			node->value = ft_strdup(cwd);
+		else if (!ft_strcmp(node->key, "OLDPWD"))
+			node->value = ft_strdup(oldpwd);
+		node = node->next;
+	}
+}
+
 void	cd(char *path)
 {
-	char	cwd[1024];
-	t_env	*node;
-	char	oldpwd[1024];
-
-	if (!ft_strcmp(path, ""))
+	if (!ft_strcmp(path, "") || !ft_strcmp(path, "~"))
 	{
 		path = env_value("HOME");
 		if (!path)
@@ -68,29 +90,7 @@ void	cd(char *path)
 			return ;
 		}
 	}
-	getcwd(oldpwd, sizeof(oldpwd));
-	if (chdir(path) == -1)
-	{
-		g_data.exit_status = 1;
-		return (perror("cd"));
-	}
-	node = g_data.env;
-	if (!getcwd(cwd, sizeof(cwd)))
-	{
-		printf("cd: error retrieving current directory: getcwd:\
- cannot access parent directories: No such file or directory\n");
-		return ;
-	}
-	if (!env_value("OLDPWD"))
-		env_add_back(&g_data.env, env_new("OLDPWD", oldpwd));
-	while (node)
-	{
-		if (!ft_strcmp(node->key, "PWD"))
-			node->value = ft_strdup(cwd);
-		else if (!ft_strcmp(node->key, "OLDPWD"))
-			node->value = ft_strdup(oldpwd);
-		node = node->next;
-	}
+	cd_helper(g_data.env, path);
 }
 
 void	pwd(void)

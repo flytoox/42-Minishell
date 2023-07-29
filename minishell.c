@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/27 23:03:56 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/28 22:22:19 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	main(int argc, char **argv, char **env)
 {
 	// atexit(ft_exit);
 	int i = -1;
-	
+
 	g_data.env = NULL;
 	if (!*env)
 		fill_the_env();
@@ -101,6 +101,7 @@ int	main(int argc, char **argv, char **env)
 	set_builtins();
 	if (*env)
 		g_data.env = fill_env(env);
+	export("_=/usr/bin/env");
 	if (argc != 1 && argv[1] != NULL)
 		return (printf("Mamamia, don't use args\n"), 1);
 	// g_data.path = ft_split(get_path(env), ':');

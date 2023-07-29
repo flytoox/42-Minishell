@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/28 21:26:52 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/28 23:06:14 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ int	calc_cmd_size(t_cmd *cmd)
 	return (i);
 }
 
-char	**get_cmds_args(t_cmd *cmd)
+char	**get_cmds_args(t_cmd *cmd, t_pars *parsed)
 {
 	char	**args;
 	int		i;
 
+	lunch_herdoc(parsed);
 	i = 0;
 	if (!calc_cmd_size(cmd))
 		return (NULL);
@@ -97,8 +98,6 @@ int	check_builtins(char ***targs, int is_child)
 	int		j;
 	char	**args;
 
-	if (!*targs)
-		return (0);
 	i = 0;
 	args = *targs;
 	while (g_data.builtins[i] && ft_strcmp(g_data.builtins[i], args[0]))
@@ -118,7 +117,7 @@ int	check_builtins(char ***targs, int is_child)
 			export(args[j]);
 		else if (i == 4 && j)
 			unset(args[j]);
-		else if (i == 5 && j)
+		else if (i == 2 && j)
 			return (*targs = *targs + 1, 2);
 		else if (i == 3 && parse_size(g_data.pars) == 1)
 			return (printf("exit\n"), exit(ft_atoi(args[j + 1])), 0);
@@ -155,80 +154,8 @@ void	make_the_env(void)
 	g_data.env_tab = env;
 }
 
-void	execute(void)
+void	signals_handling(int status)
 {
-	t_pars	*parsed;
-	t_cmd	*cmd;
-	char	**args;
-	int		ret;
-	int		fd[2];
-	int		tmp;
-	int 	status;
-
-	parsed = g_data.pars;
-	tmp = -2;
-	signal(SIGINT, SIG_IGN);
-	while (parsed)
-	{
-		lunch_herdoc(parsed);
-		args = get_cmds_args(parsed->cmd);
-		if (args && check_builtins(&args, 0))
-		{
-			parsed = parsed->next;
-			continue ;
-		}
-		if (args && parsed->in != FILE_NOT_FOUND)
-		{
-			status = -1337;
-			if (pipe(fd) == -1)
-				return (perror("pipe"));
-			if (tmp == -2)
-				tmp = fd[0];
-			if (fork() == 0)
-			{
-				signal(SIGINT, SIG_DFL);
-				signal(SIGQUIT, SIG_DFL);
-				if (parsed->next && parsed->out == FD_INIT)
-				{
-					close(fd[0]);
-					dup2(fd[1], 1);
-					close(fd[1]);
-				}
-				if (parsed->prev && parsed->in == FD_INIT)
-				{
-					close(fd[1]);
-					dup2(tmp, 0);
-					close(tmp);
-					close(fd[0]);
-				}
-				which_fd(parsed);
-				ret = check_builtins(&args, 1);
-				if (ret == 1)
-					exit(0);
-				make_the_path();
-				make_the_env();
-				if (ret == 2)
-					args[0] = path_cmd(args[0], NO_SUCH_FILE);
-				else
-					args[0] = path_cmd(args[0], CMD_NT_FND);
-				execve(args[0], args, g_data.env_tab);
-				perror("minishell");
-				exit(1);
-			}
-			else
-			{
-				signal(SIGINT, SIG_IGN);
-				signal(SIGQUIT, SIG_IGN);
-				if (tmp != fd[0])
-					close(tmp);
-				tmp = fd[0];
-				close(fd[1]);
-			}
-		}
-		parsed = parsed->next;
-	}
-	if (tmp != -2)
-		close(tmp);
 	if (status == -1337)
 	{
 		while (waitpid(-1, &status, 0) != -1)
@@ -238,13 +165,9 @@ void	execute(void)
 	}
 	if (WTERMSIG(status) == SIGINT)
 	{
-		if (g_data.pars->next)
-			write(1, "\n", 1);
-		else
-		{
+		if (!g_data.pars->next)
 			g_data.exit_status = 130;
-			write(1, "\n", 1);
-		}
+		write(1, "\n", 1);
 	}
 	if (WTERMSIG(status) == SIGQUIT)
 	{
@@ -258,5 +181,84 @@ void	execute(void)
 	}
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
+}
+
+int	helper_function(t_pars *parsed, int fd[2], int tmp, char ***args)
+{
+	int	ret;
+
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (parsed->next && parsed->out == FD_INIT)
+	{
+		close(fd[0]);
+		dup2(fd[1], 1);
+		close(fd[1]);
+	}
+	if (parsed->prev && parsed->in == FD_INIT)
+	{
+		close(fd[1]);
+		dup2(tmp, 0);
+		close(tmp);
+		close(fd[0]);
+	}
+	which_fd(parsed);
+	ret = check_builtins(args, 1);
+	if (ret == 1)
+		exit(0);
+	make_the_path();
+	make_the_env();
+	return (ret);
+}
+
+void	execute_child(int *tmp, int fd[2], t_pars *parsed, char **args)
+{
+	if (pipe(fd) == -1)
+		return (perror("pipe"));
+	if (*tmp == -2)
+		*tmp = fd[0];
+	if (fork() == 0)
+	{
+		if (helper_function(parsed, fd, *tmp, &args) == 2)
+			args[0] = path_cmd(args[0], NO_SUCH_FILE);
+		else
+			args[0] = path_cmd(args[0], CMD_NT_FND);
+		execve(args[0], args, g_data.env_tab);
+		perror("minishell");
+		exit(127);
+	}
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		if (*tmp != fd[0])
+			close(*tmp);
+		*tmp = fd[0];
+		close(fd[1]);
+	}
+}
+
+void	execute(t_pars *parsed)
+{
+	int		status;
+	char	**args;
+	int		fd[2];
+	int		tmp;
+
+	tmp = -2;
+	signal(SIGINT, SIG_IGN);
+	while (parsed)
+	{
+		args = get_cmds_args(parsed->cmd, parsed);
+		if (args && !check_builtins(&args, 0) && parsed->in != FILE_NOT_FOUND)
+		{
+			status = -1337;
+			execute_child(&tmp, fd, parsed, args);
+		}
+		parsed = parsed->next;
+	}
+	if (tmp != -2)
+		close(tmp);
+	signals_handling(status);
 	unlink(".temp_file");
 }
