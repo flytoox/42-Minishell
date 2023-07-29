@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/27 23:05:21 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/28 22:24:03 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ void	env(int is_env)
 	}
 	while (node)
 	{
-		if (node->value)
-			printf("declare -x %s=\"%s\"\n", node->key, node->value);
-		else
-			printf("declare -x %s\n", node->key);
+		if (ft_strcmp(node->key, "_"))
+		{
+			if (node->value)
+				printf("declare -x %s=\"%s\"\n", node->key, node->value);
+			else
+				printf("declare -x %s\n", node->key);
+		}
 		node = node->next;
 	}
 }

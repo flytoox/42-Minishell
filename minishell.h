@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/27 22:14:51 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/28 23:27:26 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int		is_closed(const char *s);
 
 void	display_prompt(void);
 void	rmv_frst_chr(char *s, int i);
-void	parse(char *str);
+int		parse(char *str);
 int		count_str(const char *s, const char *s1);
 void	cust_split(char *s, t_cmd **cmds);
 void	upgrade_splt(const char *sep);
@@ -142,10 +142,9 @@ int		here_doc(char *del, int is_expand);
 void	trim_it(char *s);
 char	*env_value(char *key);
 
-char	*get_next_line(int fd);
-
 char	*path_cmd(char *cmd, char *msg);
 void	set_builtins(void);
-void	execute(void);
+void	execute(t_pars *parsed);
+void	lunch_herdoc(t_pars *parsed);
 
 #endif
