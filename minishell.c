@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/28 22:22:19 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/30 01:20:48 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,25 @@ t_env	*fill_env(char **env)
 {
 	int		i;
 	t_env	*new_env;
+	char	*name_var;
+	char	*val_var;
+	char	*tmp;
 
 	new_env = NULL;
 	i = -1;
 	while (env[++i])
+	{
+		name_var = get_name_var(env[i]);
+		val_var = get_val_var(env[i]);
+		if (!ft_strcmp(name_var, "SHLVL"))
+		{
+			tmp = val_var;
+			val_var = ft_itoa(ft_atoi(val_var) + 1);
+			free(tmp);
+		}
 		env_add_back(&new_env,
-			env_new(get_name_var(env[i]), get_val_var(env[i])));
+			env_new(name_var, val_var));
+	}
 	return (new_env);
 }
 
@@ -84,14 +97,10 @@ void	fill_the_env(void)
 	shlvl = ft_itoa(1);
 	env_add_back(&g_data.env, env_new(ft_strdup("PWD"), ft_strdup(pwd)));
 	env_add_back(&g_data.env, env_new(ft_strdup("SHLVL"), shlvl));
-	// env_add_back(&g_data.env, env_new("OLDPWD", oldpwd));
-	// env_add_back(&g_data.env, env_new("HOME", home));
-	// env_add_back(&g_data.env, env_new("USER", user));
 }
 int	main(int argc, char **argv, char **env)
 {
 	// atexit(ft_exit);
-	int i = -1;
 
 	g_data.env = NULL;
 	if (!*env)

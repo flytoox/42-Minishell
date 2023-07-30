@@ -6,7 +6,7 @@
 #    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/27 23:43:30 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/30 01:20:37 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ SRC = $(wildcard *.c Parsing/*.c Execution/*.c)
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h ./Libft/libft.h
 CC = cc
-FLAGS = #-Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror 
 
 RL_INC = -I $(shell brew --prefix readline)/include
 RL_LIB = -L $(shell brew --prefix readline)/lib

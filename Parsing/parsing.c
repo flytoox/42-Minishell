@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/28 23:16:36 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/30 02:58:16 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,34 @@ void	rmv_frst_chr(char *s, int i)
 	s[j] = '\0';
 }
 
-void	remove_quotes(char *s)
+void	remove_quotes(t_pars *p)
 {
+	t_cmd	*tmp;
 	int		flg;
 	int		i;
 
-	flg = 0;
-	i = -1;
-	while (s[++i])
+	while (p)
 	{
-		if (!flg && (s[i] == '"' || s[i] == '\''))
-			flg = i + 1;
-		else if (flg && s[i] == s[flg - 1])
+		tmp = p->cmd;
+		while (tmp)
 		{
-			rmv_frst_chr(s, i);
-			rmv_frst_chr(s, flg - 1);
 			flg = 0;
-			i -= 2;
+			i = -1;
+			while (tmp->s[++i])
+			{
+				if (!flg && (tmp->s[i] == '"' || tmp->s[i] == '\''))
+					flg = i + 1;
+				else if (flg && tmp->s[i] == tmp->s[flg - 1])
+				{
+					rmv_frst_chr(tmp->s, i);
+					rmv_frst_chr(tmp->s, flg - 1);
+					flg = 0;
+					i -= 2;
+				}
+			}
+			tmp = tmp->next;
 		}
+		p = p->next;
 	}
 }
 
@@ -82,8 +92,6 @@ void	token_it(t_cmd *node)
 
 void	tokens(void)
 {
-	char	**splt;
-	int		i;
 	t_cmd	*tmp;
 
 	token_it(g_data.cmds);
@@ -124,13 +132,13 @@ void	make_new_lst(void)
 int	parse(char *str)
 {
 	if (!*str)
-		return ;
+		return (0);
 	if (is_closed(str))
 		return (printf("Dude close ur things\n"));
 	g_data.cmds = NULL;
 	cust_split(str, &g_data.cmds);
 	if (!g_data.cmds)
-		return ;
+		return (0);
 	upgrade_splt("|");
 	upgrade_splt("<<");
 	upgrade_splt(">>");
@@ -142,33 +150,36 @@ int	parse(char *str)
 		return (printf("Minishell: syntax error near unexpected token `|'\n"));
 	make_new_lst();
 	expand(g_data.pars);
+	remove_quotes(g_data.pars);
 	open_files(g_data.pars);
 	make_pars_prev();
 	execute(g_data.pars);
+	return (0);
 }
 
 void	out_append(t_pars *tmp, t_cmd *cmd)
 {
 	if (tmp->out)
 		close(tmp->out);
-	if (cmd->prev->type == OUT)
-		tmp->out = open(cmd->s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (cmd->prev->type == APPEND)
-		tmp->out = open(cmd->s, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (cmd->type == OUT)
+		tmp->out = open(cmd->next->s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (cmd->type == APPEND)
+		tmp->out = open(cmd->next->s, O_WRONLY | O_CREAT | O_APPEND, 0644);
 }
 
-void	in(t_pars *tmp, t_cmd *cmd)
+int	in(t_pars *tmp, t_cmd *cmd)
 {
 	if (tmp->in)
 		close(tmp->in);
-	tmp->in = open(cmd->s, O_RDONLY);
+	tmp->in = open(cmd->next->s, O_RDONLY);
 	if (tmp->in == -1)
 	{
 		printf("Minishell: %s: No such file or directory\n",
-			cmd->s);
+			cmd->next->s);
 		tmp->in = FILE_NOT_FOUND;
-		break ;
+		return (1);
 	}
+	return (0);
 }
 
 void	open_files(t_pars *tmp)
@@ -177,16 +188,17 @@ void	open_files(t_pars *tmp)
 
 	while (tmp)
 	{
-		tmp->in = FD_INIT;
-		tmp->out = FD_INIT;
-		cmd = tmp->cmd->next;
-		while (cmd)
+		cmd = tmp->cmd;
+		while (cmd->next)
 		{
-			if (cmd->prev->type == OUT || cmd->prev->type == APPEND)
+			if (cmd->type == OUT || cmd->type == APPEND)
 				out_append(tmp, cmd);
-			else if (cmd->prev->type == IN)
-				in(tmp, cmd);
-			else if (cmd->prev->type == HEREDOC)
+			else if (cmd->type == IN)
+			{
+				if (in(tmp, cmd))
+					break ;
+			}
+			else if (cmd->type == HEREDOC)
 			{
 				if (tmp->in)
 					close(tmp->in);

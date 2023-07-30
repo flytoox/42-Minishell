@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/28 23:27:26 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/30 02:57:48 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char	*get_name_var(char *argument);
 char	*get_val_var(char *argument);
 int		is_syntax_error(void);
 int		check_parse_export(char *s);
-void	remove_quotes(char *s);
+void	remove_quotes(t_pars *p);
 
 void	echo(char **args);
 void	cd(char *path);
@@ -136,7 +136,7 @@ void	export(char *argument);
 void	unset(char *s);
 void	env(int is_env);
 void	expand(t_pars *pars);
-void	open_files(void);
+void	open_files(t_pars *tmp);
 void	which_fd(t_pars *parsed);
 int		here_doc(char *del, int is_expand);
 void	trim_it(char *s);

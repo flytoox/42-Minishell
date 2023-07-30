@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functionHelper1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/28 23:24:35 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/30 01:21:18 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,6 @@ int	fill_file(int fd, char *del, int is_expand)
 int	here_doc(char *del, int is_expand)
 {
 	int		in;
-	int		pid;
 
 	in = open(".temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
 	if (in < 0)
