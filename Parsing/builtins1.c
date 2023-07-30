@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 01:03:26 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:38:12 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	env(int is_env)
 {
 	t_env	*node;
 
+	export("_=/usr/bin/env");
 	node = g_data.env;
 	if (is_env)
 	{
@@ -72,14 +73,14 @@ int export_helper(char *nm_vr, char *vl_vr, t_env *node)
 		{
 			if (vl_vr)
 				node->value = ft_strjoin(node->value, vl_vr);
-			return (free(nm_vr), 1);
+			return (1);
 		}
 	}
 	if (!ft_strcmp(node->key, nm_vr))
 	{
 		if (vl_vr)
 			node->value = vl_vr;
-		return (free(nm_vr), 1);
+		return (1);
 	}
 	return (0);
 }

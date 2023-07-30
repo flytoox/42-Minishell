@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/30 02:57:48 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:24:56 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,12 @@ typedef struct parsing
 
 }	t_pars;
 
+typedef struct garbage
+{
+	void			*ptr;
+	struct garbage	*next;
+}	t_grbg;
+
 typedef struct minikhell
 {
 	char	**path;
@@ -89,6 +95,7 @@ typedef struct minikhell
 	char	**builtins;
 	int		exit_status;
 	int		quit_heredoc;
+	t_grbg	*garbage;
 }	t_data;
 
 extern t_data g_data;
@@ -106,6 +113,13 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new);
 void	cmd_front(t_cmd **lst, t_cmd *new);
 int		cmd_size(t_cmd *lst);
 void	cmd_clear(t_cmd **lst);
+
+t_grbg	*garbg_new(void *s);
+void	garbg_add_back(t_grbg **lst, t_grbg *new);
+void	garbg_front(t_grbg **lst, t_grbg *new);
+int		garbg_size(t_grbg *lst);
+void	garbg_clear(t_grbg **lst);
+
 void	make_cmd_prev(void);
 void	make_pars_prev(void);
 
@@ -140,7 +154,7 @@ void	open_files(t_pars *tmp);
 void	which_fd(t_pars *parsed);
 int		here_doc(char *del, int is_expand);
 void	trim_it(char *s);
-char	*env_value(char *key);
+char	*env_value(char *key, t_env *node);
 
 char	*path_cmd(char *cmd, char *msg);
 void	set_builtins(void);

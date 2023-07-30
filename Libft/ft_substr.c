@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 00:19:37 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/06/24 12:58:20 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:31:04 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	result = malloc(len + 1);
 	if (!result)
 		return (0);
+	garbg_add_back(&g_data.garbage, garbg_new(result));
 	while (start--)
 		s++;
 	i = -1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 00:34:32 by obelaizi          #+#    #+#             */
-/*   Updated: 2022/11/03 13:53:56 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:28:49 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*ft_itoa(int n)
 	s = malloc(nb + 1);
 	if (!s)
 		return (0);
+	garbg_add_back(&g_data.garbage, garbg_new(s));
 	if (!n)
 		s[0] = '0';
 	if (n < 0)

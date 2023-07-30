@@ -6,23 +6,12 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 02:58:16 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:39:58 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_strjoin_free(char *s1, char *s2, int flg)
-{
-	char	*res;
-
-	res = ft_strjoin(s1, s2);
-	if (flg == 1 || flg == 3)
-		free(s1);
-	if (flg == 2 || flg == 3)
-		free(s2);
-	return (res);
-}
 void	rmv_frst_chr(char *s, int i)
 {
 	int		j;
@@ -33,31 +22,37 @@ void	rmv_frst_chr(char *s, int i)
 	s[j] = '\0';
 }
 
+void	do_the_work(t_cmd *tmp)
+{
+	int	flg;
+	int	i;
+
+	flg = 0;
+	i = -1;
+	while (tmp->s[++i])
+	{
+		if (!flg && (tmp->s[i] == '"' || tmp->s[i] == '\''))
+			flg = i + 1;
+		else if (flg && tmp->s[i] == tmp->s[flg - 1])
+		{
+			rmv_frst_chr(tmp->s, i);
+			rmv_frst_chr(tmp->s, flg - 1);
+			flg = 0;
+			i -= 2;
+		}
+	}
+}
+
 void	remove_quotes(t_pars *p)
 {
 	t_cmd	*tmp;
-	int		flg;
-	int		i;
 
 	while (p)
 	{
 		tmp = p->cmd;
 		while (tmp)
 		{
-			flg = 0;
-			i = -1;
-			while (tmp->s[++i])
-			{
-				if (!flg && (tmp->s[i] == '"' || tmp->s[i] == '\''))
-					flg = i + 1;
-				else if (flg && tmp->s[i] == tmp->s[flg - 1])
-				{
-					rmv_frst_chr(tmp->s, i);
-					rmv_frst_chr(tmp->s, flg - 1);
-					flg = 0;
-					i -= 2;
-				}
-			}
+			do_the_work(tmp);
 			tmp = tmp->next;
 		}
 		p = p->next;
@@ -118,8 +113,6 @@ void	make_new_lst(void)
 			head = tmp->next;
 			head->prev = NULL;
 			tmp->prev->next = NULL;
-			free(tmp->s);
-			free (tmp);
 			tmp = head;
 			parse_add_back(&g_data.pars, parse_new(head));
 		}

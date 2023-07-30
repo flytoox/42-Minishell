@@ -6,22 +6,23 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 02:55:32 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:39:05 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*env_value(char *key)
+char	*env_value(char *key, t_env *node)
 {
-	t_env	*node;
 	char	*tmp;
 	int		i;
 
-	node = g_data.env;
 	if (!ft_strncmp(key, "?", 1) && !(ft_isalnum(key[1]) || key[1] == '_'))
 		return (ft_itoa(g_data.exit_status));
 	tmp = malloc(ft_strlen(key) + 1);
+	if (!tmp)
+		exit (1);
+	garbg_add_back(&g_data.garbage, garbg_new(tmp));
 	i = 0;
 	while (key[i] && (ft_isalnum(key[i]) || key[i] == '_'))
 	{
@@ -30,14 +31,14 @@ char	*env_value(char *key)
 	}
 	tmp[i] = '\0';
 	if (!ft_strcmp(tmp, "?"))
-		return (free(tmp), ft_itoa(g_data.exit_status));
+		return (ft_itoa(g_data.exit_status));
 	while (node)
 	{
 		if (!ft_strcmp(node->key, tmp))
-			return (free(tmp), node->value);
+			return (node->value);
 		node = node->next;
 	}
-	return (free(tmp), NULL);
+	return (NULL);
 }
 
 void	trim_it(char *s)
@@ -102,7 +103,7 @@ void	expand_it(t_cmd *node, int *i, int *before_equal, int *expanded)
 	(*i)++;
 	rest = ft_substr(node->s, *i, ft_strlen(node->s));
 	trim_it(rest);
-	val = env_value(&node->s[*i]);
+	val = env_value(&node->s[*i], g_data.env);
 	node->s[*i - 1] = '\0';
 	tmp = node->s;
 	if (val)

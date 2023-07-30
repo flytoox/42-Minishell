@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmdsLists.c                                        :+:      :+:    :+:   */
+/*   GarbageList.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 22:51:07 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 03:31:44 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:24:43 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_cmd	*cmd_new(char *s)
+t_grbg	*garbg_new(void *s)
 {
-	t_cmd	*node;
+	t_grbg	*node;
 
-	node = malloc(sizeof(t_cmd));
+	node = malloc(sizeof(t_grbg));
 	if (!node)
 		exit (1);
-	garbg_add_back(&g_data.garbage, garbg_new(node));
-	node->s = s;
+	node->ptr = s;
 	node->next = 0;
 	return (node);
 }
 
-void	cmd_add_back(t_cmd **lst, t_cmd *new)
+void	garbg_add_back(t_grbg **lst, t_grbg *new)
 {
-	t_cmd	*check;
+	t_grbg	*check;
 
 	if (!new)
 		return ;
@@ -43,10 +42,10 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new)
 	check->next = new;
 }
 
-int	cmd_size(t_cmd *lst)
+int	garbg_size(t_grbg *lst)
 {
-	t_cmd	*i;
-	int		count;
+	t_grbg	*i;
+	int			count;
 
 	if (!lst)
 		return (0);
@@ -60,24 +59,24 @@ int	cmd_size(t_cmd *lst)
 	return (count);
 }
 
-void	cmd_clear(t_cmd **lst)
+void	garbg_clear(t_grbg **lst)
 {
-	int		size;
-	t_cmd	*tmp;
+	int			size;
+	t_grbg	*tmp;
 
 	if (!(*lst))
 		return ;
-	size = cmd_size(*lst);
+	size = garbg_size(*lst);
 	while (size--)
 	{
 		tmp = (*lst)->next;
-		free((*lst)->s);
+		free((*lst)->ptr);
 		free(*lst);
 		*lst = tmp;
 	}
 }
 
-void	cmd_front(t_cmd **lst, t_cmd *new)
+void	garbg_front(t_grbg **lst, t_grbg *new)
 {
 	if (!new)
 		return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 00:39:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/16 01:54:01 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:30:45 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	result = malloc(size + 1);
 	if (!result)
 		return (0);
+	garbg_add_back(&g_data.garbage, garbg_new(result));
 	while (i < size)
 	{
 		while (i < ft_strlen(s1))

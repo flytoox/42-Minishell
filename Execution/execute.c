@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/28 23:06:14 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:35:02 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 void	set_builtins(void)
 {
 	g_data.builtins = malloc(sizeof(char *) * 8);
+	if (!g_data.builtins)
+		exit(1);
+	garbg_add_back(&g_data.garbage, garbg_new(g_data.builtins));
 	g_data.builtins[0] = "echo";
 	g_data.builtins[1] = "pwd";
 	g_data.builtins[2] = "env";
@@ -49,6 +52,9 @@ char	**get_cmds_args(t_cmd *cmd, t_pars *parsed)
 	if (!calc_cmd_size(cmd))
 		return (NULL);
 	args = malloc(sizeof(char *) * (calc_cmd_size(cmd) + 1));
+	if (!args)
+		exit(1);
+	garbg_add_back(&g_data.garbage, garbg_new(args));
 	while (cmd)
 	{
 		if (cmd->type == CMD)
@@ -109,18 +115,18 @@ int	check_builtins(char ***targs, int is_child)
 	{
 		if (i == 0 && j)
 			return (echo(args + 1), 1);
-		else if (i == 5 && j)
-			return (cd(args[j]), 1);
 		else if (i == 1)
 			return (pwd(), 1);
-		else if (i == 6 && j)
-			export(args[j]);
-		else if (i == 4 && j)
-			unset(args[j]);
 		else if (i == 2 && j)
 			return (*targs = *targs + 1, 2);
 		else if (i == 3 && parse_size(g_data.pars) == 1)
 			return (printf("exit\n"), exit(ft_atoi(args[j + 1])), 0);
+		else if (i == 4 && j)
+			unset(args[j]);
+		else if (i == 5 && j)
+			return (cd(args[j]), 1);
+		else if (i == 6 && j)
+			export(args[j]);
 	}
 	if (i == 6 && j == 1)
 		env(0);
@@ -128,6 +134,8 @@ int	check_builtins(char ***targs, int is_child)
 		env(1);
 	else if (i == 5 && j == 1)
 		cd("");
+	else if (!i)
+		printf("\n");
 	return (1);
 }
 
@@ -140,6 +148,9 @@ void	make_the_env(void)
 	i = 0;
 	node = g_data.env;
 	env = malloc(sizeof(char *) * (env_size(node) + 1));
+	if (!env)
+		exit(1);
+	garbg_add_back(&g_data.garbage, garbg_new(env));
 	while (node)
 	{
 		if (node->value && node->key)

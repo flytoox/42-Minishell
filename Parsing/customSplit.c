@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:18:41 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 01:20:57 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:38:52 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,15 @@ char	*cust_strjoin(char *s1, char s2)
 	i = 0;
 	result = malloc(ft_strlen(s1) + 2);
 	if (!result)
-		return (0);
+		exit (1);
+	garbg_add_back(&g_data.garbage, garbg_new(result));
 	while (i < ft_strlen(s1))
 	{
 		result[i] = s1[i];
 		i++;
 	}
 	result[i++] = s2;
-	return (result[i] = 0, free(s1), result);
+	return (result[i] = 0, result);
 }
 
 char	**custt_strjoin(char **s1, char *s2)
@@ -48,13 +49,13 @@ char	**custt_strjoin(char **s1, char *s2)
 		sz++;
 	result = malloc((sz + 2) * sizeof(char *));
 	if (!result)
-		return (0);
+		exit (1);
+	garbg_add_back(&g_data.garbage, garbg_new(result));
 	i = -1;
 	while (++i < sz)
 		result[i] = s1[i];
 	result[i++] = s2;
 	result[i] = NULL;
-	free(s1);
 	return (result);
 }
 

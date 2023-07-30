@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:02:29 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/19 00:27:58 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:28:19 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include "../minishell.h"
 
 size_t	ft_strlen(const char *s);
 int		ft_isalnum(int c);

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:15:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/13 01:41:45 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:32:09 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ t_env	*env_new(char *key, char *value)
 
 	node = malloc(sizeof(t_env));
 	if (!node)
-		return (0);
+		exit (1);
+	garbg_add_back(&g_data.garbage, garbg_new(node));
 	node->key = key;
 	node->value = value;
 	node->next = 0;

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 22:58:33 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/14 23:01:24 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:32:33 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_pars	*parse_new(t_cmd *cmd)
 	node = malloc(sizeof(t_pars));
 	if (!node)
 		return (0);
+	garbg_add_back(&g_data.garbage, garbg_new(node));
 	node->cmd = cmd;
 	node->next = 0;
 	return (node);

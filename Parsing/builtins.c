@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/28 23:21:01 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:34:17 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	cd_helper(t_env *node, char *path)
  cannot access parent directories: No such file or directory\n");
 		return ;
 	}
-	if (!env_value("OLDPWD"))
+	if (!env_value("OLDPWD", g_data.env))
 		env_add_back(&g_data.env, env_new("OLDPWD", oldpwd));
 	while (node)
 	{
@@ -68,7 +68,7 @@ void	cd(char *path)
 {
 	if (!ft_strcmp(path, "") || !ft_strcmp(path, "~"))
 	{
-		path = env_value("HOME");
+		path = env_value("HOME", g_data.env);
 		if (!path)
 		{
 			g_data.exit_status = 1;
@@ -80,7 +80,7 @@ void	cd(char *path)
 	}
 	else if (!ft_strcmp(path, "-"))
 	{
-		path = env_value("OLDPWD");
+		path = env_value("OLDPWD", g_data.env);
 		if (path)
 			printf("%s\n", path);
 		if (!path)
@@ -122,6 +122,9 @@ char	*get_name_var(char *argument)
 	vl_vr = ft_strchr(argument, '=') + 1;
 	i = -1;
 	nm_vr = malloc(ft_strlen(argument) - ft_strlen(vl_vr));
+	if (!nm_vr)
+		exit(1);
+	garbg_add_back(&g_data.garbage, garbg_new(nm_vr));
 	while (argument[++i])
 	{
 		if (argument[i] == '=')

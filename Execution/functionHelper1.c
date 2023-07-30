@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/30 01:21:18 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/30 03:37:42 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ usage: . filename [arguments]\n"), exit(2), NULL);
 	cmd = ft_strjoin("/", tmp2);
 	while (g_data.path && g_data.path[i])
 	{
-		if (tmp)
-			free(tmp);
 		tmp = ft_strjoin(g_data.path[i], cmd);
 		if (!access(tmp, F_OK))
-			return (free(cmd), cmd = tmp, cmd);
+			return (cmd = tmp, cmd);
 		i++;
 	}
 	return (NULL);
@@ -99,7 +97,7 @@ char	*expand_her(char *s)
 			i++;
 			s3 = ft_substr(s, i, ft_strlen(s));
 			trim_it(s3);
-			s2 = env_value(&s[i]);
+			s2 = env_value(&s[i], g_data.env);
 			s[i - 1] = '\0';
 			tmp = s;
 			if (s2)
