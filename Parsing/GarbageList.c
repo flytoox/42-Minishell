@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 22:51:07 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 03:24:43 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 00:34:47 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	garbg_add_back(t_grbg **lst, t_grbg *new)
 int	garbg_size(t_grbg *lst)
 {
 	t_grbg	*i;
-	int			count;
+	int		count;
 
 	if (!lst)
 		return (0);
@@ -62,7 +62,7 @@ int	garbg_size(t_grbg *lst)
 void	garbg_clear(t_grbg **lst)
 {
 	int			size;
-	t_grbg	*tmp;
+	t_grbg		*tmp;
 
 	if (!(*lst))
 		return ;

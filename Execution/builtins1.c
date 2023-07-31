@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 03:38:12 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 00:35:09 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	unset(char *s)
 	}
 }
 
-int export_helper(char *nm_vr, char *vl_vr, t_env *node)
+int	export_helper(char *nm_vr, char *vl_vr, t_env *node)
 {
 	if (nm_vr[ft_strlen(nm_vr) - 1] == '+')
 	{
@@ -110,4 +110,28 @@ void	export(char *argument)
 	if (nm_vr[ft_strlen(nm_vr) - 1] == '+')
 		nm_vr[ft_strlen(nm_vr) - 1] = '\0';
 	env_add_back(&g_data.env, env_new(nm_vr, vl_vr));
+}
+
+void	ft_exit(char **args, int is_child)
+{
+	int		i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	if (i > 1)
+	{
+		printf("minishell: exit: too many arguments\n");
+		g_data.exit_status = 1;
+		return ;
+	}
+	if (!is_child && parse_size(g_data.pars) == 1)
+	{
+		printf("exit\n");
+		exit(ft_atoi(args[0]));
+	}
+	else if (is_child)
+	{
+		exit(ft_atoi(args[0]));
+	}
 }

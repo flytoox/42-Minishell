@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:18:41 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 03:38:52 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 00:35:23 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	cust_split(char *s, t_cmd **cmds)
 	int		flg;
 	char	chr_flg;
 	int		i;
+
 	i = 0;
 	while (s[i])
 	{

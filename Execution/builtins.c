@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/30 03:34:17 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 01:04:51 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	cd_helper(t_env *node, char *path)
 
 	getcwd(oldpwd, sizeof(oldpwd));
 	if (chdir(path) == -1)
-		return (g_data.exit_status = 1, perror("cd"));
+		return (g_data.exit_status = 1, (void)printf("cd: %s: %s\n", path,
+				strerror(errno)));
 	if (!getcwd(cwd, sizeof(cwd)))
 	{
 		printf("cd: error retrieving current directory: getcwd:\
@@ -99,42 +100,6 @@ void	pwd(void)
 
 	getcwd(cwd, sizeof(cwd));
 	printf("%s\n", cwd);
-}
-
-char	*get_val_var(char *argument)
-{
-	char	*vl_vr;
-
-	if (!ft_strchr(argument, '='))
-		return (NULL);
-	vl_vr = ft_strchr(argument, '=') + 1;
-	return (ft_strdup(vl_vr));
-}
-
-char	*get_name_var(char *argument)
-{
-	char	*nm_vr;
-	char	*vl_vr;
-	int		i;
-
-	if (!ft_strchr(argument, '='))
-		return (ft_strdup(argument));
-	vl_vr = ft_strchr(argument, '=') + 1;
-	i = -1;
-	nm_vr = malloc(ft_strlen(argument) - ft_strlen(vl_vr));
-	if (!nm_vr)
-		exit(1);
-	garbg_add_back(&g_data.garbage, garbg_new(nm_vr));
-	while (argument[++i])
-	{
-		if (argument[i] == '=')
-		{
-			nm_vr[i] = '\0';
-			break ;
-		}
-		nm_vr[i] = argument[i];
-	}
-	return (nm_vr);
 }
 
 int	check_parse_export(char *s)

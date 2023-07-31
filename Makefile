@@ -6,12 +6,18 @@
 #    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/30 03:47:04 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/31 01:41:04 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-SRC = $(wildcard *.c Parsing/*.c Execution/*.c)
+SRC = ./Parsing/GarbageList.c ./Parsing/envLists.c ./Parsing/functionsHelpers1.c ./Parsing/parsing.c\
+		./Parsing/cmdsLists.c ./Parsing/expand.c ./Parsing/functionsHelpers2.c ./Parsing/parsingHelper.c\
+		./Parsing/customSplit.c ./Parsing/expandHelper.c ./Parsing/parsList.c\
+		./Execution/builtins.c ./Execution/execute.c ./Execution/functionsHelpers2.c ./Execution/functionsHelpers4.c\
+		./Execution/builtins1.c ./Execution/functionsHelpers1.c ./Execution/functionsHelpers3.c	\
+		minishell.c 
+		
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h ./Libft/libft.h
 CC = cc
@@ -23,10 +29,10 @@ RL_LIB = -L $(shell brew --prefix readline)/lib
 all : libft.a $(NAME)
 
 libft.a : 
-	make -C Libft all bonus
+	make -C Libft all
 
-$(NAME) :  $(OBJ)
-	$(CC) $(RL_LIB) $(OBJ) ./Libft/libft.a -o $(NAME) -lreadline 
+$(NAME) :  $(OBJ) ./Libft/libft.a
+	$(CC) $(RL_LIB) $(OBJ) $(FLAGS) ./Libft/libft.a -o $(NAME) -lreadline 
 
 %.o: %.c $(HEADER)
 	$(CC) $(FLAGS) $(RL_INC)  -c $< -o $@

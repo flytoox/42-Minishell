@@ -6,13 +6,11 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/30 03:42:20 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 01:49:57 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_data	g_data;
 
 void	sigusr_handler(int signum)
 {
@@ -32,29 +30,12 @@ void	display_prompt(void)
 	if (!g_data.input)
 	{
 		garbg_clear(&g_data.garbage);
-		exit (0);
+		exit (g_data.exit_status);
 	}
 	if (g_data.input[0])
 		add_history(g_data.input);
 	parse(g_data.input);
 	free(g_data.input);
-	// cmd_clear(&g_data.cmds);
-}
-
-char	*get_path(char **env)
-{
-	int	i;
-
-	i = -1;
-	while (env[++i])
-		if (!ft_strncmp(env[i], "PATH=", 5))
-			return (env[i] + 5);
-	return (0);
-}
-
-void	ft_exit(void)
-{
-	system("leaks minishell");
 }
 
 t_env	*fill_env(char **env)
@@ -82,35 +63,33 @@ t_env	*fill_env(char **env)
 	return (new_env);
 }
 
-
-void	fill_the_env(void)
+void	fill_the_env(char **env)
 {
 	char	*pwd;
 	char	*shlvl;
 	char	cwd[1024];
 
+	if (*env)
+	{
+		g_data.env = fill_env(env);
+		return ;
+	}
 	pwd = getcwd(cwd, sizeof(cwd));
 	shlvl = ft_itoa(1);
 	env_add_back(&g_data.env, env_new(ft_strdup("PWD"), ft_strdup(pwd)));
 	env_add_back(&g_data.env, env_new(ft_strdup("SHLVL"), shlvl));
 }
+
 int	main(int argc, char **argv, char **env)
 {
-	// atexit(ft_exit);
 	g_data.garbage = NULL;
 	g_data.env = NULL;
-	if (!*env)
-		fill_the_env();
 	signal(SIGINT, sigusr_handler);
 	signal(SIGQUIT, sigusr_handler);
 	set_builtins();
-	if (*env)
-		g_data.env = fill_env(env);
+	fill_the_env(env);
 	if (argc != 1 && argv[1] != NULL)
 		return (printf("Mamamia, don't use args\n"), 1);
-	// g_data.path = ft_split(get_path(env), ':');
-	// if (!g_data.path)
-	// 	return (printf("ERROR\nthere is something with the path"), 1);
 	while (1)
 		display_prompt();
 	return (0);

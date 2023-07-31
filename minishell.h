@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/30 03:24:56 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 01:44:00 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <errno.h>
-
 
 # define CMD_NT_FND " command not found\n"
 # define NO_SUCH_FILE " No such file or directory\n"
@@ -98,7 +97,7 @@ typedef struct minikhell
 	t_grbg	*garbage;
 }	t_data;
 
-extern t_data g_data;
+t_data	g_data;
 
 void	sigusr_handler(int signum);
 
@@ -150,6 +149,8 @@ void	export(char *argument);
 void	unset(char *s);
 void	env(int is_env);
 void	expand(t_pars *pars);
+void	ft_exit(char **args, int is_child);
+
 void	open_files(t_pars *tmp);
 void	which_fd(t_pars *parsed);
 int		here_doc(char *del, int is_expand);
@@ -160,5 +161,14 @@ char	*path_cmd(char *cmd, char *msg);
 void	set_builtins(void);
 void	execute(t_pars *parsed);
 void	lunch_herdoc(t_pars *parsed);
+bool	is_export(t_cmd *cmd);
+void	tokens(void);
+int		give_me_index(char **args);
+void	make_the_path(void);
+void	make_the_env(void);
+char	**get_cmds_args(t_cmd *cmd, t_pars *parsed);
+void	signals_handling(int status);
+void	ft_print(const char *s, int fd);
+void	close_fds(void);
 
 #endif
