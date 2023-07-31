@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 01:14:34 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 02:09:42 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	open_files(t_pars *tmp)
 	while (tmp)
 	{
 		cmd = tmp->cmd;
-		while (cmd->next)
+		while (cmd && cmd->next)
 		{
 			if (cmd->type == OUT || cmd->type == APPEND)
 				out_append(tmp, cmd);

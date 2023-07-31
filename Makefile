@@ -6,7 +6,7 @@
 #    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/31 01:41:04 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/31 02:08:47 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC = ./Parsing/GarbageList.c ./Parsing/envLists.c ./Parsing/functionsHelpers1.c
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h ./Libft/libft.h
 CC = cc
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -Wall -Wextra -Werror -g
 
 RL_INC = -I $(shell brew --prefix readline)/include
 RL_LIB = -L $(shell brew --prefix readline)/lib

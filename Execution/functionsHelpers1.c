@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/31 01:12:46 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 02:01:53 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	herdoc_signal_handler(int sig)
 	{
 		rl_done = 1;
 		g_data.quit_heredoc = 1;
-		fd = open(".temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
+		fd = open("/tmp/temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
 		close(fd);
 	}
 }
@@ -82,14 +82,14 @@ int	fill_file(int fd, char *del, int is_expand)
 			line = expand_her(line);
 		ft_print(line, fd);
 	}
-	return (close(fd), open(".temp_file", O_RDONLY));
+	return (close(fd), open("/tmp/temp_file", O_RDONLY));
 }
 
 int	here_doc(char *del, int is_expand)
 {
 	int		in;
 
-	in = open(".temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
+	in = open("/tmp/temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
 	if (in < 0)
 		return (perror("Minishell"), exit(1), 1);
 	in = fill_file(in, del, is_expand);

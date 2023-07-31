@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 01:42:40 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 02:19:24 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	execute_child(int *tmp, int fd[2], t_pars *parsed, char **args)
 		else
 			args[0] = path_cmd(args[0], CMD_NT_FND);
 		execve(args[0], args, g_data.env_tab);
-		perror("minishell");
+		printf("minishell : %s: %s\n", args[0], strerror(errno));
 		garbg_clear(&g_data.garbage);
 		exit(127);
 	}
@@ -136,5 +136,5 @@ void	execute(t_pars *parsed)
 		close(tmp);
 	signals_handling(on_child);
 	close_fds();
-	unlink(".temp_file");
+	unlink("/tmp/temp_file");
 }
