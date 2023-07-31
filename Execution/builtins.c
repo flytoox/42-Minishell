@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 19:18:29 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:47:14 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	cd(char *path)
 		if (!path)
 		{
 			g_data.exit_status = 1;
-			printf("Minishell: cd: HOME not set\n");
+			ft_print("Minishell: cd: HOME not set", 2);
 			return ;
 		}
 		else if (!*path)
