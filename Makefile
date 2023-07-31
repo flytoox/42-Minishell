@@ -6,7 +6,7 @@
 #    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/31 02:08:47 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/07/31 19:35:07 by obelaizi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ SRC = ./Parsing/GarbageList.c ./Parsing/envLists.c ./Parsing/functionsHelpers1.c
 		./Parsing/cmdsLists.c ./Parsing/expand.c ./Parsing/functionsHelpers2.c ./Parsing/parsingHelper.c\
 		./Parsing/customSplit.c ./Parsing/expandHelper.c ./Parsing/parsList.c\
 		./Execution/builtins.c ./Execution/execute.c ./Execution/functionsHelpers2.c ./Execution/functionsHelpers4.c\
-		./Execution/builtins1.c ./Execution/functionsHelpers1.c ./Execution/functionsHelpers3.c	\
+		./Execution/builtins1.c ./Execution/functionsHelpers1.c ./Execution/functionsHelpers3.c ./Execution/ft_perror.c	\
 		minishell.c 
 		
 OBJ = $(SRC:.c=.o)

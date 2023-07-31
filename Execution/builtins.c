@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 01:04:51 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:18:29 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ void	cd_helper(t_env *node, char *path)
 
 	getcwd(oldpwd, sizeof(oldpwd));
 	if (chdir(path) == -1)
-		return (g_data.exit_status = 1, (void)printf("cd: %s: %s\n", path,
-				strerror(errno)));
+		return (g_data.exit_status = 1, ft_perror("cd: ",
+				path, strerror(errno)));
 	if (!getcwd(cwd, sizeof(cwd)))
 	{
-		printf("cd: error retrieving current directory: getcwd:\
- cannot access parent directories: No such file or directory\n");
+		ft_print("cd: error retrieving current directory: getcwd:\
+ cannot access parent directories: No such file or directory", 2);
 		return ;
 	}
 	if (!env_value("OLDPWD", g_data.env))
@@ -87,7 +87,7 @@ void	cd(char *path)
 		if (!path)
 		{
 			g_data.exit_status = 1;
-			printf("Minishell: cd: OLDPWD not set\n");
+			ft_print("Minishell: cd: OLDPWD not set", 2);
 			return ;
 		}
 	}

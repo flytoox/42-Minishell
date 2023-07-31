@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/31 01:44:00 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:34:06 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-# define CMD_NT_FND " command not found\n"
-# define NO_SUCH_FILE " No such file or directory\n"
+# define CMD_NT_FND "command not found\n"
+# define NO_SUCH_FILE "No such file or directory\n"
 # define FILE_NOT_FOUND -3
 # define FD_INIT -2
 
@@ -170,5 +170,7 @@ char	**get_cmds_args(t_cmd *cmd, t_pars *parsed);
 void	signals_handling(int status);
 void	ft_print(const char *s, int fd);
 void	close_fds(void);
+void	ft_perror(const char *s1, const char *s2, const char *s3);
+void	ft_putstr_fd(const char *s, int fd);
 
 #endif

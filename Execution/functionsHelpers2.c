@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 01:04:28 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 01:42:25 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:56:54 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	signals_handling(int status)
 	if (WTERMSIG(status) == SIGQUIT)
 	{
 		if (g_data.pars->next)
-			write(0, "", 1);
+			write(1, "", 1);
 		else
 		{
 			g_data.exit_status = 131;

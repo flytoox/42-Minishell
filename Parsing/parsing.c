@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 02:09:42 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:31:48 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	parse(char *str)
 	if (!*str)
 		return (0);
 	if (is_closed(str))
-		return (printf("Dude close ur things\n"));
+		return (ft_print("Dude close ur things", 2), 1);
 	g_data.cmds = NULL;
 	cust_split(str, &g_data.cmds);
 	if (!g_data.cmds)
@@ -53,7 +53,8 @@ int	parse(char *str)
 	make_cmd_prev();
 	tokens();
 	if (is_syntax_error())
-		return (printf("Minishell: syntax error near unexpected token\n"));
+		return (ft_print("Minishell: syntax error near unexpected token", 2),
+			1);
 	make_new_lst();
 	expand(g_data.pars);
 	remove_quotes(g_data.pars);
@@ -80,8 +81,7 @@ int	in(t_pars *tmp, t_cmd *cmd)
 	tmp->in = open(cmd->next->s, O_RDONLY);
 	if (tmp->in == -1)
 	{
-		printf("Minishell: %s: No such file or directory\n",
-			cmd->next->s);
+		ft_perror("Minishell: ", cmd->next->s, "No such file or directory\n");
 		tmp->in = FILE_NOT_FOUND;
 		return (1);
 	}

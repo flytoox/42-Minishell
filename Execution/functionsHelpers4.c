@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 01:10:44 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 01:43:35 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:28:40 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ char	*path_cmd_helper(char *cmd, char *tmp2, char *msg)
 	i = 0;
 	tmp = 0;
 	if (!ft_strcmp(cmd, "."))
-		return (printf("minishell: .: filename argument required\n.:\
-usage: . filename [arguments]\n"), exit(2), NULL);
+		return (ft_print("minishell: .: filename argument required\n.:\
+usage: . filename [arguments]", 2), exit(2), NULL);
 	else if (!ft_strcmp(cmd, ".."))
-		return (printf("Minishell: %s%s", cmd, msg), exit(127), NULL);
+		return (ft_perror("Minishell: ", cmd, msg), exit(127), NULL);
 	if (!cmd[0])
-		return (printf("Minishell: %s%s", cmd, msg), exit(127), NULL);
+		return (ft_perror("Minishell: ", cmd, msg), exit(127), NULL);
 	cmd = ft_strjoin("/", tmp2);
 	while (g_data.path && g_data.path[i])
 	{
@@ -56,14 +56,14 @@ char	*path_cmd(char *cmd, char *msg)
 				return (tmp2);
 		}
 		else if (S_ISDIR(statbuf.st_mode))
-			return (printf("minishell : %s: is a directory\n", tmp2),
+			return (ft_perror("minishell: ", tmp2, "is a directory\n"),
 				garbg_clear(&g_data.garbage), exit(126), NULL);
 	}
 	else
 		if (errno == EACCES)
-			return (printf("minishell: %s: Permission denied\n", tmp2),
+			return (ft_perror("minishell: ", tmp2, "Permission denied\n"),
 				garbg_clear(&g_data.garbage), exit(126), NULL);
-	return (printf("Minishell: %s%s", tmp2, msg), exit(127), NULL);
+	return (ft_perror("Minishell: ", cmd, msg), exit(127), NULL);
 }
 
 void	which_fd(t_pars *parsed)

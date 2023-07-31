@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 00:35:09 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:24:23 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	env(int is_env)
 {
 	t_env	*node;
 
-	export("_=/usr/bin/env");
+	unset(ft_strdup("_"));
+	export(ft_strdup("_=/usr/bin/env"));
 	node = g_data.env;
 	if (is_env)
 	{
@@ -26,7 +27,6 @@ void	env(int is_env)
 				printf("%s=%s\n", node->key, node->value);
 			node = node->next;
 		}
-		return ;
 	}
 	while (node)
 	{
@@ -50,7 +50,7 @@ void	unset(char *s)
 	{
 		node = g_data.env;
 		g_data.env = g_data.env->next;
-		return (env_delone(node));
+		return ;
 	}
 	node = g_data.env;
 	while (node)
@@ -58,7 +58,7 @@ void	unset(char *s)
 		if (!ft_strcmp(node->key, s))
 		{
 			tmp->next = node->next;
-			return (env_delone(node));
+			return ;
 		}
 		tmp = node;
 		node = node->next;
@@ -95,7 +95,9 @@ void	export(char *argument)
 	node = g_data.env;
 	if (check_parse_export(argument))
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", argument);
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(argument, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		return ;
 	}
 	nm_vr = get_name_var(argument);
@@ -121,7 +123,7 @@ void	ft_exit(char **args, int is_child)
 		i++;
 	if (i > 1)
 	{
-		printf("minishell: exit: too many arguments\n");
+		ft_print("minishell: exit: too many arguments", 2);
 		g_data.exit_status = 1;
 		return ;
 	}

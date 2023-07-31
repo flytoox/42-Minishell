@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/31 02:01:53 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:01:47 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,13 @@ int	fill_file(int fd, char *del, int is_expand)
 	signal(SIGINT, herdoc_signal_handler);
 	while (line)
 	{
-		free(line);
 		line = readline("> ");
 		if (!line || g_data.quit_heredoc)
 			break ;
+		garbg_add_back(&g_data.garbage, garbg_new(line));
 		if (line && ft_strlen(line) == ft_strlen(del)
 			&& !ft_strcmp(del, line))
-		{
-			free(line);
 			break ;
-		}
 		if (!is_expand)
 			line = expand_her(line);
 		ft_print(line, fd);

@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/31 01:49:57 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:16:44 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	main(int argc, char **argv, char **env)
 	set_builtins();
 	fill_the_env(env);
 	if (argc != 1 && argv[1] != NULL)
-		return (printf("Mamamia, don't use args\n"), 1);
+		return (ft_print("Mamamia, don't use args", 2), 1);
 	while (1)
 		display_prompt();
 	return (0);
