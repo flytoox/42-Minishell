@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/08/03 17:35:53 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/08/03 21:39:25 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	sigusr_handler(int signum)
 void	display_prompt(void)
 {
 	rl_catch_signals = 0;
-	rl_variable_bind("disable-completion", "on");
 	g_data.input = readline("minishell# ");
 	if (!g_data.input)
 	{

@@ -6,7 +6,7 @@
 /*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/08/03 17:22:13 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/08/03 21:30:16 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	herdoc_signal_handler(int sig)
 	{
 		rl_done = 1;
 		g_data.quit_heredoc = 1;
+		g_data.exit_status = 130;
 		fd = open("/tmp/temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
 		close(fd);
 	}
