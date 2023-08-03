@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:22:06 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 02:07:49 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:46:06 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	expand_it(t_cmd *node, int *i, int *before_equal, int *expanded)
 {
 	char	*val;
 	char	*rest;
-	char	*tmp;
 
 	if (i && node->s[*i - 1] == '=')
 		*before_equal = 1;
@@ -37,10 +36,8 @@ void	expand_it(t_cmd *node, int *i, int *before_equal, int *expanded)
 	trim_it(rest);
 	val = env_value(&node->s[*i], g_data.env);
 	node->s[*i - 1] = '\0';
-	tmp = node->s;
 	if (val)
 		node->s = ft_strjoin(node->s, val);
-	tmp = node->s;
 	node->s = ft_strjoin(node->s, rest);
 	(*i)--;
 }
@@ -89,9 +86,7 @@ void	is_it_expanded(t_cmd *node, t_pars **pars)
 void	expand(t_pars *pars)
 {
 	t_cmd	*node;
-	t_pars	*tmp;
 
-	tmp = pars;
 	while (pars)
 	{
 		pars->in = FD_INIT;

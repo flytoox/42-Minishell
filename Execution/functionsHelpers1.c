@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functionsHelpers1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/31 19:01:47 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:22:13 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ char	*expand_her(char *s)
 {
 	char	*s3;
 	char	*s2;
-	char	*tmp;
 	int		i;
 
 	i = 0;
@@ -29,10 +28,8 @@ char	*expand_her(char *s)
 			trim_it(s3);
 			s2 = env_value(&s[i], g_data.env);
 			s[i - 1] = '\0';
-			tmp = s;
 			if (s2)
 				s = ft_strjoin(s, s2);
-			tmp = s;
 			s = ft_strjoin(s, s3);
 		}
 		i++;
@@ -70,7 +67,11 @@ int	fill_file(int fd, char *del, int is_expand)
 	{
 		line = readline("> ");
 		if (!line || g_data.quit_heredoc)
+		{
+			if (line)
+				free(line);
 			break ;
+		}
 		garbg_add_back(&g_data.garbage, garbg_new(line));
 		if (line && ft_strlen(line) == ft_strlen(del)
 			&& !ft_strcmp(del, line))
@@ -88,9 +89,9 @@ int	here_doc(char *del, int is_expand)
 
 	in = open("/tmp/temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
 	if (in < 0)
-		return (perror("Minishell"), exit(1), 1);
+		return (perror("minishell"), exit(1), 1);
 	in = fill_file(in, del, is_expand);
 	if (in < 0)
-		return (perror("Minishell"), exit(1), 1);
+		return (perror("minishell"), exit(1), 1);
 	return (in);
 }

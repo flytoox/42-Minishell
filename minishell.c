@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/31 19:16:44 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:35:53 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_data	g_data;
 
 void	sigusr_handler(int signum)
 {
@@ -20,12 +22,14 @@ void	sigusr_handler(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_data.exit_status = 1;
 	}
 }
 
 void	display_prompt(void)
 {
 	rl_catch_signals = 0;
+	rl_variable_bind("disable-completion", "on");
 	g_data.input = readline("minishell# ");
 	if (!g_data.input)
 	{
@@ -44,7 +48,6 @@ t_env	*fill_env(char **env)
 	t_env	*new_env;
 	char	*name_var;
 	char	*val_var;
-	char	*tmp;
 
 	new_env = NULL;
 	i = -1;
@@ -53,10 +56,7 @@ t_env	*fill_env(char **env)
 		name_var = get_name_var(env[i]);
 		val_var = get_val_var(env[i]);
 		if (!ft_strcmp(name_var, "SHLVL"))
-		{
-			tmp = val_var;
 			val_var = ft_itoa(ft_atoi(val_var) + 1);
-		}
 		env_add_back(&new_env,
 			env_new(name_var, val_var));
 	}
