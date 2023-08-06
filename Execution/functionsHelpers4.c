@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functionsHelpers4.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 01:10:44 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 19:48:23 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:14:41 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ char	*path_cmd_helper(char *cmd, char *tmp2, char *msg)
 		return (ft_print("minishell: .: filename argument required\n.:\
 usage: . filename [arguments]", 2), exit(2), NULL);
 	else if (!ft_strcmp(cmd, ".."))
-		return (ft_perror("Minishell: ", cmd, msg), exit(127), NULL);
+		return (ft_perror("minishell: ", cmd, msg), exit(127), NULL);
 	if (!cmd[0])
-		return (ft_perror("Minishell: ", cmd, msg), exit(127), NULL);
+		return (ft_perror("minishell: ", cmd, msg), exit(127), NULL);
 	cmd = ft_strjoin("/", tmp2);
 	while (g_data.path && g_data.path[i])
 	{
@@ -56,14 +56,14 @@ char	*path_cmd(char *cmd, char *msg)
 				return (tmp2);
 		}
 		else if (S_ISDIR(statbuf.st_mode))
-			return (ft_perror("minishell: ", tmp2, "is a directory\n"),
+			return (ft_perror("minishell: ", tmp2, "is a directory"),
 				garbg_clear(&g_data.garbage), exit(126), NULL);
 	}
 	else
 		if (errno == EACCES)
-			return (ft_perror("minishell: ", tmp2, "Permission denied\n"),
+			return (ft_perror("minishell: ", tmp2, "Permission denied"),
 				garbg_clear(&g_data.garbage), exit(126), NULL);
-	return (ft_perror("Minishell: ", cmd, msg), exit(127), NULL);
+	return (ft_perror("minishell: ", cmd, msg), exit(127), NULL);
 }
 
 void	which_fd(t_pars *parsed)

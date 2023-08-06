@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+         #
+#    By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:13:54 by aait-mal          #+#    #+#              #
-#    Updated: 2023/07/31 19:35:07 by obelaizi         ###   ########.fr        #
+#    Updated: 2023/08/03 17:04:22 by aait-mal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,23 +16,23 @@ SRC = ./Parsing/GarbageList.c ./Parsing/envLists.c ./Parsing/functionsHelpers1.c
 		./Parsing/customSplit.c ./Parsing/expandHelper.c ./Parsing/parsList.c\
 		./Execution/builtins.c ./Execution/execute.c ./Execution/functionsHelpers2.c ./Execution/functionsHelpers4.c\
 		./Execution/builtins1.c ./Execution/functionsHelpers1.c ./Execution/functionsHelpers3.c ./Execution/ft_perror.c	\
-		minishell.c 
-		
+		minishell.c
+
 OBJ = $(SRC:.c=.o)
 HEADER = minishell.h ./Libft/libft.h
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 
 RL_INC = -I $(shell brew --prefix readline)/include
 RL_LIB = -L $(shell brew --prefix readline)/lib
 
 all : libft.a $(NAME)
 
-libft.a : 
+libft.a :
 	make -C Libft all
 
 $(NAME) :  $(OBJ) ./Libft/libft.a
-	$(CC) $(RL_LIB) $(OBJ) $(FLAGS) ./Libft/libft.a -o $(NAME) -lreadline 
+	$(CC) $(RL_LIB) $(OBJ) $(FLAGS) ./Libft/libft.a -o $(NAME) -lreadline
 
 %.o: %.c $(HEADER)
 	$(CC) $(FLAGS) $(RL_INC)  -c $< -o $@

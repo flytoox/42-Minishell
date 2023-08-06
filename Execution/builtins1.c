@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 19:24:23 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:48:27 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	export(char *argument)
 	t_env	*node;
 	char	*nm_vr;
 	char	*vl_vr;
-	int		i;
 
 	node = g_data.env;
 	if (check_parse_export(argument))
@@ -101,7 +100,6 @@ void	export(char *argument)
 		return ;
 	}
 	nm_vr = get_name_var(argument);
-	i = -1;
 	vl_vr = get_val_var(argument);
 	while (node)
 	{

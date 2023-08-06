@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:55:59 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 19:47:14 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:10:21 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	cd(char *path)
 		if (!path)
 		{
 			g_data.exit_status = 1;
-			ft_print("Minishell: cd: HOME not set", 2);
+			ft_print("minishell: cd: HOME not set", 2);
 			return ;
 		}
 		else if (!*path)
@@ -87,7 +87,7 @@ void	cd(char *path)
 		if (!path)
 		{
 			g_data.exit_status = 1;
-			ft_print("Minishell: cd: OLDPWD not set", 2);
+			ft_print("minishell: cd: OLDPWD not set", 2);
 			return ;
 		}
 	}

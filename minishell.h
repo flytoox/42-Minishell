@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/07/31 19:34:06 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:19:27 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-# define CMD_NT_FND "command not found\n"
-# define NO_SUCH_FILE "No such file or directory\n"
+# define CMD_NT_FND "command not found"
+# define NO_SUCH_FILE "No such file or directory"
 # define FILE_NOT_FOUND -3
 # define FD_INIT -2
 
@@ -97,7 +97,7 @@ typedef struct minikhell
 	t_grbg	*garbage;
 }	t_data;
 
-t_data	g_data;
+extern t_data	g_data;
 
 void	sigusr_handler(int signum);
 

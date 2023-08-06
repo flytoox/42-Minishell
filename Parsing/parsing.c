@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/07/31 19:31:48 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:18:18 by aait-mal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	in(t_pars *tmp, t_cmd *cmd)
 	tmp->in = open(cmd->next->s, O_RDONLY);
 	if (tmp->in == -1)
 	{
-		ft_perror("Minishell: ", cmd->next->s, "No such file or directory\n");
+		ft_perror("minishell: ", cmd->next->s, "No such file or directory");
 		tmp->in = FILE_NOT_FOUND;
 		return (1);
 	}
