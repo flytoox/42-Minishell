@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:31:14 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/08/03 16:48:27 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:23:00 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,26 +112,30 @@ void	export(char *argument)
 	env_add_back(&g_data.env, env_new(nm_vr, vl_vr));
 }
 
-void	ft_exit(char **args, int is_child)
+int	ft_exit(char **args, int is_child)
 {
 	int		i;
 
+	if (!is_valid(args[0]))
+	{
+		if (!is_child && parse_size(g_data.pars) == 1)
+			return (ft_print("exit", 2), ft_perror("minishell: exit:", args[0],
+					"numeric argument required"), garbg_clear(&g_data.garbage),
+				exit(255), 1);
+		else if (is_child)
+			return (ft_perror("minishell: exit:", args[0], "numeric\
+ argument required"), garbg_clear(&g_data.garbage), exit(255), 1);
+	}
 	i = 0;
 	while (args[i])
 		i++;
 	if (i > 1)
-	{
-		ft_print("minishell: exit: too many arguments", 2);
-		g_data.exit_status = 1;
-		return ;
-	}
+		return (ft_print("minishell: exit: too many arguments", 2),
+			g_data.exit_status = 1);
+	i = ft_atoi(args[0]);
 	if (!is_child && parse_size(g_data.pars) == 1)
-	{
-		printf("exit\n");
-		exit(ft_atoi(args[0]));
-	}
+		return (printf("exit\n"), garbg_clear(&g_data.garbage), exit(i), 1);
 	else if (is_child)
-	{
-		exit(ft_atoi(args[0]));
-	}
+		return (garbg_clear(&g_data.garbage), exit(i), 0);
+	return (0);
 }

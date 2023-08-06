@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:15:43 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/08/03 17:19:27 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:21:54 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	export(char *argument);
 void	unset(char *s);
 void	env(int is_env);
 void	expand(t_pars *pars);
-void	ft_exit(char **args, int is_child);
+int		ft_exit(char **args, int is_child);
 
 void	open_files(t_pars *tmp);
 void	which_fd(t_pars *parsed);
@@ -172,5 +172,7 @@ void	ft_print(const char *s, int fd);
 void	close_fds(void);
 void	ft_perror(const char *s1, const char *s2, const char *s3);
 void	ft_putstr_fd(const char *s, int fd);
+
+bool	is_valid(char *str);
 
 #endif

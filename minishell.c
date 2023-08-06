@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:18:45 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/08/03 21:39:25 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:47:05 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	sigusr_handler(int signum)
 
 void	display_prompt(void)
 {
+	g_data.quit_heredoc = 0;
 	rl_catch_signals = 0;
 	g_data.input = readline("minishell# ");
 	if (!g_data.input)

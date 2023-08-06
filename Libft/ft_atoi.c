@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 22:35:56 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/08/03 17:15:47 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/08/06 16:28:27 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ int	ft_atoi(const char *str)
 	while ((*str == ' ' || *str == '\t' || *str == '\n' || *str == '\v'
 			|| *str == '\f' || *str == '\r') && *str)
 		str++;
-	if (*str < '0' || *str > '9')
-		return (ft_perror("minishell: ", str, "numeric argument required"),
-			255);
 	if (*str == '+' || *str == '-')
 	{
 		if (*str == '-')

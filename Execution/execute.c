@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/08/03 17:19:31 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/08/06 18:02:01 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	check_builtins(char ***targs, int is_child, char **args)
 		else if (i == 2 && j)
 			return (*targs = *targs + 1, 2);
 		else if (i == 3)
-			return (ft_exit(&args[j + 1], is_child), 0);
+			return (ft_exit(&args[j + 1], is_child));
 		else if (i == 4 && j)
 			unset(args[j]);
 		else if (i == 5 && j)

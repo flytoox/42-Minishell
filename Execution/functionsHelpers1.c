@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functionsHelpers1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-mal <aait-mal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:11:34 by aait-mal          #+#    #+#             */
-/*   Updated: 2023/08/03 21:30:16 by aait-mal         ###   ########.fr       */
+/*   Updated: 2023/08/06 18:13:42 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,33 +44,28 @@ int	event(void)
 
 void	herdoc_signal_handler(int sig)
 {
-	int	fd;
-
 	if (sig == SIGINT)
 	{
 		rl_done = 1;
 		g_data.quit_heredoc = 1;
 		g_data.exit_status = 130;
-		fd = open("/tmp/temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
-		close(fd);
 	}
 }
 
-int	fill_file(int fd, char *del, int is_expand)
+void	fill_file(int fd[2], char *del, int is_expand, char *line)
 {
-	char	*line;
-
-	line = ft_strdup("");
-	rl_event_hook = event;
-	g_data.quit_heredoc = 0;
-	signal(SIGINT, herdoc_signal_handler);
 	while (line)
 	{
 		line = readline("> ");
 		if (!line || g_data.quit_heredoc)
 		{
-			if (line)
+			if (g_data.quit_heredoc)
+			{
 				free(line);
+				close(fd[1]);
+				close(fd[0]);
+				pipe(fd);
+			}
 			break ;
 		}
 		garbg_add_back(&g_data.garbage, garbg_new(line));
@@ -79,20 +74,21 @@ int	fill_file(int fd, char *del, int is_expand)
 			break ;
 		if (!is_expand)
 			line = expand_her(line);
-		ft_print(line, fd);
+		ft_print(line, fd[1]);
 	}
-	return (close(fd), open("/tmp/temp_file", O_RDONLY));
 }
 
 int	here_doc(char *del, int is_expand)
 {
-	int		in;
+	int		fd[2];
 
-	in = open("/tmp/temp_file", O_CREAT | O_TRUNC | O_WRONLY, 0777);
-	if (in < 0)
+	if (pipe(fd) < 0)
 		return (perror("minishell"), exit(1), 1);
-	in = fill_file(in, del, is_expand);
-	if (in < 0)
-		return (perror("minishell"), exit(1), 1);
-	return (in);
+	rl_event_hook = event;
+	signal(SIGINT, herdoc_signal_handler);
+	if (g_data.quit_heredoc)
+		return (close(fd[1]), fd[0]);
+	fill_file(fd, del, is_expand, ft_strdup(""));
+	close(fd[1]);
+	return (fd[0]);
 }
