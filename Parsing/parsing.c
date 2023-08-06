@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:42:18 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/08/06 16:14:44 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/06 18:49:24 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	parse(char *str)
 	remove_quotes(g_data.pars);
 	open_files(g_data.pars);
 	make_pars_prev();
-	execute(g_data.pars);
-	return (0);
+	lunch_herdoc(g_data.pars);
+	return (execute(g_data.pars), 0);
 }
 
 void	out_append(t_pars *tmp, t_cmd *cmd)

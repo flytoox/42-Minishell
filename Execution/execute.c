@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 01:47:36 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/08/06 18:28:54 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/06 18:52:25 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ void	execute(t_pars *parsed)
 
 	tmp = -2;
 	on_child = 0;
+	if (g_data.quit_heredoc)
+		return ;
 	signal(SIGINT, SIG_IGN);
 	while (parsed)
 	{
@@ -134,7 +136,5 @@ void	execute(t_pars *parsed)
 	}
 	if (tmp != -2)
 		close(tmp);
-	signals_handling(on_child);
-	close_fds();
-	unlink("/tmp/temp_file");
+	return (signals_handling(on_child), close_fds());
 }

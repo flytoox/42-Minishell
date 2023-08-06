@@ -6,7 +6,7 @@
 /*   By: obelaizi <obelaizi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 01:08:19 by obelaizi          #+#    #+#             */
-/*   Updated: 2023/08/06 17:55:28 by obelaizi         ###   ########.fr       */
+/*   Updated: 2023/08/06 18:49:08 by obelaizi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**get_cmds_args(t_cmd *cmd, t_pars *parsed)
 	char	**args;
 	int		i;
 
-	lunch_herdoc(parsed);
+	(void)parsed;
 	i = 0;
 	if (!calc_cmd_size(cmd))
 		return (NULL);
@@ -70,15 +70,19 @@ void	lunch_herdoc(t_pars *parsed)
 	t_cmd	*cmd;
 	int		in;
 
-	cmd = parsed->cmd;
-	while (cmd)
+	while (parsed)
 	{
-		if (cmd->type == DELIM)
-			in = here_doc(cmd->s, cmd->quote);
-		cmd = cmd->next;
+		cmd = parsed->cmd;
+		while (cmd)
+		{
+			if (cmd->type == DELIM)
+				in = here_doc(cmd->s, cmd->quote);
+			cmd = cmd->next;
+		}
+		if (parsed->in == -200)
+			parsed->in = in;
+		parsed = parsed->next;
 	}
-	if (parsed->in == -200)
-		parsed->in = in;
 }
 
 int	give_me_index(char **args)
